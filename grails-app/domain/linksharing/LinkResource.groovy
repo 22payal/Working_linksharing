@@ -6,5 +6,13 @@ class LinkResource extends Resource{
     static constraints = {
         url(unique: true,nullable:false,blank: false)
     }
+
+
+    @Override
+    public String toString() {
+        return "LinkResource{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }
 

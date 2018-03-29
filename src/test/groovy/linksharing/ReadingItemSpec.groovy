@@ -30,14 +30,15 @@ class ReadingItemSpec extends Specification implements DomainUnitTest<ReadingIte
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"sd",visibility: Visibility.PUBLIC,createdBy: user)
+       topic.save()
         Resource resource=new LinkResource(url: "www.google.com",description: "abhabhab",user: user,topic: topic)
-
+        resource.save()
+        ReadingItem readingItem1=new ReadingItem(isRead: null,user:user,resource:resource)
+        ReadingItem readingItem2=new ReadingItem(isRead:0,user:user,resource:resource)
 
         when:
-        ReadingItem readingItem1=new ReadingItem(isRead: null,user:user,resource:resource)
-
-        readingItem1.validate()
         readingItem1.save()
         then:
         readingItem1.errors.getFieldErrorCount('isRead')==1
@@ -45,9 +46,6 @@ class ReadingItemSpec extends Specification implements DomainUnitTest<ReadingIte
 
 
         when:
-        ReadingItem readingItem2=new ReadingItem(isRead:0,user:user,resource:resource)
-
-        readingItem2.validate()
         readingItem2.save()
         then:
         ReadingItem.count==1
@@ -65,25 +63,24 @@ class ReadingItemSpec extends Specification implements DomainUnitTest<ReadingIte
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"sd",visibility: Visibility.PUBLIC,createdBy: user)
+        topic.save()
         Resource resource=new LinkResource(url: "www.google.com",description: "abhabhab",user: user,topic: topic)
+       resource.save()
+        ReadingItem readingItem1 = new ReadingItem(isRead: true, user: null, resource: resource)
+        ReadingItem readingItem2 = new ReadingItem(isRead: true, user: user, resource: resource)
 
         when:
-        ReadingItem readingItem1 = new ReadingItem(isRead: true, user: null, resource: resource)
-
-        readingItem1.validate()
         readingItem1.save()
         then:
         readingItem1.errors.getFieldErrorCount('user') == 1
 
         when:
-        ReadingItem readingItem2 = new ReadingItem(isRead: true, user: null, resource: resource)
-
-        readingItem2.validate()
         readingItem2.save()
         then:
 
-        ReadingItem.count==1
+        readingItem2.count==1
 
     }
 
@@ -103,25 +100,26 @@ class ReadingItemSpec extends Specification implements DomainUnitTest<ReadingIte
                 admin:false,
                 active:true
         )
+        user.save()
+
         Topic topic = new Topic(name:"sd",visibility: Visibility.PUBLIC,createdBy: user)
+        topic.save()
         Resource resource=new LinkResource(url: "www.google.com",description: "abhabhab",user: user,topic: topic)
+        resource.save()
+        ReadingItem readingItem1=new ReadingItem(isRead: true,user:user,resource:null)
+        ReadingItem readingItem2=new ReadingItem(isRead: true,user:user,resource:resource)
+
 
         when:
-        ReadingItem readingItem1=new ReadingItem(isRead: true,user:user,resource:null)
-
-        readingItem1.validate()
         readingItem1.save()
         then:
         readingItem1.errors.getFieldErrorCount('resource')==1
         readingItem1.hasErrors()==true
 
         when:
-        ReadingItem readingItem2=new ReadingItem(isRead: true,user:user,resource:resource)
-
-        readingItem2.validate()
         readingItem2.save()
         then:
-        ReadingItem.count==1
+        readingItem2.count==1
     }
 
     def "Readingitem resource should be unique per user"(){
@@ -137,35 +135,31 @@ class ReadingItemSpec extends Specification implements DomainUnitTest<ReadingIte
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"sd",visibility: Visibility.PUBLIC,createdBy: user)
+        topic.save()
         Resource resource=new LinkResource(url: "www.google.com",description: "abhabhab",user: user,topic: topic)
+        resource.save()
+        ReadingItem readingItem1=new ReadingItem(isRead: true,user:user,resource:resource)
+
+        ReadingItem readingItem2=new ReadingItem(isRead: true,user:user,resource:resource)
+
+        ReadingItem readingItem3=new ReadingItem(isRead: true,user:user,resource:resource)
 
 
         when:
-        ReadingItem readingItem1=new ReadingItem(isRead: true,user:user,resource:resource)
-        readingItem1.validate()
         readingItem1.save()
 
         then:
-        ReadingItem.count==1
+        readingItem1.count==1
 
 
         when:
-
-        ReadingItem readingItem2=new ReadingItem(isRead: true,user:user,resource:resource)
-        resource.addToReadingItem(readingItem2)
-        resource.save()
-        user.addToReadingItem(readingItem2)
-        user.save()
-        readingItem2.validate()
         readingItem2.save()
+        then:
+        readingItem2.errors.hasErrors()==true
 
-        ReadingItem readingItem3=new ReadingItem(isRead: true,user:user,resource:resource)
-        resource.addToReadingItem(readingItem3)
-        resource.save()
-        user.addToReadingItem(readingItem3)
-        user.save()
-        readingItem3.validate()
+        when:
         readingItem3.save()
 
         then:

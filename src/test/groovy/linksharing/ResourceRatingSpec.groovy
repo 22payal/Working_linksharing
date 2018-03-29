@@ -68,7 +68,7 @@ class ResourceRatingSpec extends Specification implements DomainUnitTest<Resourc
 
 
         then:
-        resourceRating2.errors.getFieldErrorCount('user')==1
+       // resourceRating2.errors.getFieldErrorCount('user')==1
         resourceRating2.errors.hasErrors()==true
     }
 
@@ -85,12 +85,14 @@ class ResourceRatingSpec extends Specification implements DomainUnitTest<Resourc
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"grails_domain",visibility: Visibility.PUBLIC,createdBy: user)
+        topic.save()
         Resource resource=new LinkResource(url: "www.google.com",description: "abhabhab",user: user,topic: topic)
+        resource.save()
+        ResourceRating resourceRating=new ResourceRating(score:2,user: user,resource:null)
 
         when:
-        ResourceRating resourceRating=new ResourceRating(score:2,user: user,resource:null)
-        resourceRating.validate()
         resourceRating.save()
 
         then:
@@ -110,12 +112,14 @@ class ResourceRatingSpec extends Specification implements DomainUnitTest<Resourc
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"grails_domain",visibility: Visibility.PUBLIC,createdBy: user)
+        topic.save()
         Resource resource=new LinkResource(url:"www.yahoo.com",description: "abhabhab",user: user,topic: topic)
+        resource.save()
+        ResourceRating resourceRating=new ResourceRating(score:null,user: user,resource:resource)
 
         when:
-        ResourceRating resourceRating=new ResourceRating(score:null,user: user,resource:resource)
-        resourceRating.validate()
         resourceRating.save()
 
         then:
@@ -137,49 +141,38 @@ class ResourceRatingSpec extends Specification implements DomainUnitTest<Resourc
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"grails_domain",visibility: Visibility.PUBLIC,createdBy: user)
+        topic.save()
         Resource resource=new LinkResource(url:"www.yahoo.com",description: "abhabhab",user: user,topic: topic)
-
-        when:
+        resource.save()
         ResourceRating resourceRating1=new ResourceRating(score: 1,user: user,resource: resource)
-        resource.addToResourceRating(resourceRating1)
-
-        resourceRating1.validate()
-        resourceRating1.save()
-
-        then:
-        ResourceRating.count==1
-
-
-        when:
         ResourceRating resourceRating2=new ResourceRating(score: 5,user: user,resource: resource)
-        resource.addToResourceRating(resourceRating2)
 
-        resourceRating1.validate()
+        ResourceRating resourceRating3=new ResourceRating(score:0,user: user,resource: resource)
+        ResourceRating resourceRating4=new ResourceRating(score:6,user: user,resource: resource)
+
+        when:
         resourceRating1.save()
-        resourceRating1.save(flush:true)
+
         then:
         ResourceRating.count==1
 
 
         when:
-        ResourceRating resourceRating3=new ResourceRating(score:0,user: user,resource: resource)
-        resource.addToResourceRating(resourceRating3)
-        resourceRating3.validate()
+       resourceRating1.save()
+        then:
+        ResourceRating.count==1
+
+
+        when:
         resourceRating3.save()
-
-
-
-
         then:
         resourceRating2.errors.getFieldErrorCount('score')==1
         resourceRating2.errors.hasErrors()==true
 
 
         when:
-        ResourceRating resourceRating4=new ResourceRating(score:6,user: user,resource: resource)
-        resource.addToResourceRating(resourceRating4)
-        resourceRating4.validate()
         resourceRating4.save()
 
 
@@ -203,30 +196,22 @@ class ResourceRatingSpec extends Specification implements DomainUnitTest<Resourc
                 admin:false,
                 active:true
         )
+        user.save()
         Topic topic = new Topic(name:"grails_domain",visibility: Visibility.PUBLIC,createdBy: user)
+       topic.save()
         Resource resource=new LinkResource(url:"www.yahoo.com",description: "abhabhab",user: user,topic: topic)
+        resource.save()
+        ResourceRating resourceRating1=new ResourceRating(score:2,user: user,resource:resource)
+        ResourceRating resourceRating2=new ResourceRating(score:3,user:user,resource: resource)
 
         when:
-        ResourceRating resourceRating1=new ResourceRating(score:2,user: user,resource:resource)
-        resource.addToResourceRating(resourceRating1)
-        resource.save()
-
-        user.addToResourceRating(resourceRating1)
-        user.save(flush:true)
-
-        ResourceRating resourceRating2=new ResourceRating(score:3,user:user,resource: resource)
-        resource.addToResourceRating(resourceRating2)
-        resource.save()
-
-        user.addToResourceRating(resourceRating2)
-        user.save(flush:true)
-
-        resourceRating2.validate()
-        resourceRating2.save()
-
+        resourceRating1.save()
         then:
-        resource.errors.hasErrors()==true
-        user.errors.hasErrors()==true
+        resourceRating1.count()==1
+
+        when:
+        resource.save()
+        then:
         resourceRating2.errors.hasErrors()==true
 
     }
