@@ -1,5 +1,6 @@
 package linksharing
 
+import enumeration.Visibility
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
@@ -18,25 +19,25 @@ class DocumentResourceSpec extends Specification implements DomainUnitTest<Docum
 
     def "filePath should not be null or blank"(){
         setup:
-//        String email = "payal.nigam@tothenew.com"
-//        String password = "payal123"
-//        User user = new User()
-//        user.email=email
-//        user.password=password
-//        user.userName ="payalNigam"
-//        user.firstName="Payal"
-//        user.lastName ="Nigam"
-//        user.admin=false
-//        user.active=true
-//
-//        user.save()
-//
-//        Topic topic1 = new Topic()
-//        topic1.createdBy = user
-//        topic1.topicName = "first topic"
-//        topic1.visibility = Visibility.PUBLIC
-//
-//        topic1.save()
+        String email = "payal.nigam@tothenew.com"
+        String password = "payal123"
+        User user = new User()
+        user.email=email
+        user.password=password
+        user.userName ="payalNigam"
+        user.firstName="Payal"
+        user.lastName ="Nigam"
+        user.admin=false
+        user.active=true
+
+        user.save()
+
+        Topic topic1 = new Topic()
+        topic1.createdBy = user
+        topic1.topicName = "first topic"
+        topic1.visibility = Visibility.PUBLIC
+
+        topic1.save()
 
         DocumentResource documentResource1 = new DocumentResource()
         documentResource1.filepath= "payal/file.txt"

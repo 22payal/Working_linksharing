@@ -12,16 +12,14 @@ class User {
     Date dateCreated
     Date lastUpdated
     Byte photo
-    List<Topic> topic
+
+   // List<Topic> topics
+
     String name
 
     String  getName() {
         name= firstName+" "+lastName
     }
-
-
-    static hasMany = [topic:Topic,subscription:Subscription,readingItem:ReadingItem,resource:Resource,resourceRating:ResourceRating]
-
 
     static transients = ['name']
 
@@ -37,4 +35,11 @@ class User {
 
     }
 
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                '}';
+    }
 }

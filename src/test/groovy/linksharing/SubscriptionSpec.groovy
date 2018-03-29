@@ -5,6 +5,7 @@ import enumeration.Visibility
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
+
 class SubscriptionSpec extends Specification implements DomainUnitTest<Subscription> {
 
     def setup() {
@@ -18,7 +19,7 @@ class SubscriptionSpec extends Specification implements DomainUnitTest<Subscript
 //            true == false
 //    }
 
-    def "User should not be null"(){
+    def "User should not be null"() {
         setup:
         String email = "payal.nigam@tothenew.com"
         String password = "payal123"
@@ -40,146 +41,132 @@ class SubscriptionSpec extends Specification implements DomainUnitTest<Subscript
 
         topic.save()
 
-        Subscription subscription1=new Subscription()
+        Subscription subscription1 = new Subscription()
         subscription1.user = user
-        subscription1.topic= topic
-        subscription1.seriousness= Seriousness.VerySerious
+        subscription1.topic = topic
+        subscription1.seriousness = Seriousness.VerySerious
 
-//
-//        Subscription subscription2=new Subscription()
-//        subscription2.user = null
-//        subscription2.topic= null
-//        subscription2.seriousness= Seriousness.VerySerious
+
+        Subscription subscription2=new Subscription()
+        subscription2.user = null
+        subscription2.topic= null
+        subscription2.seriousness= Seriousness.VerySerious
 
 
         when:
-        subscription1.save(flush:true)
+        subscription1.save(flush: true)
 
         then:
-        subscription1.count()==1
+        subscription1.count() == 1
 
-//        when:
-//        subscription2.save(flush:true)
-//
-//        then:
-//        subscription2.errors.hasErrors()==true
-//
+        when:
+        subscription2.save(flush:true)
+
+        then:
+        subscription2.errors.hasErrors()==true
+
 
     }
 
-    def "Topic should not be null"(){
+    def "Topic should not be null"() {
         setup:
         String email = "payal.nigam@tothenew.com"
         String password = 'payal123'
         User user = new User(
                 email: email,
-                userName:"payalNigam",
-                password:password,
+                userName: "payalNigam",
+                password: password,
                 firstName: "Payal",
                 lastName: "Nigam",
-                admin:false,
-                active:true
+                admin: false,
+                active: true
         )
-        Topic topic=new Topic(name:"grails",visibility: Visibility.PUBLIC,createdBy: user)
-
+        user.save()
+        Topic topic = new Topic(name: "grails", visibility: Visibility.PUBLIC, createdBy: user)
+    topic.save()
         when:
-        Subscription subscription=new Subscription(
-                seriousness:Seriousness.VerySerious,
-                user:user,
-                topic:null
+        Subscription subscription = new Subscription(
+                seriousness: Seriousness.VerySerious,
+                user: user,
+                topic: null
         )
         subscription.validate()
         topic.addToSubscription(subscription)
         user.addToTopic(topic)
         user.addToSubscription(subscription)
-        user.save(flush:true)
+        user.save(flush: true)
 
         then:
-        subscription.errors.hasErrors()==true
+        subscription.errors.hasErrors() == true
     }
 
-    def "User should not be able to subscribe to topic multiple times "(){
+    def "User should not be able to subscribe to topic multiple times "() {
         setup:
         String email = "payal.nigam@tothenew.com"
         String password = 'payal123'
         User user = new User
                 (
                         email: email,
-                        userName:"payalNigam",
-                        password:password,
+                        userName: "payalNigam",
+                        password: password,
                         firstName: "Payal",
                         lastName: "Nigam",
-                        admin:false,
-                        active:true
+                        admin: false,
+                        active: true
                 )
+        user.save()
 
-        Topic topic=new Topic(name:"grails",visibility: Visibility.PUBLIC,createdBy: user)
+        Topic topic = new Topic(name: "grails", visibility: Visibility.PUBLIC, createdBy: user)
+        topic.save()
+
+        Subscription subscription1 = new Subscription(seriousness: Seriousness.VerySerious, user: user, topic: topic)
+        Subscription subscription2 = new Subscription(seriousness: Seriousness.Serious, user: user, topic: topic)
 
         when:
-        Subscription subscription1=new Subscription(seriousness:Seriousness.VerySerious, user:user,topics:topic)
-        subscription1.validate()
+        subscription1.save()
+        then:
+        subscription1.count==1
 
-        topic.addToSubscription(subscription1)
-
-        user.addToTopic(topic)
-
-        user.addToSubscription(subscription1)
-
-        user.save(flush:true)
-
-        Subscription subscription2=new Subscription(seriousness:Seriousness.Serious, user:user,topics:topic)
-        subscription1.validate()
-
-        topic.addToSubscription(subscription2)
-        user.addToTopic(topic)
-        user.addToSubscription(subscription2)
-        user.save(flush:true)
+        when:
+        subscription2.save()
 
 
         then:
-        subscription1.errors.hasErrors()==true
+        subscription2.errors.hasErrors() == true
     }
 
-    def "Seriousness should not be null"(){
+    def "Seriousness should not be null"() {
 
         setup:
         String email = "payal.nigam@tothenew.com"
-        String password = 'payal123'
+        String password = "payal123"
         User user = new User
                 (
                         email: email,
-                        userName:"payalNigam",
-                        password:password,
+                        userName: "payalNigam",
+                        password: password,
                         firstName: "Payal",
                         lastName: "Nigam",
-                        admin:false,
-                        active:true
+                        admin: false,
+                        active: true
                 )
 
-        Topic topic=new Topic(name:"grails",visibility: Visibility.PUBLIC,createdBy: user)
+        user.save()
+        Topic topic = new Topic(name: "grails", visibility: Visibility.PUBLIC, createdBy: user)
+         topic.save()
+
+        Subscription subscription1 = new Subscription(seriousness: Seriousness.VerySerious, user: user, topic: topic)
+        Subscription subscription2 = new Subscription(seriousness: null, user: user, topic: topic)
 
         when:
-        Subscription subscription1=new Subscription(seriousness:Seriousness.VerySerious, user:user,topics:topic)
-        subscription1.validate()
-
-        topic.addToSubscription(subscription1)
-        user.addToTopic(topic)
-        user.addToSubscription(subscription1)
-        user.save(flush:true)
-
+        subscription1.save()
         then:
-        Subscription.count==1
+        subscription1.count == 1
 
         when:
-        Subscription subscription2=new Subscription(seriousness:null, user:user,topics:topic)
-        subscription1.validate()
-        topic.addToSubscription(subscription2)
-        user.addToTopic(topic)
-        user.addToSubscription(subscription2)
-        user.save(flush:true)
-
+       subscription2.save()
         then:
-        subscription1.errors.hasErrors()==true
+        subscription2.errors.hasErrors() == true
 
     }
 

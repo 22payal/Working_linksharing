@@ -50,7 +50,7 @@ class TopicSpec extends Specification implements DomainUnitTest<Topic> {
         topic1.visibility = Visibility.PRIVATE
 
         Topic topic2 = new Topic()
-        topic2.topicName = "topic"
+        topic2.topicName = topic1.topicName
         topic2.createdBy = user1
         topic2.visibility = Visibility.PUBLIC
 
@@ -66,7 +66,7 @@ class TopicSpec extends Specification implements DomainUnitTest<Topic> {
         topic2.save()
 
         then:
-        topic2.errors.hasErrors() == true
+        topic2.errors.hasErrors()== true
 
     }
 
