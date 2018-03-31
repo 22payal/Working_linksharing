@@ -13,6 +13,8 @@ class User {
     Date lastUpdated
     Byte photo
 
+    static hasMany = [topic:Topic]
+
    // List<Topic> topics
 
     String name

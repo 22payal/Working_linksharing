@@ -2,31 +2,17 @@ package linksharing
 
 import enumeration.Seriousness
 import enumeration.Visibility
+import grails.util.Holders
 
 
 class BootStrap {
-//
-//    def init = { servletContext ->
-//
-//    }
-//    def destroy = {
-//    }
 
-//
-//
-//    def init = { servletContext ->
-//        log.info("**********************************************")
-//        println(Holders.grailsApplication.config.server.contextPath)
-//    }
 
-//
-//    def destroy = {
-//    }
-//
-//}
+
     def init = { servletContext ->
+        log.info("**********************************************")
+        println(Holders.grailsApplication.config.server.contextPath)
 
-//        List<User> users = createUsers()
 
         //Q3
 //
@@ -60,7 +46,7 @@ class BootStrap {
         println("done Creating reading item")
 
         println("Creating resource rating")
-        createResourceRatings()
+        createResourceRating()
         println("done Creating resource rating")
 
     }
@@ -135,13 +121,14 @@ class BootStrap {
 
         List<User> allusers = User.findAll()
         println(allusers)
-
+      int topicCount =0
         allusers.each
                 { user ->
                     println(user)
                     if (!(Topic.findByCreatedBy(user)))
                     {
-                        5.times { topicCount ->
+                        5.times {
+
                             user.refresh()
                             println("Creating topic for user $user with name topic $topicCount")
                             Topic topic = new Topic(topicName:  "topic $topicCount", visibility: Visibility.PRIVATE, createdBy: user)
@@ -150,46 +137,31 @@ class BootStrap {
                                 println topic.errors
                             }
                             topic.save(flush: true, failOnError: true)
+                            topicCount++
                         }
                         //   user.save(flush: true, failonerror: true)
                     }
 
-                    user.save(flush: true, failonerror: true)
+                    user.save(flush: true, failonError: true)
                 }
 
     }
 
 
-    void createResource() {
-        if (Resource.count == 0) {
-            List<Topic> allTopics = Topic.getAll()
-
+    void createResource()
+     {
+          List<Topic> allTopics = Topic.getAll()
 
             allTopics.each {
-                Topic temp = it
 
-                (1..2).eachWithIndex { index, item ->
+                Topic temp=it
 
-                    LinkResource linkResource = new LinkResource(
-                            createdby: temp.createdBy,
-                            description: "This link resource with index $index is created by ${temp.createdBy.name} for topic ${temp.topicName}",
-                            topic: temp,
-                            url: "www.${temp.createdBy.name}.com/${temp.topicName}/${it}")
+                if (Resource.findAllByTopic(temp).size()==0)
+                {
 
-                    if (linkResource.save(flush: true)) {
-                        temp.addToResource(linkResource)
-                       // temp.createdBy.addToResource(linkResource)
-                        temp.save(flush: true)
-
-                        log.info("Saved Successfully : $linkResource")
-                    } else
-                        log.error("Error while saving : $linkResource")
-
-                }
-                // temp.save(flush: true)
                 (1..2).eachWithIndex
                         {
-                            index, item ->
+                            index ,item ->
                                 DocumentResource documentResource = new DocumentResource(
                                         createdBy: temp.createdBy,
                                         description: "This document resource with index $index is created by ${temp.createdBy.name} for topic ${temp.topicName}",
@@ -198,14 +170,36 @@ class BootStrap {
 
                                 if (documentResource.save(flush: true)) {
                                     temp.addToResource(documentResource)
-                         //           temp.createdBy.addToResource(documentResource)
+                                    //temp.createdBy.addToResource(documentResource)
                                     temp.save(flush: true)
                                     log.info("Saved Successfully : $documentResource")
                                 } else
                                     log.error("Error while saving : $documentResource")
                         }
-                //temp.save(flush: true)
-            }
+
+
+                    (1..2).eachWithIndex { index ,item ->
+
+                        LinkResource linkResource = new LinkResource(
+                                createdBy: temp.createdBy,
+                                description: "This link resource with index $index is created by ${temp.createdBy.name} for topic ${temp.topicName}",
+                                topic: temp,
+                                url: "www.${temp.topicName}.com")
+
+                        if (linkResource.save(flush: true)) {
+                            temp.addToResource(linkResource)
+
+                            temp.save(flush: true)
+
+                            log.info("Saved Successfully : $linkResource")
+                        } else {
+                            log.error("Error while saving : $linkResource")
+                           // linkResource.errors.allErrors.each { println it }
+                        }
+                    }
+                    // temp.save(flush: true)
+
+                }
 
         }
     }
@@ -220,13 +214,12 @@ class BootStrap {
             for (Topic topic : topicList) {
                 if (topic.createdBy != temp) {
                     if (!Subscription.findByUserAndTopic(temp, topic)) {
-                        Subscription subscription = new Subscription(user: temp, topic: topic, seriousness: Seriousness.VerySerious)
+                        Subscription subscription = new Subscription(user: temp, topic: topic, seriousness: Seriousness.Serious)
                         if (!subscription.save(flush: true)) {
                             log.error("Error while saving : $subscription")
                         } else {
                             log.info("Saved Successfully : $subscription")
-                           // temp.addToSubscription(subscription)
-                            //topic.addToSubscription(subscription)
+
                         }
                     }
                 }
@@ -234,53 +227,63 @@ class BootStrap {
         }
     }
 
-        void createReadingItem() {
+    void createReadingItem() {
         List<Subscription> subscriptionList = Subscription.findAll()
         List<User> userList = User.findAll()
+        subscriptionList.each {
+            for (User user : userList) {
+                if (it.user == user && !user.topic.contains(it.topic))  {
+                    ReadingItem readingItem = new ReadingItem(user: user, isRead: false, resource:it.topic.resource[0] )
 
-            subscriptionList.each {
-                for (User user : userList) {
-                    if (it.user == user && !Topic.findByCreatedBy(user)) {
-                        ReadingItem readingItem = new ReadingItem(user: user, isRead: true, resource: it.topic.resource)
-                        //if (!user.readingItem.contains(readingItem)) {
-                        if(!(ReadingItem.findByUser(user)))
-                            if (!readingItem.save(flush: true))
-                                log.info(" errors flagged ")
-                            } else {
-                            log.info("no errors flagged ")
-                               // user.addToReadingItem(readingItem)
-                                //it.topic.resource.addToReadingItem(readingItem)
-                            }
-                        }
+                    if(ReadingItem.findAllByUserAndResource(user,it.topic.resource[0]).size()!=0)
+                    {
+                        readingItem.save()
+                    }
+
+                       if (!readingItem.save(flush: true))
+                       {
+                            log.error("Error while saving : $readingItem")
+                        } else {
+                            log.info("Saved Succesfully: $readingItem")
+
+
+
                     }
                 }
-
-
-    void createResourceRatings() {
-        Random random = new Random()
-        List<ReadingItem> readingItemList = ReadingItem.findAll()
-        println readingItemList.size()
-        if (readingItemList.size()!=0) {
-            readingItemList.each {
-                if (it.isRead) {
-                    ResourceRating resourceRating = new ResourceRating(resource: it.resource, createdby: it.user, score: random.nextInt(6))
-                    if (!resourceRating.save(flush: true)) {
-                        log.error("Error while saving : $resourceRating")
-                        resourceRating.errors.allErrors.each { println it }
-                    } else
-                        log.info("Saved Successfully : $resourceRating")
-                    //Utility.saving(resourceRating)
-                }
             }
-        }
-
-        else
-        {
-            println("no records yet")
         }
     }
 
 
+
+    void createResourceRating() {
+        List<ReadingItem> readingItemList = ReadingItem.findAll()
+
+        println(readingItemList.size())
+
+        if (readingItemList.size()!=0) {
+            readingItemList.each { itemList->
+
+                if (!itemList.isRead) {
+
+                    ResourceRating resourceRating = new ResourceRating(resource: itemList.resource, createdBy: itemList.user, score: 5)
+
+                    resourceRating.save()
+                    if (!resourceRating.save(flush: true)) {
+                        println("not save")
+                      log.error("Error while saving : $resourceRating")
+
+                    }
+                      else {
+                        log.info("Saved Successfully : $resourceRating")
+                        itemList.isRead = true
+                        resourceRating.errors.allErrors.each { println it }
+                    }
+                }
+            }
+        }
+
+    }
 
 }
 

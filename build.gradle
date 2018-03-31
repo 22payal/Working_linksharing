@@ -64,7 +64,7 @@ dependencies {
 
 bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
-    /*jvmArgs = ['-Dlocal.config.location=externalConfig.yml']*/
+    jvmArgs = ['-Dlocal.config.location=externalConfig.yml']
     addResources = true
     String springProfilesActive = 'spring.profiles.active'
     systemProperty springProfilesActive, System.getProperty(springProfilesActive)
