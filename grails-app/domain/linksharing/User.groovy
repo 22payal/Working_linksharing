@@ -1,5 +1,7 @@
 package linksharing
 
+import co.SearchCo
+
 class User {
 
     String firstName
@@ -46,6 +48,16 @@ class User {
         sort 'id':'desc'
     }
 
+    List<ReadingItem> getUnReadResources(SearchCo searchCO){
+
+                List<ReadingItem> unReadItems= ReadingItem.createCriteria().list(max:10,offset:0){
+                    eq('isRead',false)
+                         eq('user',this)
+                         if(searchCO.q){
+                                    ilike('resource.description',"%searchCO.q%")
+                            }
+                    }
+           }
 
 
 
