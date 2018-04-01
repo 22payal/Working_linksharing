@@ -2,6 +2,7 @@ package linksharing
 
 import co.ResourceSearchCo
 import vo.RatingInfoVo
+import vo.ResourceVo
 
 
 abstract class Resource {
@@ -78,6 +79,22 @@ abstract class Resource {
                 return ratingInfoVo
 
     }
+
+    static List<ResourceVo> getTopPost(){
+             List<ResourceVo> topPosts = ResourceRating.createCriteria().list(){
+                        projections{
+                                createAlias('resource', 'r')
+                                groupProperty('r.id')
+                                property('r.createdBy')
+                                property('r.topic.name')
+                                count('r.id', 'count')
+                            }
+                        order('count', 'desc')
+                        maxResults(5)
+                    }
+               return topPosts
+            }
+
 
 
 }
