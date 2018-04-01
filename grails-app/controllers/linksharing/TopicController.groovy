@@ -22,8 +22,8 @@ class TopicController {
     def save(Topic topic, String visibility)
     {
         topic = new Topic(topicName:"new topic" , createdBy: session.user, visibility:Visibility.convertIntoEnum(visibility) )
-
-        if (topic.save())
+        topic.save()
+        if (topic.validate())
         {
             flash.message ="Topic is now saved"
             render("topic saved successfully")

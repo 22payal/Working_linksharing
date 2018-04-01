@@ -52,15 +52,13 @@ class SubscriptionController {
     def subscriptionDelete(Integer id) {
 
          Subscription subscription= Subscription.load(id)
-        if (subscription.delete()) {
-            flash.message = "success"
-
-        } else {
+         subscription.delete()
+        if (subscription.hasErrors()) {
             flash.error = "error"
 
-        }
-
-
-    }
+        } else {
+            flash.message = "success"
+           }
+   }
 
 }
