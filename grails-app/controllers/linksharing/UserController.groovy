@@ -4,6 +4,7 @@ import enumeration.Visibility
 
 class UserController {
 
+
     def index() {
         render("user dashboard")
     }
@@ -18,7 +19,7 @@ class UserController {
                 render("Subscription Exists")
             else {
                 flash.error = "Subscription does not exists"
-                  redirect(controller:"Login",action: "index")
+
             }
 
         }

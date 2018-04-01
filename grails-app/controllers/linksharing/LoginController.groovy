@@ -4,13 +4,9 @@ import javax.servlet.http.HttpSession
 
 class LoginController {
 
-    static defaultAction = "loginHandler"
-
     def index() {
-        if(session.user)
-            forward(controller: 'User',action:'index')
-        else
-            render( 'failure')    }
+       render('hello')
+    }
 
     def loginHandler(String userName,String password) {
         println(userName)
@@ -28,11 +24,11 @@ class LoginController {
         {
             flash.error="User not found"
         }
-        redirect(controller: 'Login',action: 'index')
+
     }
 
     def logout() {
         session.invalidate()
-        redirect(controller: 'Login',action:'index')
+       // redirect(controller: 'Login',action:'index')
     }
 }

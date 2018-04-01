@@ -2,8 +2,8 @@
 <head>
     <title></title>
 </head>
-from user
-<body>
 
+<body>
+<%="Hello GSP!" %>
 </body>
 </html>

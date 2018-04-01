@@ -4,7 +4,6 @@
 </head>
 
 <body>
-hello
-
+<%="Hello GSP!" %>
 </body>
 </html>
