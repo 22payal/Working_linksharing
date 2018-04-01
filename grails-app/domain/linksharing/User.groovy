@@ -18,22 +18,27 @@ class User {
    // List<Topic> topics
 
     String name
+    String confirmPassword
 
     String  getName() {
         name= firstName+" "+lastName
     }
 
-    static transients = ['name']
+    static transients = ['name','confirmPassword']
 
     static constraints = {
         email(email: true,unique: true ,blank: false , nullable: false)
-        password(size: 5..15, blank: false ,nullable: false)
+        password(minSize: 5, blank: false ,nullable: false,validator: {password, obj ->
+            def password2 = obj.confirmPassword
+            password == password2 ? true : ['invalid.matchingpasswords']
+        })
         firstName(blank: false ,nullable: false)
         lastName(blank: false , nullable: false)
         userName(unique: true, blank:false , nullable: false)
         photo(nullable: true,sqlType:'longBlob')
         admin(nullable:true)
         active(nullable: true)
+        confirmPassword(nullable: false,blank: false)
 
     }
 
