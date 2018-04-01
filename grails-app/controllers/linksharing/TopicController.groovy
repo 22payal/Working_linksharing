@@ -1,15 +1,23 @@
 package linksharing
 
-
+import co.ResourceSearchCo
 import enumeration.Visibility
 
 class TopicController {
 
     def index() { }
 
-    def topicShow()
+//    def topicShow()
+//    {
+//        Topic topic=Topic.read()
+//    }
+
+    def topicShow(ResourceSearchCo resourceSearchCo)
     {
-        Topic topic=Topic.read()
+        Topic topic = Resource.search(resourceSearchCo)
+        render("CreatedBy- $topic.createdBy.firstName having Topicname- $topic.topicName")
+
+
     }
 
     def topicDelete(Integer id)

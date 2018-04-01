@@ -50,6 +50,24 @@ class Topic {
 
     }
 
+    static getTrendingTopics() {
+               List<Topic> trendingTopics = Resource.createCriteria().list{
+                        projections {
+                                createAlias('topic', 't')
+                                groupProperty('t.id')
+                                property('t.name')
+                                property('t.visibility')
+                                count('t.id', 'count')
+                                property('t.createdBy')
+                            }
+                        eq('t.visibility', Visibility.PUBLIC)
+                        order('count', 'desc')
+                        order('t.name', 'asc')
+                        maxResults(5)
+                    }
+
+                        return trendingTopics
+            }
 
     @Override
     public String toString() {

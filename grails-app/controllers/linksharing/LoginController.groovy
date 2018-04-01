@@ -1,5 +1,7 @@
 package linksharing
 
+import vo.ResourceVo
+
 import javax.servlet.http.HttpSession
 
 class LoginController {
@@ -35,4 +37,12 @@ class LoginController {
         session.invalidate()
         redirect(controller: 'Login',action:'index')
     }
+
+    def topPost()
+    {
+                    List<ResourceVo> topPosts = Resource.getTopPost()
+                    println("$topPosts.id + $topPosts.createdBy + $topPosts.topicName")
+
+    }
+
 }
