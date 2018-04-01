@@ -1,5 +1,8 @@
 package linksharing
 
+import co.ResourceSearchCo
+import enumeration.Visibility
+
 class ResourceController {
 
     def index() { }
@@ -13,5 +16,12 @@ class ResourceController {
             throw new Exception( "exception of object not found")
         }
     }
+
+    def search(){
+        ResourceSearchCo resourceSearchCo=new ResourceSearchCo()
+        if(resourceSearchCo.q)
+            resourceSearchCo.visibility=Visibility.PUBLIC
+    }
+
 
 }

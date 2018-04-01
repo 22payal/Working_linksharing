@@ -23,6 +23,9 @@ abstract class Resource {
             ResourceSearchCo resourceSearchCo->
                 if (resourceSearchCo.topicId)
                     eq('topic.id',resourceSearchCo.topicId)
+                if (resourceSearchCo.visibility)
+                    eq('topic.visibility', resourceSearchCo.visibility)
+
 
         }
     }
