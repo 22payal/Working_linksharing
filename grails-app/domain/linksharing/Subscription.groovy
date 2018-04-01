@@ -19,4 +19,11 @@ class Subscription {
         seriousness(nullable:false)
 
     }
+
+    static mapping = {
+        seriousness defaultValue: Seriousness.SERIOUS
+        user fetch: 'join'
+        topic fetch: 'join'
+    }
+
 }

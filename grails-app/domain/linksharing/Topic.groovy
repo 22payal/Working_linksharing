@@ -27,6 +27,13 @@ class Topic {
         visibility(nullable: false)
     }
 
+    static  mapping = {
+        sort 'topicName':"asc"
+
+
+    }
+
+
     void afterInsert() {
         log.info "<--------- After Insert event of topic------>"
         Topic.withNewSession
