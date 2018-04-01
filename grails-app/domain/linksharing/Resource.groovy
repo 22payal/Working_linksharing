@@ -1,5 +1,7 @@
 package linksharing
 
+import co.ResourceSearchCo
+
 
 abstract class Resource {
     String description
@@ -15,5 +17,15 @@ abstract class Resource {
     static constraints = {
         description(type:'text')
     }
+
+    static namedQueries = {
+        search{
+            ResourceSearchCo resourceSearchCo->
+                if (resourceSearchCo.topicId)
+                    eq('topic.id',resourceSearchCo.topicId)
+
+        }
+    }
+
 }
 
