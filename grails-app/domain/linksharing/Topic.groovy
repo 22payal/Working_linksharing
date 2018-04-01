@@ -27,12 +27,6 @@ class Topic {
         visibility(nullable: false)
     }
 
-    Topic(String topicName, User createdBy, Visibility visibility) {
-        this.topicName = topicName
-        this.createdBy = createdBy
-        this.visibility = visibility
-    }
-
     void afterInsert() {
         log.info "<--------- After Insert event of topic------>"
         Topic.withNewSession
