@@ -1,36 +1,14 @@
+<%@ page import="linksharing.Resource" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <title>Home</title>
+    <title></title>
+    <meta name="layout" content="main">
 
 </head>
 
 <body>
-
-<nav class="navbar navbar-expand-lg navbar  ">
-
-    <a class="navbar-brand col-lg-2 " href="#"><h2 style="margin-top: 0px">Link Sharing</h2></a>
-
-    <p class="col-lg-7"></p>
-
-    <form class="navbar-form navbar-left" action="/action_page.php">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search...">
-            <div class="input-group-btn">
-                <button class="btn btn-default" type="submit">
-                    <i class="glyphicon glyphicon-search"></i>
-                </button>
-            </div>
-        </div>
-    </form>
-</nav>
 
 <div class=" container">
     <div class="col-lg-6">
@@ -39,54 +17,43 @@
             <div class=" panel panel-default     ">
                 <div class="panel-heading " style="background: #007efc">
                     <p>
+
                     <h3 style="color:white">Recent Shares</h3></p>
                 </div>
+
                 <div class="panel-body  ">
                     <div class="col-lg-12">
-                        <div class="col-lg-3" style="margin-top: 25px">
-                            <i class="fa fa-user fa-5x" aria-hidden="true"></i>
+                        <g:each in="${Resource.getRecentShares()}" var="recentShares">
+                            <div class="col-lg-3" style="margin-top: 25px">
+                                <i class="fa fa-user fa-5x" aria-hidden="true"></i>
 
-                        </div>
-                        <div class="col-lg-9">
-                            <p><h6>User's FullName  <span style="color: darkgray">@username</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
-                            <p><h5>An overview of the topic is written here for basic understanding...............................
-                        ...............................
-                        ...............................</h5></p>
+                            </div>
 
-                            <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-google fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-                            <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#" style="color: #007efc;font-size: small">View Topic</a></span>
+                            <div class="col-lg-9">
+                                <p>${recentShares.createdBy.name}  <span
+                                        style="color: darkgray">@${recentShares.createdBy.username}</span><span
+                                        class="pull-right"
+                                        style="margin-right: 0px;color: #007efc;font-size: small">${recentShares.topic.name}</span>
+                                </p>
 
-                        </div>
+                                <p>${recentShares.description}</p>
+
+                                <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
+                                <i class="fa fa-google fa-lg" aria-hidden="true"></i>
+                                <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+                                <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"
+                                                                                                     style="color: #007efc;font-size: small">View Topic</a>
+                                </span>
+                            </div>
+                            <hr>
+                        </g:each>
                     </div>
-
-                    <div class="col-lg-12">
-                        <hr>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="col-lg-3" style="margin-top: 25px">
-                            <i class="fa fa-user fa-5x" aria-hidden="true"></i>
-
-                        </div>
-                        <div class="col-lg-9">
-                            <p><h6>User's FullName  <span style="color: darkgray">@username</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
-                            <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
-
-                            <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-google fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-                            <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#" style="color: #007efc;font-size: small">View Topic</a></span>
-
-                        </div>
-                    </div>
-
 
                 </div>
             </div>
 
         </div>
+
         <div class="col-lg-12" style="margin-top: 25px">
 
             <div class=" panel panel-default     ">
@@ -109,21 +76,27 @@
                             <i class="fa fa-user fa-5x" aria-hidden="true"></i>
 
                         </div>
+
                         <div class="col-lg-9">
-                            <p><h6>User's FullName  <span style="color: darkgray">@username</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
-                            <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
+                            %{--<g:each in="${Resource.getTopPost()}" var="topPosts">--}%
+                                %{--<p>${topPosts.createdBy}<span style="color: darkgray">@${topPosts.createdBy}</span><span--}%
+                                        %{--class="pull-right"--}%
+                                        %{--style="margin-right: 0px;color: #007efc;font-size: small">${topPosts.topicName}</span>--}%
+                                %{--</p>--}%
+
+                                %{--<p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>--}%
 
 
-                            <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-google fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-                            <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#" style="color: #007efc;font-size: small">View Topic</a></span>
+                                %{--<i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>--}%
+                                %{--<i class="fa fa-google fa-lg" aria-hidden="true"></i>--}%
+                                %{--<i class="fa fa-twitter fa-lg" aria-hidden="true"></i>--}%
+                                %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"--}%
+                                                                                                     %{--style="color: #007efc;font-size: small">View Topic</a>--}%
+                                %{--</span>--}%
+                            %{--</g:each>--}%
 
                         </div>
                     </div>
-
-
-
 
                 </div>
             </div>
