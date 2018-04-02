@@ -5,7 +5,8 @@ import enumeration.Visibility
 class UserController {
 
     def index() {
-        render("user dashboard")
+        //render("welcome ${session.userName}")
+        render(view: 'dashboard')
     }
 
     def show(Integer id) {
@@ -18,7 +19,7 @@ class UserController {
                 render("Subscription Exists")
             else {
                 flash.error = "Subscription does not exists"
-                  redirect(controller:"Login",action: "index")
+
             }
 
         }
