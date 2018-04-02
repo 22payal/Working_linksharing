@@ -1,3 +1,4 @@
+<%@ page import="enumeration.Visibility" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,26 +50,35 @@
                                 <h4 class="modal-title">create topic</h4>
                             </div>
                             <div class="modal-body">
-                                <form class="form-horizontal" action="#">
+                                <g:form controller="topic" action="save" method="post">
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="name1">name</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="name1"  name="name1">
+
+
+                                        <div class="form-group col-lg-10">
+                                            <label>TOPIC NAME : </label>
+                                            <input class="form-control" type="text" name="topicName" placeholder="enter name of your topic">
+
                                         </div>
                                     </div>
 
-                                    <div class="dropdown">
-                                        <label class="control-label col-sm-2" for="visibility">visibility:</label>
 
-                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="visibility">visibility
+                                    <div class="dropdown">
+                                        %{--<label>Visibility</label>--}%
+                                        %{--<input class="form-control" id="newvisibility"  name="newvisibility" >--}%
+                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" name= "visibility" id="visibility">visibility
                                             <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">private</a></li>
-                                            <li><a href="#">public</a></li>
+
+                                            %{--<li><a href="${createLink(controller: 'Topic',action:'save' , visibility: "private")}">private</a></li>--}%
+                                            %{--<li><a href="${createLink(controller: 'Topic',action: 'save', visibility: "public" )}">public</a></li>--}%
+
+                                            %{--<li>  <g:select from="${Visibility}"  name="PRIVATE" value="PRIVATE "  /></li>--}%
+                                            %{--<li>   <g:select from="${Visibility}" name="PUBLIC" value="PUBLIC"/></li>--}%
+
 
                                         </ul>
-                                    </div>
 
+                                    </div>
                                     <br>
 
                                     <div class="form-group">
@@ -78,7 +88,7 @@
 
                                         </div>
                                     </div>
-                                </form>
+                                </g:form>
 
 
 
@@ -274,14 +284,14 @@
                 <li class="dropdown  col-lg-3" style="padding: 0px">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user"
                                                                                   style="font-size:24px"></i>
-                        Payal Nigam
+                        <b>${session.user.getName()}</b>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Profile</a></li>
                         <li><a href="#">Users</a></li>
                         <li><a href="#">Topic</a></li>
                         <li><a href="#">Post</a></li>
-                        <li><a href="#">Logout</a></li>
+                        <li><g:link controller="login" action="logout">Logout</g:link></li>
                     </ul>
                 </li>
 
@@ -302,8 +312,8 @@
                         </div>
                         <div class="col-sm-9">
 
-                            <p>Payal Nigam<br>
-                                <small class="text-muted">$session.userName</small>
+                            <p>${session.user.getName()}<br>
+                                <small class="text-muted">${session.user.userName}</small>
                             </p>
 
                             <div class="row">
@@ -346,7 +356,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h6 class="text-muted">$session.username</h6>
+                                        <h6 class="text-muted">${session.user.userName}</h6>
                                         <a href="#">Unsubscribe</a>
                                     </div>
                                     <div class="col-sm-3">
@@ -396,7 +406,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h6 class="text-muted">$session.username</h6>
+                                        <h6 class="text-muted">${session.user.userName}</h6>
                                         <a href="#">Unsubscribe</a>
                                     </div>
                                     <div class="col-sm-3">
@@ -448,7 +458,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h6 class="text-muted">session.userName</h6>
+                                        <h6 class="text-muted">${session.user.userName}</h6>
                                         <a href="#">Subscribe</a>
                                     </div>
                                     <div class="col-sm-3">
@@ -482,7 +492,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h6 class="text-muted">$session.username</h6>
+                                        <h6 class="text-muted">${session.user.userName}</h6>
                                         <a href="#">Unsubscribe</a>
                                     </div>
                                     <div class="col-sm-3">
@@ -534,7 +544,7 @@
 
                     </div>
                     <div class="col-lg-9">
-                        <p><h6>User's FullName  <span style="color: darkgray">$session.userName</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
+                        <p><h6>User's FullName  <span style="color: darkgray">${session.user.userName}</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
                         <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
 
                         <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
@@ -556,7 +566,7 @@
 
                     </div>
                     <div class="col-lg-9">
-                        <p><h6>User's FullName  <span style="color: darkgray">$session.name</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
+                        <p><h6>User's FullName  <span style="color: darkgray">${session.user.getName()}</span><span class="pull-right" style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
                         <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
 
                         <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>

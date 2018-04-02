@@ -6,34 +6,51 @@ import javax.servlet.http.HttpSession
 
 class LoginController {
 
-   // static defaultAction = "loginHandler"
+    static defaultAction = "home"
+
+    def home()
+    {
+        render(view: 'register')
+    }
 
     def index() {
+        if(session.user)
+        {
+            flash.message= "user is logged in"
+            redirect(controller: 'User', action: 'index')
 
-       render(view: 'register')
-
-    }
+        }
+        else
+        {
+            render("session over")
+        }
+     }
 
     def loginHandler(String loginusername,String loginpassword) {
         User user = User.findByUserNameAndPassword(loginusername, loginpassword)
         if(user!=null) {
+            user.active=true
             if(user.active) {
                 session.user=user
+                redirect(controller: 'User',action: 'index')
             }
             else {
                 flash.error = "Your account is not active"
+                render("Your account is not active")
 
             }
         }
         else
         {
             flash.error="User not found"
+            render("User not found")
         }
 
     }
 
     def logout() {
         session.invalidate()
+        redirect(controller: 'Login', action: 'home')
 
     }
 
@@ -55,13 +72,26 @@ class LoginController {
 
                if (newuser.validate()) {
                    newuser.save(flush: true, failOnError: true)
-                   newuser.errors.allErrors.each{log.info(it)}
 
-                   forward(controller: 'User', action: 'index')
+                    render(view: 'register')
                     }
         else
                {
-                   newuser.errors.allErrors.each{println(it)}
+                   if (newuser.errors.hasFieldErrors("password")) {
+                       println newuser.errors.getFieldError("password").rejectedValue
+                   }
+
+                   else if (newuser.errors.hasFieldErrors("userName")) {
+                       println newuser.errors.getFieldError("userName").rejectedValue
+                   }
+
+                 else  if (newuser.errors.hasFieldErrors("email")) {
+                       println newuser.errors.getFieldError("email").rejectedValue
+                   }
+
+                   else if (newuser.errors.hasFieldErrors("firstName")) {
+                       println newuser.errors.getFieldError("firstName").rejectedValue
+                   }
                }
 
     }

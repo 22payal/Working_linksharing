@@ -26,11 +26,20 @@ class User {
         name= firstName+" "+lastName
     }
 
+    public String getConfirmPassword(){
+        return confirmPassword
+    }
+    public void setConfirmPassword(String pass){
+        confirmPassword = pass
+    }
+
     static transients = ['name','confirmPassword']
 
     static constraints = {
         email(email: true,unique: true ,blank: false , nullable: false)
-        password(minSize: 5, blank: false ,nullable: false,validator: {password, obj ->
+        password(minSize: 5, blank: false ,nullable: false)
+
+          confirmPassword(nullable:false, validator: {password, obj ->
             def password2 = obj.confirmPassword
             password == password2 ? true : ['invalid.matchingpasswords']
         })
@@ -40,7 +49,7 @@ class User {
         photo(nullable: true,sqlType:'longBlob')
         admin(nullable:true)
         active(nullable: true)
-        confirmPassword(nullable: false,blank: false)
+        confirmPassword(nullable: true,blank: true)
 
     }
 

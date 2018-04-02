@@ -78,22 +78,22 @@
                         </div>
 
                         <div class="col-lg-9">
-                            %{--<g:each in="${Resource.getTopPost()}" var="topPosts">--}%
-                                %{--<p>${topPosts.createdBy}<span style="color: darkgray">@${topPosts.createdBy}</span><span--}%
-                                        %{--class="pull-right"--}%
-                                        %{--style="margin-right: 0px;color: #007efc;font-size: small">${topPosts.topicName}</span>--}%
-                                %{--</p>--}%
+                            <g:each in="${Resource.getTopPost()}" var="topPosts">
+                                <p>${topPosts.createdBy}<span style="color: darkgray">@${topPosts.createdBy}</span><span
+                                        class="pull-right"
+                                        style="margin-right: 0px;color: #007efc;font-size: small">${topPosts.topicName}</span>
+                                </p>
 
-                                %{--<p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>--}%
+                                <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
 
 
-                                %{--<i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>--}%
-                                %{--<i class="fa fa-google fa-lg" aria-hidden="true"></i>--}%
-                                %{--<i class="fa fa-twitter fa-lg" aria-hidden="true"></i>--}%
-                                %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"--}%
-                                                                                                     %{--style="color: #007efc;font-size: small">View Topic</a>--}%
-                                %{--</span>--}%
-                            %{--</g:each>--}%
+                                <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
+                                <i class="fa fa-google fa-lg" aria-hidden="true"></i>
+                                <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+                                <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"
+                                                                                                     style="color: #007efc;font-size: small">View Topic</a>
+                                </span>
+                            </g:each>
 
                         </div>
                     </div>

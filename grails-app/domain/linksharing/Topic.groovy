@@ -22,7 +22,7 @@ class Topic {
 
     static constraints = {
 
-        topicName(blank: false, nullable: false, unique: 'createdBy')
+        topicName(blank: false, nullable: false)
         createdBy(nullable: false)
         visibility(nullable: false)
     }
@@ -42,7 +42,7 @@ class Topic {
                     Subscription subscription = new Subscription(
                                        topic: this,
                                        user: this.createdBy,
-                                       seriousness: Seriousness.VerySerious
+                                       seriousness: Seriousness.VERYSERIOUS
                                         )
                     subscription.save(flush: true, failOnError: true)
                     //this.addToSubscription(subscription)

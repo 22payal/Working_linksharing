@@ -86,7 +86,7 @@ abstract class Resource {
                                 createAlias('resource', 'r')
                                 groupProperty('r.id')
                                 property('r.createdBy')
-                                property('r.topic.name')
+                                property('r.topic')
                                 count('r.id', 'count')
                             }
                         order('count', 'desc')
