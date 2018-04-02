@@ -73,7 +73,8 @@ class Topic {
     public String toString() {
         return "Topic{" +
                 "topicName='" + topicName + '\'' +
-                '}';
+                '}'
     }
+
 }
 

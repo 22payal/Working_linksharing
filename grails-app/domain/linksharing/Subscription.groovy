@@ -26,4 +26,14 @@ class Subscription {
         topic fetch: 'join'
     }
 
+    List getSubscribedUser(){
+              List subscribedTopics=this.user.toList(){
+                   maxResults(5)
+               }
+                 return subscribedTopics
+
+            }
+
+static transients = ['subscribedUser']
+
 }

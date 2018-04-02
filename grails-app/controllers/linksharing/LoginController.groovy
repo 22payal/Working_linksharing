@@ -6,17 +6,16 @@ import javax.servlet.http.HttpSession
 
 class LoginController {
 
-    static defaultAction = "loginHandler"
+   // static defaultAction = "loginHandler"
 
     def index() {
-        if(session.user)
-            forward(controller: 'User',action:'index')
-        else
-            render( 'failure')    }
 
-    def loginHandler(String userName,String password) {
-        println(userName)
-        User user = User.findByUserNameAndPassword(userName, password)
+       render(view: 'register')
+
+    }
+
+    def loginHandler(String loginusername,String loginpassword) {
+        User user = User.findByUserNameAndPassword(loginusername, loginpassword)
         if(user!=null) {
             if(user.active) {
                 session.user=user
@@ -30,12 +29,12 @@ class LoginController {
         {
             flash.error="User not found"
         }
-        redirect(controller: 'Login',action: 'index')
+
     }
 
     def logout() {
         session.invalidate()
-        redirect(controller: 'Login',action:'index')
+
     }
 
     def topPost()
@@ -44,5 +43,32 @@ class LoginController {
                     println("$topPosts.id + $topPosts.createdBy + $topPosts.topicName")
 
     }
+
+    def register() {
+
+        User newuser = new User(firstName: params.firstName,
+                               lastName: params.lastName,
+                                email: params.email,
+                                userName: params.userName,
+                                  password: params.password,
+                                confirmPassword: params.confirmPassword)
+
+               if (newuser.validate()) {
+                   newuser.save(flush: true, failOnError: true)
+                   newuser.errors.allErrors.each{log.info(it)}
+
+                   forward(controller: 'User', action: 'index')
+                    }
+        else
+               {
+                   newuser.errors.allErrors.each{println(it)}
+               }
+
+    }
+
+    def topPosts() {
+        List<ResourceVo> topPosts = Resource.getTopPost()
+    }
+
 
 }

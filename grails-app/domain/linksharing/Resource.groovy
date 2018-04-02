@@ -95,6 +95,16 @@ abstract class Resource {
                return topPosts
             }
 
+    static List<Resource> getRecentShares(){
+
+                        List<Resource> recentShares = Resource.createCriteria().list {
+                        order("dateCreated", "desc")
+                        maxResults(2)
+
+                           }
+                return recentShares
+           }
+
 
 
 }
