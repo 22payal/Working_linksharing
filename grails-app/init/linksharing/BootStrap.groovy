@@ -23,31 +23,33 @@ class BootStrap {
 //        log.info("User has errors while validating- ${users.last().hasErrors()}")
 
         //Q4
+//
+//        if (User.count() == 0) {
+//            println("Creating Users")
+//            createUsers()
+//            println("Done Creating Users")
+//        }
 
-        if (User.count() == 0) {
-            println("Creating Users")
-            createUsers()
-            println("Done Creating Users")
-        }
-        println("Creating Topic")
-        createTopic()
-        println("Done Creating Topic")
-
-        println("Creating Resource")
-          createResource()
-        println("done Creating Resource")
-
-        println("Creating subscribe topic")
-       subscribeTopic()
-        println("done Creating subscribe topic")
-
-        println("Creating reading item")
-        createReadingItem()
-        println("done Creating reading item")
-
-        println("Creating resource rating")
-        createResourceRating()
-        println("done Creating resource rating")
+       // createUsers()
+//        println("Creating Topic")
+//        createTopic()
+//        println("Done Creating Topic")
+//
+//        println("Creating Resource")
+//          createResource()
+//        println("done Creating Resource")
+//
+//        println("Creating subscribe topic")
+//       subscribeTopic()
+//        println("done Creating subscribe topic")
+//
+//        println("Creating reading item")
+//        createReadingItem()
+//        println("done Creating reading item")
+//
+//        println("Creating resource rating")
+//        createResourceRating()
+//        println("done Creating resource rating")
 
     }
     def destroy = {

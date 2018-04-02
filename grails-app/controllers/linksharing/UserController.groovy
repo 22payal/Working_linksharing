@@ -5,7 +5,7 @@ import enumeration.Visibility
 class UserController {
 
     def index() {
-        //render("welcome ${session.userName}")
+      //  render("welcome ${session.user.getName()}")
         render(view: 'dashboard')
     }
 
