@@ -49,8 +49,10 @@ class LoginController {
     }
 
     def logout() {
-        session.invalidate()
-        redirect(controller: 'Login', action: 'home')
+            session.invalidate()
+
+            redirect(controller: 'Login', action: 'home')
+
 
     }
 
@@ -98,6 +100,14 @@ class LoginController {
 
     def topPosts() {
         List<ResourceVo> topPosts = Resource.getTopPost()
+    }
+
+    def forgotPassword(User user)
+    {
+       if( User.findByUserNameAndEmail(user.userName,user.email))
+       {
+           render("it exists")
+       }
     }
 
 

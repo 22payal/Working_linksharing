@@ -69,6 +69,21 @@ class Topic {
                         return trendingTopics
             }
 
+    static List getSubscribedUsers(User user,Topic topic)
+    {
+        List <Subscription> subscribedTopics = Subscription.findAllByUser(user)
+
+         subscribedTopics.topic.each {
+             int subscribedUserscount = Subscription.countByTopic(it)
+
+             return subscribedUserscount - 1
+         }
+    }
+
+
+    static transients = ['getSubscribedUsers']
+
+
     @Override
     public String toString() {
         return "Topic{" +

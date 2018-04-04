@@ -2,6 +2,9 @@ package linksharing
 
 
 import enumeration.Seriousness
+import org.grails.datastore.mapping.query.Query
+import vo.ResourceVo
+import vo.SubscriptionVO
 
 
 class Subscription {
@@ -11,12 +14,12 @@ class Subscription {
     Seriousness seriousness
 
 
-    static belongsTo = [topic:Topic,user:User]
+    static belongsTo = [topic: Topic, user: User]
 
     static constraints = {
-        user (nullable: false )
-        topic(nullable: false , unique:'user')
-        seriousness(nullable:false)
+        user(nullable: false)
+        topic(nullable: false, unique: 'user')
+        seriousness(nullable: false)
 
     }
 
@@ -26,14 +29,41 @@ class Subscription {
         topic fetch: 'join'
     }
 
-    List getSubscribedUser(){
-              List subscribedTopics=this.user.toList(){
-                   maxResults(5)
-               }
-                 return subscribedTopics
+//    static List<SubscriptionVO> getSubscribedTopics(){
+//        List<ResourceVo> subscribedTopics = Subscription.createCriteria().list{
+//            projections{
+//                createAlias('subscription', 's')
+//                groupProperty('s.id')
+//                property('s.createdBy')
+//                property('s.topic')
+//                count('s.id', 'count')
+//            }
+//            order('count', 'desc')
+//        }
+//        List  result =[]
+//
+//        subscribedTopics.each {
+//            result.add(new Subscription( id : it[0], createdBy: it[1], topic: it[2], count: it[3]))
+//        }
+//        return result
+//}
 
+    static List getSubscribedTopics(User user) {
+        List<Subscription> subscribedTopics = Subscription.findAllByUser(user)
+        List<Topic> result = []
+       // List<String> result = []
+
+        subscribedTopics.each {
+            Topic topic = Topic.findByCreatedByAndTopicName(it.user, it.topic.topicName)
+            if (!topic) {
+               // result.add(it.topic.topicName)
+                result.add(it.topic)
             }
+        }
+        return result
+    }
 
-static transients = ['subscribedUser']
+
+    static transients = ['getSubscribedTopics']
 
 }

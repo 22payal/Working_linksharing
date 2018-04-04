@@ -5,7 +5,9 @@ class LinkResourceController {
     def index() { }
 
     def save(){
-                LinkResource linkResource = new LinkResource(createdBy: session.user, description: params.description, topic: params.topic)
+
+             Topic topic = Topic.findByTopicNameAndCreatedBy(params.topicName,session.user)
+                LinkResource linkResource = new LinkResource(url: params.url, createdBy: session.user, description: params.description, topic: topic)
                 if (linkResource.save())
                         flash.message="LINK RESOURCE SAVED"
                else
