@@ -1,7 +1,9 @@
-<%@ page import="enumeration.Visibility" %>
+<%@ page import="linksharing.Subscription; enumeration.Visibility" %>
+<%@ page import="linksharing.Topic" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="layout" content="main">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -12,296 +14,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar">
-    <div class="container-fluid">
-        <div class="col-lg-4">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">LinkSharing</a>
-            </div>
-        </div>
-        <div class="col-lg-8">
 
-
-            <ul class="nav navbar-nav col-lg-12">
-                <li class="col-lg-5 ">
-                    <form class="navbar-form navbar-left" action="/action_page.php">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </li>
-
-
-                <li class="col-lg-1 " style="padding: 0px"><a href="#myModal" data-toggle="modal"
-                                                              data-target="#myModal"><i class="fa fa-comments"
-                                                                                        style="font-size:24px"></i></a>
-                </li>
-                <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">create topic</h4>
-                            </div>
-                            <div class="modal-body">
-                                <g:form controller="topic" action="save" method="post">
-                                    <div class="form-group">
-
-
-                                        <div class="form-group col-lg-10">
-                                            <label>TOPIC NAME : </label>
-                                            <input class="form-control" type="text" name="topicName" placeholder="enter name of your topic">
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="dropdown">
-                                        %{--<label>Visibility</label>--}%
-                                        %{--<input class="form-control" id="newvisibility"  name="newvisibility" >--}%
-                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" name= "visibility" id="visibility">visibility
-                                            <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-
-                                            %{--<li><a href="${createLink(controller: 'Topic',action:'save' , visibility: "private")}">private</a></li>--}%
-                                            %{--<li><a href="${createLink(controller: 'Topic',action: 'save', visibility: "public" )}">public</a></li>--}%
-
-                                            %{--<li>  <g:select from="${Visibility}"  name="PRIVATE" value="PRIVATE "  /></li>--}%
-                                            %{--<li>   <g:select from="${Visibility}" name="PUBLIC" value="PUBLIC"/></li>--}%
-
-
-                                        </ul>
-
-                                    </div>
-                                    <br>
-
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="submit" class="btn btn-default">share</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                                        </div>
-                                    </div>
-                                </g:form>
-
-
-
-                            </div>
-                            <!--<div class="modal-footer">-->
-                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                            <!--</div>-->
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <li class="col-lg-1" style="padding: 0px"><a href="#myModal2" data-toggle="modal"
-                                                             data-target="#myModal2"><i class="fa fa-envelope"
-                                                                                        style="font-size:24px"></i></a>
-                </li>
-                <div id="myModal2" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">send invitation</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" action="#">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="email">email</label>
-                                        <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="email"  name="email">
-                                        </div>
-                                    </div>
-
-                                    <div class="dropdown">
-                                        <label class="control-label col-sm-2" for="visibility1">visibility:</label>
-
-                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="visibility1">visibility
-                                            <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">private</a></li>
-                                            <li><a href="#">public</a></li>
-
-                                        </ul>
-                                    </div>
-
-                                    <br>
-
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="submit" class="btn btn-default">share</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <li class="col-lg-1" style="padding: 0px"><a href="#myModal3" data-toggle="modal"
-                                                             data-target="#myModal3"><i class="fa fa-link"
-                                                                                        style="font-size:24px"></i></a>
-                </li>
-                <div id="myModal3" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">create resource</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" action="#">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="link">link:</label>
-                                        <div class="col-sm-10">
-                                            <input type="url" class="form-control" id="link" placeholder="Enter link"
-                                                   name="link">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="descrip">description:</label>
-                                        <div class="col-sm-10">
-                                            <textarea class="form-control" rows="5" id="descrip"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown">
-                                        <label class="control-label col-sm-2" for="topic">topic:</label>
-
-                                        <button class="btn btn-default dropdown-toggle" type="button"
-                                                data-toggle="dropdown" id="topic">topic
-                                            <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">topictype1</a></li>
-                                            <li><a href="#">topictype2</a></li>
-                                            <li><a href="#">topictype3</a></li>
-
-                                        </ul>
-                                    </div>
-                                    <br>
-
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="submit" class="btn btn-default">share</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                            </button>
-
-                                        </div>
-                                    </div>
-                                </form>
-
-                            </div>
-                            <!--<div class="modal-footer">-->
-                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                            <!--</div>-->
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <li class="col-lg-1" style="padding: 0px"><a href="#myModal4" data-toggle="modal"
-                                                             data-target="#myModal4"><i class="fa fa-file-text"
-                                                                                        style="font-size:24px"></i></a>
-                </li>
-                <div id="myModal4" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Share document</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal" action="#">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="document">document</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" class="form-control" id="document" name="document">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2" for="descrip1">description:</label>
-                                        <div class="col-sm-10">
-                                            <textarea class="form-control" rows="5" id="descrip1"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown">
-                                        <label class="control-label col-sm-2" for="topic1">topic:</label>
-
-                                        <button class="btn btn-default dropdown-toggle" type="button"
-                                                data-toggle="dropdown" id="topic1">topic
-                                            <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">topictype1</a></li>
-                                            <li><a href="#">topictype2</a></li>
-                                            <li><a href="#">topictype3</a></li>
-
-                                        </ul>
-                                    </div>
-                                    <div class="form-group">
-                                        <br>
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="submit" class="btn btn-default">share</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-
-
-
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <li class="dropdown  col-lg-3" style="padding: 0px">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user"
-                                                                                  style="font-size:24px"></i>
-                        <b>${session.user.getName()}</b>
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Users</a></li>
-                        <li><a href="#">Topic</a></li>
-                        <li><a href="#">Post</a></li>
-                        <li><g:link controller="login" action="logout">Logout</g:link></li>
-                    </ul>
-                </li>
-
-            </ul>
-
-
-        </div>
-
-    </div>
-</nav>
 <div class="container">
     <div class="col-lg-6">
         <div class="panel panel-primary col-lg-12">
@@ -319,11 +32,11 @@
                             <div class="row">
 
                                 <h6 class="text-muted col-sm-6">Subscriptions
-                                    <p class="text-primary">50</p>
+                                    <p class="text-primary">${Subscription.countByUser(session.user)}</p>
                                 </h6>
 
                                 <h6 class="text-muted col-sm-6">Topics
-                                    <p class="text-primary">30</p>
+                                    <p class="text-primary">${Topic.countByCreatedBy(session.user)}</p>
                                 </h6>
 
                             </div>
@@ -395,45 +108,9 @@
             </div>
             <hr>
 
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <div class="col-sm-3 fa fa-user fa-5x">
-                            </div>
-                            <div class="col-sm-9">
-                                <a href="#" class="pull-left">Grails</a>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <h6 class="text-muted">${session.user.userName}</h6>
-                                        <a href="#">Unsubscribe</a>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h6 class="text-muted pull-left">Subscriptions</h6>
-                                        <h6 class="text-primary">50</h6>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h6 class="text-muted  pull-right">Post
-                                            <br>
-                                            <br>
-                                            <p class="text-primary">30</p>
-                                        </h6>
-                                    </div>
-                                    <span type="img" class="fa fa-envelope pull-right fa-2x" style="margin-left: 10px;color: #007efc;"></span>
+           <g:render template="subscribedTopic"></g:render>
 
-                                    <select class="pull-right">
-                                        <option>Serious</option>
-                                        <option>Casual</option>
-                                        <option>Very Serious</option>
-                                    </select>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <br>
         <div class="col-lg-12"><br></div>
@@ -447,35 +124,16 @@
                     <a href="#" class="pull-right">View All</a>
                 </h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body ">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="row">
-                            <div class="col-sm-3 fa fa-user fa-5x">
+                            <div class="col-sm-5 fa fa-user fa-5x">
                             </div>
-                            <div class="col-sm-9">
-                                <a href="#" class="pull-left">Grails</a>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <h6 class="text-muted">${session.user.userName}</h6>
-                                        <a href="#">Subscribe</a>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h6 class="text-muted pull-left">Subscriptions</h6>
-                                        <h6 class="text-primary">50</h6>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h6 class="text-muted  pull-right">Post
-                                            <br>
-                                            <br>
-                                            <p class="text-primary">30</p>
-                                        </h6>
-                                    </div>
-                                    <span type="img" class="fa fa-envelope pull-right fa-2x" style="margin-left: 10px;color: #007efc;"></span>
 
-                                </div>
-                            </div>
+                         <g:render template="trendingTopic"></g:render>
+
+
                         </div>
                     </div>
                 </div>
@@ -487,44 +145,7 @@
                         <div class="row">
                             <div class="col-sm-3 fa fa-user fa-5x">
                             </div>
-                            <div class="col-sm-9">
-                                <a href="#" class="pull-left">Grails</a>
-                                <br>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <h6 class="text-muted">${session.user.userName}</h6>
-                                        <a href="#">Unsubscribe</a>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h6 class="text-muted pull-left">Subscriptions</h6>
-                                        <h6 class="text-primary">50</h6>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h6 class="text-muted  pull-right">Post
-                                            <br>
-                                            <br>
-                                            <p class="text-primary">30</p>
-                                        </h6>
-                                    </div>
-                                    <span type="img" class="glyphicon glyphicon-trash pull-right fa-2x"
-                                          style="margin-left: 10px;color: #007efc;"></span>
-                                    <span type="img" class="fa fa-file pull-right fa-2x"
-                                          style="margin-left: 10px;  margin-right: 5px;color: #007efc;"></span>
-                                    <span type="img" class="fa fa-envelope pull-right fa-2x" style="margin-left: 10px;color: #007efc;"></span>
 
-                                    <select class="pull-right">
-                                        <option>Serious</option>
-                                        <option>Casual</option>
-                                        <option>Very Serious</option>
-                                    </select>
-                                    <div>
-                                        <select class="pull-right">
-                                            <option>Private</option>
-                                            <option>Public</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

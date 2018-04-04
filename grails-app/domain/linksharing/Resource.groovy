@@ -5,7 +5,7 @@ import vo.RatingInfoVo
 import vo.ResourceVo
 
 
-abstract class Resource {
+ class Resource {
     String description
     User createdBy
     Topic topic
@@ -81,7 +81,7 @@ abstract class Resource {
     }
 
     static List<ResourceVo> getTopPost(){
-             List<ResourceVo> topPosts = ResourceRating.createCriteria().list(){
+             List<ResourceVo> topPosts = ResourceRating.createCriteria().list{
                         projections{
                                 createAlias('resource', 'r')
                                 groupProperty('r.id')
@@ -92,7 +92,12 @@ abstract class Resource {
                         order('count', 'desc')
                         maxResults(5)
                     }
-               return topPosts
+        List  result =[]
+
+        topPosts.each {
+            result.add(new Resource( id : it[0], createdBy: it[1], topic: it[2], count: it[3]))
+        }
+               return result
             }
 
     static List<Resource> getRecentShares(){

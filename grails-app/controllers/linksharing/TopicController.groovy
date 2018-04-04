@@ -20,6 +20,8 @@ class TopicController {
 //
 //    }
 
+
+
 //    def topicDelete(Integer id)
 //    {
 //        Topic topic=Topic.load(id)
@@ -27,13 +29,21 @@ class TopicController {
 //
     //   def topicSave() { }
 
-    def save(Topic topic , String visibility) {
+     List topicShow(User user)
+    {
+        List<Topic> topics =Topic.findAllByCreatedBy(user)
+        render("${topics.topicName}")
+    }
+
+
+    def save() {
 
       //  render(params.topicName)
        //  render(visibility)
-        // render(params.visibility)
-        visibility="public"
-         topic = new Topic(createdBy: session.user, visibility: Visibility.convertIntoEnum(visibility), topicName: params.topicName)
+      //   render(params.visibility)
+      // String visibility="public"
+
+        Topic topic = new Topic(createdBy: session.user, visibility: Visibility.convertIntoEnum(params.visibility), topicName:params.topicName)
 
 
         if (topic.validate()) {
@@ -50,4 +60,6 @@ class TopicController {
         }
 
     }
+
+
 }

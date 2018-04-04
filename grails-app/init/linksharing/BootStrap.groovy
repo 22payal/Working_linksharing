@@ -23,33 +23,33 @@ class BootStrap {
 //        log.info("User has errors while validating- ${users.last().hasErrors()}")
 
         //Q4
-//
-//        if (User.count() == 0) {
-//            println("Creating Users")
-//            createUsers()
-//            println("Done Creating Users")
-//        }
 
-       // createUsers()
-//        println("Creating Topic")
-//        createTopic()
-//        println("Done Creating Topic")
-//
-//        println("Creating Resource")
-//          createResource()
-//        println("done Creating Resource")
-//
-//        println("Creating subscribe topic")
-//       subscribeTopic()
-//        println("done Creating subscribe topic")
-//
-//        println("Creating reading item")
-//        createReadingItem()
-//        println("done Creating reading item")
-//
-//        println("Creating resource rating")
-//        createResourceRating()
-//        println("done Creating resource rating")
+        if (User.count() == 0) {
+            println("Creating Users")
+            createUsers()
+            println("Done Creating Users")
+        }
+
+        createUsers()
+        println("Creating Topic")
+        createTopic()
+        println("Done Creating Topic")
+
+        println("Creating Resource")
+          createResource()
+        println("done Creating Resource")
+
+        println("Creating subscribe topic")
+       subscribeTopic()
+        println("done Creating subscribe topic")
+
+        println("Creating reading item")
+        createReadingItem()
+        println("done Creating reading item")
+
+        println("Creating resource rating")
+        createResourceRating()
+        println("done Creating resource rating")
 
     }
     def destroy = {
@@ -216,7 +216,7 @@ class BootStrap {
             for (Topic topic : topicList) {
                 if (topic.createdBy != temp) {
                     if (!Subscription.findByUserAndTopic(temp, topic)) {
-                        Subscription subscription = new Subscription(user: temp, topic: topic, seriousness: Seriousness.Serious)
+                        Subscription subscription = new Subscription(user: temp, topic: topic, seriousness: Seriousness.SERIOUS)
                         if (!subscription.save(flush: true)) {
                             log.error("Error while saving : $subscription")
                         } else {
@@ -259,6 +259,7 @@ class BootStrap {
 
 
     void createResourceRating() {
+
         List<ReadingItem> readingItemList = ReadingItem.findAll()
 
         println(readingItemList.size())
@@ -268,7 +269,7 @@ class BootStrap {
 
                 if (!itemList.isRead) {
 
-                    ResourceRating resourceRating = new ResourceRating(resource: itemList.resource, createdBy: itemList.user, score: 5)
+                    ResourceRating resourceRating = new ResourceRating(resource: itemList.resource, createdBy: itemList.user, score: Math.abs(new Random().nextInt() % 5) + 0)
 
                     resourceRating.save()
                     if (!resourceRating.save(flush: true)) {

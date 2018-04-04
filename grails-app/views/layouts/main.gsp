@@ -1,50 +1,95 @@
-<!doctype html>
-<html lang="en" class="no-js">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>
-        <g:layoutTitle default="Grails"/>
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
 
-    <asset:stylesheet src="application.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    %{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}%
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <g:layoutHead/>
-</head>
-<body>
 
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
+</head>
+
+<body>
+<nav class="navbar navbar">
+    <div class="container-fluid">
+        <div class="col-lg-4">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/#">
-		    <asset:image src="grails.svg" alt="Grails Logo"/>
-                </a>
-            </div>
-            <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
-                <ul class="nav navbar-nav navbar-right">
-                    <g:pageProperty name="page.nav" />
-                </ul>
+                <a class="navbar-brand" href="#">LinkSharing</a>
             </div>
         </div>
-    </div>
 
-    <g:layoutBody/>
+        <g:if test="${session.user}">
+        <div class="col-lg-8">
 
-    <div class="footer" role="contentinfo"></div>
 
-    <div id="spinner" class="spinner" style="display:none;">
-        <g:message code="spinner.alt" default="Loading&hellip;"/>
-    </div>
+        <ul class="nav navbar-nav col-lg-12">
+        <li class="col-lg-5 ">
+        <form class="navbar-form navbar-left" action="/action_page.php">
+        <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search...">
+        <div class="input-group-btn">
+        <button class="btn btn-default" type="submit">
+        <i class="glyphicon glyphicon-search"></i>
+        </button>
+        </div>
+        </div>
+        </form>
+        </li>
 
-    <asset:javascript src="application.js"/>
 
+        <li class="col-lg-1 " style="padding: 0px"><a href="#myModal" data-toggle="modal"
+        data-target="#myModal"><i class="fa fa-comments"
+        style="font-size:24px"></i></a>
+        </li>
+        <g:render template="/topic/createTopic"></g:render>
+
+        <li class="col-lg-1" style="padding: 0px"><a href="#myModal2" data-toggle="modal"
+        data-target="#myModal2"><i class="fa fa-envelope"
+        style="font-size:24px"></i></a>
+        </li>
+        <g:render template="sendInvite"></g:render>
+
+
+        <li class="col-lg-1" style="padding: 0px"><a href="#myModal3" data-toggle="modal"
+        data-target="#myModal3"><i class="fa fa-link"
+        style="font-size:24px"></i></a>
+        </li>
+
+        <g:render template="/Resource/createResource"></g:render>
+
+        <li class="col-lg-1" style="padding: 0px"><a href="#myModal4" data-toggle="modal"
+        data-target="#myModal4"><i class="fa fa-file-text"
+        style="font-size:24px"></i></a>
+        </li>
+        <g:render template="/documentResource/shareDocument"></g:render>
+
+        <li class="dropdown  col-lg-3" style="padding: 0px">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-user" style= "font-size:24px"></i>
+        <b>${session.user.getName()}</b>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Post</a></li>
+        <li><g:link controller="topic" action="topicShow" params="${session.user}">Topic</g:link></li>
+        <li><g:link controller="login" action="logout">Logout</g:link></li>
+        </ul>
+        </li>
+
+        </ul>
+
+
+        </div>
+
+        </div>
+        </g:if>
+</div>
+</nav>
+
+<g:layoutBody/>
 </body>
 </html>

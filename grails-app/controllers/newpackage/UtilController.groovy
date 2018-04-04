@@ -14,4 +14,12 @@ class UtilController {
 
         render("hello user ")
     }
+
+
+
+    def call(){
+        //render(view: "/applicationLayout/discard")
+        render(view: "/applicationLayout/select")
+
+    }
 }
