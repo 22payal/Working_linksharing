@@ -10,15 +10,12 @@ class UnreadItemService {
 
     EmailService emailService
 
-    def serviceMethod() {
-
-
-    }
-
-    @Scheduled(cron = "0 0 1 ? * MON *")
     def unreaditem() {
+        println("invoked")
+
         List<User> userList = User.findAll()
         List<String> topicName = []
+        List<String> createdBy =[]
 
         userList.each { user ->
             List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(user, false)
@@ -26,13 +23,20 @@ class UnreadItemService {
             readingItemList.resource.each { list ->
 
                 topicName.add(list.topic.topicName)
+                createdBy.add(list.createdBy.getName())
             }
+//
+//            println("size of list is :"+topicName.size())
+//            topicName.each {println(it)}
 
-            EmailDTO emailDTO = new EmailDTO(to: user.email, subject: "Unread items in inbox", itemList: topicName)
+            EmailDTO emailDTO = new EmailDTO(to: user.email, subject: "Unread items in inbox", itemList: topicName, createrList:createdBy )
 
             emailService.sendUnreadResourcesEmail(emailDTO)
 
+            println(emailDTO.properties)
+
             topicName = []
+            createdBy=[]
 
         }
     }

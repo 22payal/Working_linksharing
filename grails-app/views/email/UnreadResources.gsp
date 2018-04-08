@@ -2,10 +2,8 @@
 <html>
 <body>
 <p>Hello ... You have some unread items in your inbox :
-<g:each var="name" in="${list}" status="counter" >
-    ${counter}. ${name} <br/>
 
-</g:each>
+  Topic name : <b>${list1}</b> created by ${list2} <br>
 </p>
 <p>Thank you,<br/> linksharing team</p>
 </body>
