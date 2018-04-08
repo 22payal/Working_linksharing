@@ -36,10 +36,28 @@ class SubscriptionController {
         }
     }
 
-    def subscriptionDelete(Integer id) {
+    def subscriptionDelete() {
+        println(params.id)
+       // println(params.id.createdBy)
+       // println(params.id.id)
+        Topic topic= Topic.findById(params.id)
+        Subscription  subscription = Subscription.findByTopic(topic)
+      //  Topic currentTopic=  Topic.findByCreatedByAndId(params.id.createdBy,params.id.id)
 
-        Subscription subscription = Subscription.load(params.id)
+//        if(currentTopic)
+//        {
+//            currentTopic.delete()
+//
+//            if (currentTopic.hasErrors()) {
+//                flash.error = "error"
+//
+//            } else {
+//                flash.message = "success"
+//            }
+//        }
         subscription.delete()
+
+
        // render(text: "mjhmjxwdsdgj ${params.id}")
 
         if (subscription.hasErrors()) {

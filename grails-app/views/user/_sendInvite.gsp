@@ -1,3 +1,4 @@
+<%@ page import="linksharing.Topic" %>
 <div id="myModal2" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
@@ -7,39 +8,30 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">send invitation</h4>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal" action="#">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">email</label>
+            <div class="modal-body row">
+                <g:form controller="topic" action="invite" method="post">
+                    <div class="form-group" >
+                        <div class="form-group col-lg-10">
+                        <label class="control-label col-sm-2">Email:</label>
+
                         <div class="col-sm-10">
-                            <input type="email" class="form-control" id="email"  name="email">
+                        <input class="form-control" type="email" name="to" placeholder="enter the email of the receipent">
+
                         </div>
                     </div>
+                 <span class="caret"></span>
 
-                    <div class="dropdown">
-                        <label class="control-label col-sm-2" for="visibility1">visibility:</label>
-
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" id="visibility1">visibility
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-
-                            %{--<li>  <g:select from="Visibility.visibility"  name= value="${}"/> PRIVATE</li>--}%
-                            <li><a href="#">private</a></li>
-                            <li><a href="#">public</a></li>
-
-                        </ul>
-                    </div>
+                    <g:select name="topicName" from="${Topic.getTopicName(session.user)}" value="topicName" > Topics</g:select>
 
                     <br>
-
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">share</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
+                            %{--<button type="submit" class="btn btn-default"> Invite </button>--}%
+                            <g:submitButton name="Share" value="Invite">Invite</g:submitButton>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                         </div>
-                    </div>
-                </form>
+                        </div>
+                </g:form>
 
             </div>
 
@@ -47,3 +39,44 @@
 
     </div>
 </div>
+</div>
+
+
+%{--<%@ page import="enumeration.Visibility" %>--}%
+%{--<div id="myModal" class="modal fade" role="dialog">--}%
+    %{--<div class="modal-dialog">--}%
+
+        %{--<div class="modal-content">--}%
+            %{--<div class="modal-header">--}%
+                %{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}%
+                %{--<h4 class="modal-title">Send Invitation</h4>--}%
+            %{--</div>--}%
+            %{--<div class="modal-body row ">--}%
+                %{--<g:form controller="email" action="index" method="post">--}%
+                    %{--<div class="form-group">--}%
+                        %{--<div class="form-group col-lg-10">--}%
+                            %{--<label>Email : </label>--}%
+                            %{--<input class="form-control" type="text" name="to" placeholder="enter email of the recepient">--}%
+
+                        %{--</div>--}%
+
+                        %{--<div>--}%
+
+                            %{--<span class="caret"></span>--}%
+                            %{--<g:select name="visibility" from="${enumeration.Visibility.values()}" value="visibility" />--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="form-group">--}%
+                        %{--<div class="col-sm-offset-2 col-sm-10">--}%
+                            %{--<g:submitButton name="Share" value="submit">Submit</g:submitButton>--}%
+                            %{--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}%
+
+                        %{--</div>--}%
+                    %{--</div>--}%
+                %{--</g:form>--}%
+            %{--</div>--}%
+        %{--</div>--}%
+
+    %{--</div>--}%
+%{--</div>--}%

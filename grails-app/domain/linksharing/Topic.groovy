@@ -53,21 +53,26 @@ class Topic {
     static getTrendingTopics() {
                List<Topic> trendingTopics = Resource.createCriteria().list{
                         projections {
-                                createAlias('topic', 't')
-                                groupProperty('t.id')
-                                property('t.name')
-                                property('t.visibility')
-                                count('t.id', 'count')
-                                property('t.createdBy')
+                                groupProperty('topic')
+                                count('topic.id', 'count')
                             }
-                        eq('t.visibility', Visibility.PUBLIC)
                         order('count', 'desc')
-                        order('t.name', 'asc')
-                        maxResults(5)
+                       maxResults(5)
                     }
-
-                        return trendingTopics
+        List <Topic> result=[]
+        trendingTopics.each {result.add(it[0])}
+                  return result
             }
+
+   static Integer getSubscriptions(Topic topic)
+    {
+       return  Subscription.findAllByTopic(topic).size()
+    }
+
+    static Integer getPost(Topic topic)
+    {
+       return Resource.findAllByTopic(topic).size()
+    }
 
     static List getSubscribedUsers(User user,Topic topic)
     {
@@ -79,6 +84,51 @@ class Topic {
              return subscribedUserscount - 1
          }
     }
+
+
+    boolean isPublic(String topicName)
+    {
+
+       if(Topic.findByTopicNameAndVisibility(topicName,Visibility.PUBLIC))
+           return 1
+
+
+        else
+           return 0
+    }
+
+    boolean canViewBy(User user, Topic topic)
+    {
+        if(isPublic(topic.topicName) || Subscription.findByUserAndTopic(user,topic)||(user.admin))
+        return 1
+
+        else
+            return 0
+
+    }
+
+    static List getCreatedTopics(User user) {
+        List<Topic> createdTopics = Topic.findAllByCreatedBy(user)
+        List<Topic> result = []
+
+        createdTopics.each {
+
+            result.add(it)
+        }
+        return result
+    }
+
+    static List <String> getTopicName(User user)
+    {
+        List <Topic> topic = Topic.findAllByCreatedBy(user)
+        List <String>result = []
+
+        topic.topicName.each {
+                    result.add(it)
+                }
+        return  result
+    }
+
 
 
     static transients = ['getSubscribedUsers']

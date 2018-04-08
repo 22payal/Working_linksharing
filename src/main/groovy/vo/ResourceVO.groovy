@@ -1,6 +1,6 @@
 package vo
 
-class ResourceVo {
+class ResourceVO {
     Integer id
     Integer count
     String createdBy

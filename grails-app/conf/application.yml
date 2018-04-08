@@ -131,6 +131,19 @@ environments:
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
 
-server:
-    contextPath: /linksharing-app/
+grails:
+     mail:
+          host: "smtp.gmail.com"
+          port: 465
+          username: "payalttn123@gmail.com"
+          password: "linksharing123"
+          props:
+              mail.smtp.auth: "true"
+              mail.smtp.socketFactory.port: "465"
+              mail.smtp.socketFactory.class: "javax.net.ssl.SSLSocketFactory"
+              mail.smtp.socketFactory.fallback: "false"
 
+#
+#server:
+#    contextPath: /linksharing-app/
+#

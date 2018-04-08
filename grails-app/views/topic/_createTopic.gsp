@@ -10,8 +10,6 @@
             <div class="modal-body row ">
                 <g:form controller="topic" action="save" method="post">
                     <div class="form-group">
-
-
                         <div class="form-group col-lg-10">
                             <label>TOPIC NAME : </label>
                             <input class="form-control" type="text" name="topicName" placeholder="enter name of your topic">

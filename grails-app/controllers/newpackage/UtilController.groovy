@@ -18,8 +18,7 @@ class UtilController {
 
 
     def call(){
-        //render(view: "/applicationLayout/discard")
-        render(view: "/applicationLayout/select")
+        render(view: "/topic/newShowTopic")
 
     }
 }

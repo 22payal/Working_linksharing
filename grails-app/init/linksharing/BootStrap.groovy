@@ -29,8 +29,6 @@ class BootStrap {
             createUsers()
             println("Done Creating Users")
         }
-
-        createUsers()
         println("Creating Topic")
         createTopic()
         println("Done Creating Topic")
@@ -88,11 +86,11 @@ class BootStrap {
         }
 
         User normal = new User(
-                firstName:"test user",
-                lastName:  "first",
-                userName:  "user.first",
-                password:  "first123",
-                email:  "test.first@tothenew.com",
+                firstName:"pia ",
+                lastName:  "mehra",
+                userName:  "pia.mehra",
+                password:  "pia123",
+                email:  "pia.mehra1996@gmail.com",
                 admin:false,
                 active: true)
 
@@ -229,29 +227,55 @@ class BootStrap {
         }
     }
 
+//    void createReadingItem() {
+//        List<Subscription> subscriptionList = Subscription.findAll()
+//        List<User> userList = User.findAll()
+//        subscriptionList.each {
+//            for (User user : userList) {
+//                if (it.user == user && !user.topic.contains(it.topic))  {
+//                    ReadingItem readingItem = new ReadingItem(user: user, isRead: false, resource:it.topic.resource[0] )
+//
+//                    if(ReadingItem.findAllByUserAndResource(user,it.topic.resource[0]).size()!=0)
+//                    {
+//                        readingItem.save()
+//                    }
+//
+//                       if (!readingItem.save(flush: true))
+//                       {
+//                            log.error("Error while saving : $readingItem")
+//                        } else {
+//                            log.info("Saved Succesfully: $readingItem")
+//
+//
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     void createReadingItem() {
-        List<Subscription> subscriptionList = Subscription.findAll()
+     List  <Resource> resourceList = Resource.findAll()
+
         List<User> userList = User.findAll()
-        subscriptionList.each {
-            for (User user : userList) {
-                if (it.user == user && !user.topic.contains(it.topic))  {
-                    ReadingItem readingItem = new ReadingItem(user: user, isRead: false, resource:it.topic.resource[0] )
 
-                    if(ReadingItem.findAllByUserAndResource(user,it.topic.resource[0]).size()!=0)
-                    {
-                        readingItem.save()
-                    }
+        resourceList.each{
+            for (User user : userList)
+            {
+            if((! Topic.findAllByCreatedByAndTopicName(user,it.topic.topicName)) && (Subscription.findAllByUserAndTopic(user,it.topic)))
+            {
+                ReadingItem readingItem = new ReadingItem(user: user, isRead: false, resource:it )
 
-                       if (!readingItem.save(flush: true))
-                       {
-                            log.error("Error while saving : $readingItem")
-                        } else {
-                            log.info("Saved Succesfully: $readingItem")
+                if(ReadingItem.findAllByUserAndResource(user,it).size()==0) {
+                    if (readingItem.validate()) {
+                        readingItem.save(flush: true)
+                        log.info("Saved Succesfully: $readingItem")
 
-
-
+                    } else {
+                        log.error("Error while saving : $readingItem")
                     }
                 }
+            }
             }
         }
     }

@@ -1,10 +1,14 @@
 package linksharing
 
-import co.ResourceSearchCo
+import dto.EmailDTO
+import enumeration.Seriousness
 import enumeration.Visibility
 
 
 class TopicController {
+
+
+    EmailService emailService
 
 //    def index() {
 //
@@ -22,26 +26,36 @@ class TopicController {
 
 
 
-//    def topicDelete(Integer id)
-//    {
-//        Topic topic=Topic.load(id)
-//    }
-//
-    //   def topicSave() { }
-
-     List topicShow(User user)
+    def topicDelete(Integer id)
     {
-        List<Topic> topics =Topic.findAllByCreatedBy(user)
-        render("${topics.topicName}")
+        Topic topic= Topic.load(id)
+        topic.delete()
+
+        if (topic.hasErrors()) {
+            flash.error = "error"
+
+        } else {
+            flash.message = "success"
+        }
     }
 
+    //   def topicSave() { }
+
+
+//     List topicShow(User user)
+//    {
+//        List<Topic> topics =Topic.findAllByCreatedBy(user)
+//        render("${topics.topicName}")
+//    }
+
+   def show()
+  {
+      Topic topic = Topic.findById(params.id)
+
+      render(view: '_topicShow', model: [topic: topic])
+  }
 
     def save() {
-
-      //  render(params.topicName)
-       //  render(visibility)
-      //   render(params.visibility)
-      // String visibility="public"
 
         Topic topic = new Topic(createdBy: session.user, visibility: Visibility.convertIntoEnum(params.visibility), topicName:params.topicName)
 
@@ -57,6 +71,51 @@ class TopicController {
             render("error during saving topic")
             topic.errors.allErrors.each {println(it)}
 
+        }
+
+    }
+
+    def invite()
+    {
+        println(params.to)
+        println(params.topicName)
+        render("in topic invite")
+        Topic topic = Topic.findByTopicName(params.topicName)
+
+        if (topic && User.findByEmail(params.to))
+        {
+              //send invite
+            println("in if")
+            EmailDTO emailDTO = new EmailDTO(to: params.to, subject:"NEW INVITATION" ,from:"payalttn123@gmail.com" , linkId: topic.id , content: "your new subscription")
+           println(emailDTO.properties)
+
+            emailService.sendInvitation(emailDTO)
+
+        }
+        else
+        {
+            flash.error= "Desired Topic not found or user not found"
+        }
+    }
+
+    def join(Integer id)
+    {
+        printf("in topic join action")
+        Topic topic=Topic.findById(id)
+        User user= User.findById(id)
+        Subscription subscription = new Subscription(topic: topic , user: user, seriousness: Seriousness.SERIOUS)
+
+        if (subscription.validate())
+        {
+            subscription.save()
+            flash.message="Subscription saved successfully"
+            render("Subscription for that topic created successfully")
+        }
+
+        else
+        {  subscription.errors.allErrors.each {println(it)}
+            flash.error="subscription could not be saved"
+            render("Subscription could not be saved")
         }
 
     }

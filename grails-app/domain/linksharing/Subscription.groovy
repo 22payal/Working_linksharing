@@ -2,10 +2,6 @@ package linksharing
 
 
 import enumeration.Seriousness
-import org.grails.datastore.mapping.query.Query
-import vo.ResourceVo
-import vo.SubscriptionVO
-
 
 class Subscription {
     Topic topic
@@ -30,7 +26,7 @@ class Subscription {
     }
 
 //    static List<SubscriptionVO> getSubscribedTopics(){
-//        List<ResourceVo> subscribedTopics = Subscription.createCriteria().list{
+//        List<ResourceVO> subscribedTopics = Subscription.createCriteria().list{
 //            projections{
 //                createAlias('subscription', 's')
 //                groupProperty('s.id')
@@ -51,18 +47,15 @@ class Subscription {
     static List getSubscribedTopics(User user) {
         List<Subscription> subscribedTopics = Subscription.findAllByUser(user)
         List<Topic> result = []
-       // List<String> result = []
 
         subscribedTopics.each {
             Topic topic = Topic.findByCreatedByAndTopicName(it.user, it.topic.topicName)
             if (!topic) {
-               // result.add(it.topic.topicName)
                 result.add(it.topic)
             }
         }
         return result
     }
-
 
     static transients = ['getSubscribedTopics']
 

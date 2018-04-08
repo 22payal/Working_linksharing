@@ -3,7 +3,7 @@ package vo
 import enumeration.Visibility
 import linksharing.User
 
-class TopicVo {
+class TopicVO {
 
     Integer id
     String name

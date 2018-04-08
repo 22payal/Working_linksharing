@@ -18,19 +18,23 @@
                                 <h6 class="text-muted">${session.user.userName}</h6>
 
                                 <g:link controller="subscription" action="subscriptionDelete"
-                                        id="${subscribedTopics.id}">Unsubscribe</g:link>
+                                        id="${subscribedTopics}">Unsubscribe</g:link>
                             </div>
 
                             <div class="col-sm-2">
                                 <h6 class="text-muted pull-left">Subscriptions</h6>
-                                <h6 class="text-primary">${subscribedTopics.topicName.size()}</h6>
+                                <h6 class="text-primary">
+                                    <ls:subscriptionCount id="${subscribedTopics}"> </ls:subscriptionCount>
+                                </h6>
                             </div>
 
                             <div class="col-sm-3">
                                 <h6 class="text-muted  pull-right">Post
                                     <br>
                                     <br>
-                                    <p class="text-primary">30</p>
+                                    <p class="text-primary">
+                                        <ls:resourceCount id="${subscribedTopics}"> </ls:resourceCount>
+                                    </p>
                                 </h6>
                             </div>
                             <span type="img" class="fa fa-envelope pull-right fa-2x"

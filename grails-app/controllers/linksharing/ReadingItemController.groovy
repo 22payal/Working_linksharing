@@ -14,4 +14,19 @@ class ReadingItemController {
 
                    }
 
+//    def changeisRead(Integer id, User user){
+//
+//        if(ReadingItem.executeUpdate("UPDATE RadingItem set isRead=:isRead where id=:id",
+//                [isRead:isRead, id:id])){
+//            render("SUCCESS")
+//        }
+//        else
+//            render("ERROR")
+//
+//    }
+
+
+
+
+
 }
