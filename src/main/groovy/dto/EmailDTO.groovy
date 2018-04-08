@@ -10,5 +10,7 @@ class EmailDTO {
     //String view
     String content
     Integer linkId
+    List <String> itemList
     //Map model
+
 }

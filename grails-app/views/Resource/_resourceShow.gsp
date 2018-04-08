@@ -79,7 +79,9 @@
     </div>
 
     <div class="col-lg-5">
-        <g:render template="/topic/trendingTopics"></g:render>
+        <g:render template="/user/trendingTopic">
+
+        </g:render>
     </div>
 </div>
 
