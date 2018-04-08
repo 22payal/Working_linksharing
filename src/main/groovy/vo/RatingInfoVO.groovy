@@ -1,6 +1,6 @@
 package vo
 
-class RatingInfoVo {
+class RatingInfoVO {
     Integer totalVotes
     Double averageScore
     Integer totalScore

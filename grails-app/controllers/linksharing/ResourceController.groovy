@@ -2,11 +2,8 @@ package linksharing
 
 import co.ResourceSearchCo
 import enumeration.Visibility
-import linksharing.Resource
-import vo.RatingInfoVo
-import vo.TopicVo
-import linksharing.Topic
-
+import vo.RatingInfoVO
+import vo.TopicVO
 
 class ResourceController {
 
@@ -33,10 +30,10 @@ class ResourceController {
     def show(Integer ResourceId)
     {
         Resource resource = Resource.findById(resourceId)
-               RatingInfoVo ratingInfoVo = resource.getResourceRatingInformation()
+               RatingInfoVO ratingInfoVo = resource.getResourceRatingInformation()
                 render("TOTAL VOTES- $ratingInfoVo.totalVotes + TOTAL SCORE- $ratingInfoVo.totalScore + AVERAGE SCORE- $ratingInfoVo.averageScore")
 
-        List<TopicVo> trendingTopics = Topic.getTrendingTopics()
+        List<TopicVO> trendingTopics = Topic.getTrendingTopics()
         render("TRENDING TOPICS-"+trendingTopics.each {println("$it.name + $it.visibility + $it.createdBy")})
 
     }
@@ -47,7 +44,7 @@ class ResourceController {
     }
 
 def findTrendingTopics(){
-            List<TopicVo> trendingTopics = Topic.getTrendingTopics()
+            List<TopicVO> trendingTopics = Topic.getTrendingTopics()
         render("TRENDING TOPICS-" +
             trendingTopics.each {println("$it.name + $it.visibility + $it.createdBy")})
 }

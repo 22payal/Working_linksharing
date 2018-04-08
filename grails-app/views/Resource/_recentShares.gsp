@@ -7,7 +7,7 @@
     </div>
 
     <div class="col-lg-9">
-        <p>${recentShares.createdBy.name}  <span
+        <p>${recentShares.createdBy.userName}  <span
                 style="color: darkgray">@${recentShares.createdBy.userName}</span><span
                 class="pull-right"
                 style="margin-right: 0px;color: #007efc;font-size: small">${recentShares.topic.topicName}</span>

@@ -30,6 +30,12 @@
 
     </div>
 
+    <div class="form-group col-lg-10 row">
+        <label>Photo</label>
+        <input class="form-control" type="file" name="photo">
+
+    </div>
+
     <div  class="form-group col-lg-10">
         <input type="submit" class="form-control btn-primary" style="background:#007efc">
     </div>

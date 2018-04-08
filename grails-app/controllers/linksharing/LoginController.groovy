@@ -1,8 +1,6 @@
 package linksharing
 
-import vo.ResourceVo
-
-import javax.servlet.http.HttpSession
+import vo.ResourceVO
 
 class LoginController {
 
@@ -10,7 +8,7 @@ class LoginController {
 
     def home()
     {
-        render(view: 'register')
+        render(view: 'main')
     }
 
     def index() {
@@ -58,7 +56,7 @@ class LoginController {
 
     def topPost()
     {
-                    List<ResourceVo> topPosts = Resource.getTopPost()
+                    List<ResourceVO> topPosts = Resource.getTopPost()
                     println("$topPosts.id + $topPosts.createdBy + $topPosts.topicName")
 
     }
@@ -75,7 +73,7 @@ class LoginController {
                if (newuser.validate()) {
                    newuser.save(flush: true, failOnError: true)
 
-                    render(view: 'register')
+                    render(view: 'main')
                     }
         else
                {
@@ -98,17 +96,14 @@ class LoginController {
 
     }
 
-    def topPosts() {
-        List<ResourceVo> topPosts = Resource.getTopPost()
-    }
+//    def topPosts() {
+//        List<ResourceVO> topPosts = Resource.getTopPost()
+//    }
 
-    def forgotPassword(User user)
+
+    def forgotPassword()
     {
-       if( User.findByUserNameAndEmail(user.userName,user.email))
-       {
-           render("it exists")
-       }
+        render(view: 'ForgotPassword')
     }
-
 
 }
