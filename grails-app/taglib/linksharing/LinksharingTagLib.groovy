@@ -72,5 +72,10 @@ class LinksharingTagLib {
 
     }
 
+//    def userImg={
+//        attrs,body->
+//            User.findById()
+//    }
+
 
 }

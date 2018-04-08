@@ -77,6 +77,19 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var loadModal = function () {
+            $.post({url :"/login/register", success : function (response) {
+                    $('#modalBody').html(response);
+                }});
+        };
+
+        $('#loadModal').click(loadModal);
+    });
+</script>
+
 </body>
 
 </html>

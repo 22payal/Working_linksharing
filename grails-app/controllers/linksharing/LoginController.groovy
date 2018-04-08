@@ -73,24 +73,24 @@ class LoginController {
                if (newuser.validate()) {
                    newuser.save(flush: true, failOnError: true)
 
-                    render(view: 'main')
+                    render(view: 'user/dashboard')
                     }
         else
                {
                    if (newuser.errors.hasFieldErrors("password")) {
-                       println newuser.errors.getFieldError("password").rejectedValue
+                       println newuser.errors.getFieldError("password")
                    }
 
                    else if (newuser.errors.hasFieldErrors("userName")) {
-                       println newuser.errors.getFieldError("userName").rejectedValue
+                       println newuser.errors.getFieldError("userName")
                    }
 
                  else  if (newuser.errors.hasFieldErrors("email")) {
-                       println newuser.errors.getFieldError("email").rejectedValue
+                       println newuser.errors.getFieldError("email")
                    }
 
                    else if (newuser.errors.hasFieldErrors("firstName")) {
-                       println newuser.errors.getFieldError("firstName").rejectedValue
+                       println newuser.errors.getFieldError("firstName")
                    }
                }
 

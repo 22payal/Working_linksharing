@@ -66,6 +66,7 @@ dependencies {
     runtime 'mysql:mysql-connector-java:5.1.36'
 }
 
+
 bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')
     jvmArgs = ['-Dlocal.config.location=externalConfig.yml']

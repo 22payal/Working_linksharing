@@ -56,4 +56,9 @@ class UserController {
 
     }
 
+    def add()
+    {
+
+    }
+
 }
