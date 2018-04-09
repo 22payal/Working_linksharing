@@ -9,20 +9,17 @@
             </div>
             <div class="modal-body row">
                 <g:form controller="linkResource" action="save">
-
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="url">link:</label>
-
                         <div class="col-sm-10">
-                            <input type="text" id="url" placeholder="Enter link" name="link"/>
-
+                            <input type="url" class="form-control" id="url" placeholder="Enter link"
+                                   name="link">
                         </div>
-
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="description">description:</label>
                         <div class="col-sm-10">
-                            <textarea rows="5" id="description"></textarea>
+                            <textarea class="form-control" rows="5" id="description"></textarea>
                         </div>
                     </div>
                     <div class="dropdown">
