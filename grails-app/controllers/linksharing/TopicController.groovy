@@ -87,7 +87,8 @@ class TopicController {
               //send invite
             println("in if")
             EmailDTO emailDTO = new EmailDTO(to: params.to, subject:"NEW INVITATION" ,from:"payalttn123@gmail.com" , linkId: topic.id , content: "your new subscription")
-           println(emailDTO.properties)
+
+            println(emailDTO.properties)
 
             emailService.sendInvitation(emailDTO)
 
@@ -101,8 +102,8 @@ class TopicController {
     def join(Integer id)
     {
         printf("in topic join action")
-        Topic topic=Topic.findById(id)
-        User user= User.findById(id)
+        Topic topic=Topic.findById(params.id)
+        User user= User.findByEmail(params.email)
         Subscription subscription = new Subscription(topic: topic , user: user, seriousness: Seriousness.SERIOUS)
 
         if (subscription.validate())

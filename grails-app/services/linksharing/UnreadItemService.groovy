@@ -41,11 +41,11 @@ class UnreadItemService {
         }
     }
 
-    def inbox() {
+    def inbox(User user) {
 
           List result=[]
 
-            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(session.user, false)
+            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(user, false)
 
             readingItemList.resource.each { list ->
               result.add(list)

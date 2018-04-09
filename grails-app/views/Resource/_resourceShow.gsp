@@ -11,6 +11,7 @@
 </head>
 
 <body>
+
 <div class="container">
     <div class="col-lg-7">
 
@@ -37,8 +38,7 @@
                                     </div>
 
                                     <div class="col-lg-7" style="text-align: right">
-                                        <p><a href="${createLink(controller: "topic", action: "show", id: resource.topicId)}"
-                                              class="pull-right">${resource.topicName}</a></p><br>
+                                        <p>${resource.topicName}</p><br>
                                     </div>
 
                                     <div class="col-lg-12"><br><br></div>

@@ -8,7 +8,7 @@ class SubscriptionController {
 
 
     def subscriptionSave(Integer id) {
-        Topic newtopic = Topic.load(id)
+        Topic newtopic = Topic.get(params.id)
         Subscription subscription = new Subscription(user: session.user, topic: newtopic, seriousness: "SERIOUS")
         subscription.save()
 
@@ -37,28 +37,12 @@ class SubscriptionController {
     }
 
     def subscriptionDelete() {
-        println(params.id)
-       // println(params.id.createdBy)
-       // println(params.id.id)
-        Topic topic= Topic.findById(params.id)
+
+        Topic topic= Topic.get(params.id)
+
         Subscription  subscription = Subscription.findByTopic(topic)
-      //  Topic currentTopic=  Topic.findByCreatedByAndId(params.id.createdBy,params.id.id)
 
-//        if(currentTopic)
-//        {
-//            currentTopic.delete()
-//
-//            if (currentTopic.hasErrors()) {
-//                flash.error = "error"
-//
-//            } else {
-//                flash.message = "success"
-//            }
-//        }
-        subscription.delete()
-
-
-       // render(text: "mjhmjxwdsdgj ${params.id}")
+        subscription.delete(flush:true)
 
         if (subscription.hasErrors()) {
             flash.error = "error"

@@ -35,4 +35,16 @@ class UserService {
         return map
     }
 
+    def changePassword(String oldPassword, String newPassword, String confirmNewPassword)
+    {
+        if (newPassword.equals(confirmNewPassword)) {
+            User.executeUpdate("update User u set u.password=:newPassword where u.password=:oldPassword",[newPassword:newPassword, oldPassword:oldPassword] )
+        }
+    }
+
+    def forgotPassword(String newPassword , String email)
+    {
+        User.executeUpdate("update User u set u.password=:newPassword where u.email=:email",[newPassword:newPassword, email:email] )
+    }
+
 }

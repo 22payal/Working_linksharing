@@ -14,7 +14,8 @@ class UserController {
 
     def index() {
       //  render("welcome ${session.user.getName()}")
-        List <Resource> resourceList = unreadItemService.inbox()
+        List <Resource> resourceList = unreadItemService.inbox(session.user)
+
         render(view: '/user/dashboard', model: [resourceList:resourceList])
     }
 
@@ -39,17 +40,25 @@ class UserController {
     {
         if(User.findByEmailAndUserName(params.email,params.username))
         {
-            Util util = new Util()
-            def newPassword = Util.randomPassword
+//            Util util = new Util()
+            Long newPassword = Util.randomPassword
+            String updatedPassword = String.valueOf(newPassword)
 
 //            String subject= messageSource.getMessage('Reply from linkSharing', [].toArray(), Locale.default)
 
-            EmailDTO emailDTO = new EmailDTO(to: params.email, subject: "Reply from linkSharing" ,from:"payalttn123@gmail.com",content:"Hello user your new password is : ${newPassword}")
+
+            def msg = messageSource.getMessage('my.localized.content', ['Juan', 'lunes'] as Object[], 'Reply from linkSharing', request.locale)
+
+
+            EmailDTO emailDTO = new EmailDTO(to: params.email, subject: "Reply from linkSharing" ,from:"payalttn123@gmail.com",content:"Hello user your new password is : ${updatedPassword}")
 
             emailService.sendMail(emailDTO)
 
+            userService.forgotPassword(updatedPassword,session.user.email)
+
+
             flash.message="password sent"
-            render(" message sent successlly...check your mail")
+            render(" message sent successlly...check your mail...now login with new password")
         }
 
         else
@@ -67,5 +76,14 @@ class UserController {
     def editProfile() {
         Map map = userService.showProfile((session.user.userName))
         render(view: 'editProfile', model: [user: map.userInformation, userTopics: map.userTopics, userPosts: map.userPosts])
+    }
+
+    def changePassword()
+    {
+        String oldPassword=params.oldPassword
+        String newPassword= params.updatedPassword
+        String confirmNewPassword= params.updatedConfirmPassword
+
+       userService.changePassword(oldPassword,newPassword,confirmNewPassword)
     }
 }

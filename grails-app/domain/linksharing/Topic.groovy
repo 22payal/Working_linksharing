@@ -120,10 +120,10 @@ class Topic {
 
     static List <String> getTopicName(User user)
     {
-        List <Topic> topic = Topic.findAllByCreatedBy(user)
+        List <Subscription> list = Subscription.findAllByUser(user)
         List <String>result = []
 
-        topic.topicName.each {
+        list.topic.topicName.each {
                     result.add(it)
                 }
         return  result

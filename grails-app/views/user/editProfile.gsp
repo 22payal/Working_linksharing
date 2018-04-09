@@ -92,7 +92,9 @@
 
                                                 <div class="col-sm-3">
                                                     <h6 class="text-muted pull-left">Subscriptions</h6>
-                                                    <h6 class="text-primary">${topic.subscriptionCount}</h6>
+                                                    <h6 class="text-primary">
+                                                        <ls:inboxSubscriptionCount id="${topic.topicId}"> </ls:inboxSubscriptionCount>
+                                                    </h6>
                                                 </div>
 
                                                 <div class="col-sm-3">
@@ -100,7 +102,9 @@
                                                         <br>
                                                         <br>
 
-                                                        <p class="text-primary">${topic.resourcesCount}</p>
+                                                        <p class="text-primary">
+                                                            <ls:inboxResourceCount id="${topic.topicId}"> </ls:inboxResourceCount>
+                                                        </p>
                                                     </h6>
                                                 </div>
                                                 <span type="img" class="fa fa-file pull-right fa-2x"
@@ -266,13 +270,20 @@
 
                 <div class="panel-body ">
                     <g:form controller="user" action="changePassword">
+
                         <div class="form-group col-lg-10">
-                            <label>Password*</label>
+                            <label>Old Password*</label>
+                            <input class="form-control" type="text" name="oldPassword">
+                        </div>
+
+
+                        <div class="form-group col-lg-10">
+                            <label>New Password*</label>
                             <input class="form-control" type="text" name="updatedPassword">
                         </div>
 
                         <div class="form-group col-lg-10">
-                            <label>Confirm Password*</label>
+                            <label>Confirm New Password*</label>
                             <input class="form-control" type="password" name="updatedConfirmPassword">
                         </div>
 
