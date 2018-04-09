@@ -40,4 +40,18 @@ class UnreadItemService {
 
         }
     }
-}
+
+    def inbox() {
+
+          List result=[]
+
+            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(session.user, false)
+
+            readingItemList.resource.each { list ->
+              result.add(list)
+            }
+
+
+        }
+    }
+

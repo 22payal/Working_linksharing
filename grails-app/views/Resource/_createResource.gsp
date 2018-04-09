@@ -22,7 +22,9 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="description">description:</label>
                         <div class="col-sm-10">
-                            <textarea rows="5" id="description"></textarea>
+                            <textarea content="text" rows="5" id="description">
+
+                            </textarea>
                         </div>
                     </div>
                     <div class="dropdown">
@@ -31,11 +33,6 @@
                         <button class="btn btn-default dropdown-toggle" type="button"
                                 data-toggle="dropdown" id="topic">topic
                             <span class="caret"></span></button>
-                        %{--<ul class="dropdown-menu">--}%
-                        %{--<li><a href="${createLink(controller: 'linkResource', action: 'save' , params: "topicName")}">topic1</a></li>--}%
-                        %{--<li><a href="${createLink(controller: 'linkResource', action: 'save' , params: "topicName")}">topic2</a></li>--}%
-                        %{--<li><a href="${createLink(controller: 'linkResource', action: 'save' , params: "topicName")}">topic3</a></li>--}%
-                        %{--</ul>--}%
                     </div>
                     <br>
 
@@ -50,9 +47,6 @@
                 </g:form>
 
             </div>
-            <!--<div class="modal-footer">-->
-            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-            <!--</div>-->
         </div>
 
     </div>

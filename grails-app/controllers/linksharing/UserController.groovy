@@ -9,10 +9,13 @@ class UserController {
 
     EmailService emailService
     MessageSource messageSource
+    UserService userService
+    UnreadItemService unreadItemService
 
     def index() {
       //  render("welcome ${session.user.getName()}")
-        render(view: 'dashboard')
+        List <Resource> resourceList = unreadItemService.inbox()
+        render(view: '/user/dashboard', model: [resourceList:resourceList])
     }
 
     def show(Integer id) {
@@ -61,4 +64,8 @@ class UserController {
 
     }
 
+    def editProfile() {
+        Map map = userService.showProfile((session.user.userName))
+        render(view: 'editProfile', model: [user: map.userInformation, userTopics: map.userTopics, userPosts: map.userPosts])
+    }
 }

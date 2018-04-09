@@ -1,9 +1,11 @@
 package vo
 
 class ResourceVO {
-    Integer id
-    Integer count
-    String createdBy
+    Integer resourceId
+    Integer topicId
+    String resourceDescription
+    String ownerName
+    String ownerUsername
     String topicName
 
 }

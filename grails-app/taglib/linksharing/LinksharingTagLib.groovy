@@ -1,7 +1,7 @@
 package linksharing
 
 class LinksharingTagLib {
-    static defaultEncodeAs = [taglib:'html']
+    static defaultEncodeAs = [taglib:'text']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static namespace = "ls"
 
@@ -76,6 +76,11 @@ class LinksharingTagLib {
 //        attrs,body->
 //            User.findById()
 //    }
+
+    def userImage = { attrs, body ->
+        out << "<img src='${createLink(controller: 'user', action: 'fetchUserImage', params: [username: attrs.username])}' " +
+                " height='${attrs.height}' width='${attrs.width}'>"
+    }
 
 
 }
