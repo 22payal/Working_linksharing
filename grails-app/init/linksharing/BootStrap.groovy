@@ -29,25 +29,36 @@ class BootStrap {
             createUsers()
             println("Done Creating Users")
         }
-        println("Creating Topic")
-        createTopic()
-        println("Done Creating Topic")
 
-        println("Creating Resource")
-          createResource()
-        println("done Creating Resource")
+        if (Topic.count==0) {
+            println("Creating Topic")
+            createTopic()
+            println("Done Creating Topic")
+        }
 
-        println("Creating subscribe topic")
-       subscribeTopic()
-        println("done Creating subscribe topic")
+        if(Resource.count==0) {
+            println("Creating Resource")
+            createResource()
+            println("done Creating Resource")
+        }
 
-        println("Creating reading item")
-        createReadingItem()
-        println("done Creating reading item")
+        if(Subscription.count==0) {
+            println("Creating subscribe topic")
+            subscribeTopic()
+            println("done Creating subscribe topic")
+        }
 
-        println("Creating resource rating")
-        createResourceRating()
-        println("done Creating resource rating")
+        if(ReadingItem.count==0) {
+            println("Creating reading item")
+            createReadingItem()
+            println("done Creating reading item")
+        }
+
+        if(ResourceRating.count==0) {
+            println("Creating resource rating")
+            createResourceRating()
+            println("done Creating resource rating")
+        }
 
     }
     def destroy = {

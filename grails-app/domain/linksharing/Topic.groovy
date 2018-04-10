@@ -22,7 +22,7 @@ class Topic {
 
     static constraints = {
 
-        topicName(blank: false, nullable: false)
+        topicName(blank: false, nullable: false, unique:'createdBy')
         createdBy(nullable: false)
         visibility(nullable: false)
     }

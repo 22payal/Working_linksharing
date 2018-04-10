@@ -9,6 +9,8 @@ class TopicController {
 
 
     EmailService emailService
+    TopicService topicService
+
 
 //    def index() {
 //
@@ -28,15 +30,19 @@ class TopicController {
 
     def topicDelete(Integer id)
     {
-        Topic topic= Topic.load(id)
-        topic.delete()
-
-        if (topic.hasErrors()) {
-            flash.error = "error"
-
-        } else {
-            flash.message = "success"
+//
+        Topic topic = Topic.get(params.id)
+        if (!topic)
+        {
+            flash.error="topic not found"
         }
+
+        else
+        {
+            topicService.delete(topic)
+            flash.message="topic deleted"
+        }
+
     }
 
     //   def topicSave() { }
