@@ -73,7 +73,8 @@ class LoginController {
                if (newuser.validate()) {
                    newuser.save(flush: true, failOnError: true)
 
-                    render(view: 'user/dashboard')
+//                    render(view: '/login/')
+                   redirect (controller: 'login', action: 'home')
                     }
         else
                {

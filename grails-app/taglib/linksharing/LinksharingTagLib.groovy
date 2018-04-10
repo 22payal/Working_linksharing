@@ -1,26 +1,26 @@
 package linksharing
 
 class LinksharingTagLib {
-    static defaultEncodeAs = [taglib:'html']
+    static defaultEncodeAs = [taglib:'text']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static namespace = "ls"
 
 
     def toggleSubscribe={ attrs, body->
-//        println(attrs.id.topicName)
-//        println(attrs.id.createdBy.userName)
 
-//        Subscription subscription =Subscription.findByUserAndTopic(attrs.id.createdBy,attrs.id)
-//       if(subscription) {
+        Topic topic = Topic.get(attrs.id)
+
+        Subscription subscription =Subscription.findByUserAndTopic(session.user,topic)
+       if(subscription) {
 //           out << "Unsubscribe"
 
-//          out<< "<a href='/subscription/subscriptionDelete/${attrs.id}'> Unsubscribe </a>"
-//       }
-//        else
-//       {
+          out<< "<a href='/subscription/subscriptionDelete/${attrs.id}'> Unsubscribe </a>"
+       }
+        else
+       {
 //          out<<"Subscribe"
-//           out<<"<g:link controller='subscription' action='subscriptionDelete' id='${attrs.id}'> Subscribe </g:link>"
-//       }
+           out<< "<a href='/subscription/subscriptionSave/${attrs.id}'> subscribe </a>"
+       }
 
     }
 
@@ -53,6 +53,17 @@ class LinksharingTagLib {
 
     }
 
+    def inboxSubscriptionCount={attrs,body->
+        Topic topic = Topic.findById(attrs.id)
+        out << Subscription.findAllByTopic(topic).size()
+
+    }
+
+    def inboxResourceCount={attrs,body->
+        Topic topic = Topic.findById(attrs.id)
+        out << Resource.findAllByTopic(topic).size()
+
+    }
     def resourceCount={attrs,body->
         out << Resource.findAllByTopic(attrs.id).size()
 
@@ -76,6 +87,11 @@ class LinksharingTagLib {
 //        attrs,body->
 //            User.findById()
 //    }
+
+    def userImage = { attrs, body ->
+        out << "<img src='${createLink(controller: 'user', action: 'fetchUserImage', params: [username: attrs.username])}' " +
+                " height='${attrs.height}' width='${attrs.width}'>"
+    }
 
 
 }

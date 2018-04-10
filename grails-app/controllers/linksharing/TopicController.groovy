@@ -9,6 +9,8 @@ class TopicController {
 
 
     EmailService emailService
+    TopicService topicService
+
 
 //    def index() {
 //
@@ -28,15 +30,19 @@ class TopicController {
 
     def topicDelete(Integer id)
     {
-        Topic topic= Topic.load(id)
-        topic.delete()
-
-        if (topic.hasErrors()) {
-            flash.error = "error"
-
-        } else {
-            flash.message = "success"
+//
+        Topic topic = Topic.get(params.id)
+        if (!topic)
+        {
+            flash.error="topic not found"
         }
+
+        else
+        {
+            topicService.delete(topic)
+            flash.message="topic deleted"
+        }
+
     }
 
     //   def topicSave() { }
@@ -87,7 +93,8 @@ class TopicController {
               //send invite
             println("in if")
             EmailDTO emailDTO = new EmailDTO(to: params.to, subject:"NEW INVITATION" ,from:"payalttn123@gmail.com" , linkId: topic.id , content: "your new subscription")
-           println(emailDTO.properties)
+
+            println(emailDTO.properties)
 
             emailService.sendInvitation(emailDTO)
 
@@ -101,8 +108,8 @@ class TopicController {
     def join(Integer id)
     {
         printf("in topic join action")
-        Topic topic=Topic.findById(id)
-        User user= User.findById(id)
+        Topic topic=Topic.findById(params.id)
+        User user= User.findByEmail(params.email)
         Subscription subscription = new Subscription(topic: topic , user: user, seriousness: Seriousness.SERIOUS)
 
         if (subscription.validate())

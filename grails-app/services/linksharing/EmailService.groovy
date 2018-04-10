@@ -28,7 +28,7 @@ class EmailService {
         mailService.sendMail {
             to emailDTO.to
             subject emailDTO.subject
-            html view: "/email/_invite", model: [link: "${emailDTO.linkId}"]
+            html view: "/email/_invite", model: [link: "${emailDTO.linkId}",email:"${emailDTO.to}"]
         }
     }
 

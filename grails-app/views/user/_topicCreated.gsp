@@ -17,8 +17,8 @@
                             <div class="col-sm-6">
                                 <h6 class="text-muted">${session.user.userName}</h6>
 
-                                <g:link controller="subscription" action="subscriptionDelete"
-                                        id="${createdTopics.id}">Unsubscribe</g:link>
+                                <g:link controller="topic" action="topicDelete"
+                                        id="${createdTopics.id}">Delete Topic</g:link>
                             </div>
 
                             <div class="col-sm-2">

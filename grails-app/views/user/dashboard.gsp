@@ -99,6 +99,7 @@
             <div class="panel panel-primary ">
                 <div class="panel-heading">Inbox</div>
 
+               <g:each in="${resourceList}" var="list">
                 <div class="panel-body">
                     <div class="col-lg-12">
                         <div class="col-lg-3" style="margin-top: 25px">
@@ -107,10 +108,10 @@
                         </div>
 
                         <div class="col-lg-9">
-                            <p><h6>User's FullName  <span style="color: darkgray">${session.user.userName}</span><span
+                            <p><h6>Created by :  <span style="color: darkgray">${list.createdBy.userName}</span><span
                                 class="pull-right"
-                                style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
-                            <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
+                                style="margin-right: 0px;color: #007efc;font-size: small">${list.topic.topicName}</span></h6> </p>
+                            <p><h5>${list.description}</h5></p>
 
                             <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
                             <i class="fa fa-google fa-lg" aria-hidden="true"></i>
@@ -118,37 +119,38 @@
                             <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"
                                                                                                  style="color: #007efc;font-size: small">Download</a>
                                 <a href="#" style="color: #007efc;font-size: small">Mark as Read</a>
-                                <a href="#" style="color: #007efc;font-size: small">View Topic</a></span>
+                                <g:link controller="resource" action="showPost" id="${list.id}">View Post</g:link></span>
 
                         </div>
                     </div>
 
                 </div>
+               </g:each>
                 <hr>
 
-                <div class="panel-body">
-                    <div class="col-lg-12">
-                        <div class="col-lg-3" style="margin-top: 25px">
-                            <i class="fa fa-user fa-5x" aria-hidden="true"></i>
+                %{--<div class="panel-body">--}%
+                    %{--<div class="col-lg-12">--}%
+                        %{--<div class="col-lg-3" style="margin-top: 25px">--}%
+                            %{--<i class="fa fa-user fa-5x" aria-hidden="true"></i>--}%
 
-                        </div>
+                        %{--</div>--}%
 
-                        <div class="col-lg-9">
-                            <p><h6>User's FullName  <span style="color: darkgray">${session.user.getName()}</span><span
-                                class="pull-right"
-                                style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>
-                            <p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>
+                        %{--<div class="col-lg-9">--}%
+                            %{--<p><h6>User's FullName  <span style="color: darkgray">${session.user.getName()}</span><span--}%
+                                %{--class="pull-right"--}%
+                                %{--style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>--}%
+                            %{--<p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>--}%
 
-                            <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-google fa-lg" aria-hidden="true"></i>
-                            <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-                            <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"
-                                                                                                 style="color: #007efc;font-size: small">Download</a>
-                                <a href="#" style="color: #007efc;font-size: small">Mark as Read</a>
-                                <a href="#" style="color: #007efc;font-size: small">View Topic</a></span>
-                        </div>
-                    </div>
-                </div>
+                            %{--<i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>--}%
+                            %{--<i class="fa fa-google fa-lg" aria-hidden="true"></i>--}%
+                            %{--<i class="fa fa-twitter fa-lg" aria-hidden="true"></i>--}%
+                            %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"--}%
+                                                                                                 %{--style="color: #007efc;font-size: small">Download</a>--}%
+                                %{--<a href="#" style="color: #007efc;font-size: small">Mark as Read</a>--}%
+                                %{--<a href="#" style="color: #007efc;font-size: small">View Topic</a></span>--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
             </div>
         </div>
 
