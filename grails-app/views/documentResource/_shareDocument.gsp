@@ -10,7 +10,7 @@
 
             <div class="modal-body row">
 
-                <g:uploadForm controller="documentResource" action="update" method="post">
+                <g:uploadForm controller="DocumentResource" action="update" method="post">
 
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="document">document</label>
