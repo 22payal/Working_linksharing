@@ -54,7 +54,7 @@ class UserController {
 
             emailService.sendMail(emailDTO)
 
-            userService.forgotPassword(updatedPassword,session.user.email)
+            userService.forgotPassword(updatedPassword,emailDTO.to)
 
 
             flash.message="password sent"
