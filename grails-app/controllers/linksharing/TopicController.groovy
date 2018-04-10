@@ -108,8 +108,14 @@ class TopicController {
     def join(Integer id)
     {
         printf("in topic join action")
-        Topic topic=Topic.findById(params.id)
+
+        println(params.link)
+        println(params.email)
+
+        Topic topic=Topic.findById(params.link)
+
         User user= User.findByEmail(params.email)
+
         Subscription subscription = new Subscription(topic: topic , user: user, seriousness: Seriousness.SERIOUS)
 
         if (subscription.validate())
