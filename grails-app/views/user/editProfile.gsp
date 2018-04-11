@@ -117,21 +117,27 @@
                                                 </span>
 
                                                 <g:form controller="subscription" action="update" method="post">
-                                                    <select class="pull-right" name="updatedSeriousness">
-                                                        <option class="placeholder" selected disabled
-                                                                value="">${enumeration.Seriousness.SERIOUS}</option>
-                                                        <option value="${enumeration.Seriousness.VERYSERIOUS}">Very Serious</option>
-                                                        <option value="${enumeration.Seriousness.SERIOUS}">Serious</option>
-                                                        <option value="${enumeration.Seriousness.CASUAL}">Casual</option>
-                                                    </select>
-
                                                     <div>
-                                                        <select class="pull-right" name="updatedVisibility">
-                                                            <option class="placeholder" selected disabled
-                                                                    value="">${topic.topicVisibility}</option>
-                                                            <option value="${enumeration.Visibility.PRIVATE}">PRIVATE</option>
-                                                            <option value="${enumeration.Visibility.PUBLIC}">PUBLIC</option>
-                                                        </select>
+                                                    %{--<select class="pull-right" name="updatedSeriousness">--}%
+                                                        %{--<option class="placeholder" selected disabled--}%
+                                                                %{--value="">${enumeration.Seriousness.SERIOUS}</option>--}%
+                                                        %{--<option value="${enumeration.Seriousness.VERYSERIOUS}">Very Serious</option>--}%
+                                                        %{--<option value="${enumeration.Seriousness.SERIOUS}">Serious</option>--}%
+                                                        %{--<option value="${enumeration.Seriousness.CASUAL}">Casual</option>--}%
+                                                    %{--</select>--}%
+                                                    <g:select name="seriousness" from="${enumeration.Seriousness.values()}" value="seriousness" />
+
+                                                    </div>
+                                                    </g:form>
+                                                <g:form controller="topic" action="update" method="post">
+                                                    <div>
+                                                        %{--<select class="pull-right" name="updatedVisibility">--}%
+                                                            %{--<option class="placeholder" selected disabled--}%
+                                                                    %{--value="">${topic.topicVisibility}</option>--}%
+                                                            %{--<option value="${enumeration.Visibility.PRIVATE}">PRIVATE</option>--}%
+                                                            %{--<option value="${enumeration.Visibility.PUBLIC}">PUBLIC</option>--}%
+                                                        %{--</select>--}%
+                                                    <g:select name="visibility" from="${enumeration.Visibility.values()}" value="visibility" />
                                                     </div>
                                                 </g:form>
                                             </div>

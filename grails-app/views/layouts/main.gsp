@@ -26,7 +26,7 @@
 
             <ul class="nav navbar-nav col-lg-12">
                 <li class="col-lg-5 ">
-                    <form class="navbar-form navbar-left" action="/action_page.php">
+                    <g:form controller="topic" action="search" method="post" class="navbar-form navbar-left" >
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search...">
 
@@ -36,7 +36,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </g:form>
                 </li>
 
 

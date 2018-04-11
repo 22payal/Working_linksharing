@@ -1,0 +1,814 @@
+From 27798d2b7dcb6a85b9e74f26614a73d2f036712f Mon Sep 17 00:00:00 2001
+From: 22payal <payalnigam1996@gmail.com>
+Date: Wed, 11 Apr 2018 23:40:17 +0530
+Subject: [PATCH] making final changes
+
+---
+ grails-app/assets/stylesheets/application.css      | 68 ++++++++++++++++++++++
+ .../linksharing/LinkResourceController.groovy      | 12 +++-
+ .../controllers/linksharing/LoginController.groovy |  8 ++-
+ .../linksharing/ReadingItemController.groovy       |  4 ++
+ .../controllers/linksharing/TopicController.groovy |  1 +
+ .../controllers/linksharing/UserController.groovy  | 42 ++++++++++++-
+ grails-app/domain/linksharing/Topic.groovy         | 13 ++++-
+ grails-app/domain/linksharing/User.groovy          |  2 +-
+ .../services/linksharing/UnreadItemService.groovy  |  2 +-
+ grails-app/services/linksharing/UserService.groovy | 49 ++++++++++++++++
+ .../taglib/linksharing/LinksharingTagLib.groovy    | 44 +++++++++++---
+ grails-app/views/Resource/_createResource.gsp      | 21 ++++---
+ grails-app/views/Resource/_resourceShow.gsp        |  2 +-
+ .../views/documentResource/_shareDocument.gsp      |  8 +--
+ grails-app/views/layouts/main.gsp                  |  3 +-
+ grails-app/views/login/_userLogin.gsp              |  4 +-
+ grails-app/views/login/_userRegister.gsp           | 16 ++---
+ grails-app/views/user/adminView.gsp                | 62 ++++++++++++++++++++
+ grails-app/views/user/dashboard.gsp                | 39 ++++---------
+ src/main/groovy/vo/UserVO.groovy                   |  3 -
+ 20 files changed, 330 insertions(+), 73 deletions(-)
+ create mode 100644 grails-app/views/user/adminView.gsp
+
+diff --git a/grails-app/assets/stylesheets/application.css b/grails-app/assets/stylesheets/application.css
+index 1889054bc62bbc29a6adf33e3daf6d170287663a..86b43610d80efb0883f7b5f9096838d6d3e6a8af 100644
+--- a/grails-app/assets/stylesheets/application.css
++++ b/grails-app/assets/stylesheets/application.css
+@@ -13,3 +13,71 @@
+ *= require mobile
+ *= require_self
+ */
++div.stars {
++    width: 270px;
++    display: inline-block;
++}
++
++input.star {
++    display: none;
++}
++
++label.star {
++    float: right;
++    padding: 0px;
++    font-size: 36px;
++    color: #444;
++    transition: all .2s;
++}
++
++input.star:checked ~ label.star:before {
++    content: '\f005';
++    color: #FD4;
++    transition: all .25s;
++}
++
++input.star-5:checked ~ label.star:before {
++    color: #FE7;
++    text-shadow: 0 0 20px #952;
++}
++
++input.star-1:checked ~ label.star:before {
++    color: #F62;
++}
++
++label.star:hover {
++    transform: rotate(-15deg) scale(1.3);
++}
++
++label.star:before {
++    content: '\f006';
++    font-family: FontAwesome;
++}
++
++.rev-box {
++    overflow: hidden;
++    height: 0;
++    width: 100%;
++    transition: all .25s;
++}
++
++textarea.review {
++    background: #222;
++    border: none;
++    width: 100%;
++    max-width: 100%;
++    height: 100px;
++    padding: 0px;
++    box-sizing: border-box;
++    color: #EEE;
++}
++
++label.review {
++    display: block;
++    transition: opacity .25s;
++}
++
++input.star:checked ~ .rev-box {
++    height: 125px;
++    overflow: visible;
++}
+\ No newline at end of file
+diff --git a/grails-app/controllers/linksharing/LinkResourceController.groovy b/grails-app/controllers/linksharing/LinkResourceController.groovy
+index 7a594150c11a7386fcd0ba541cb24c6eba3ff816..52a2c770a120428c4038a12358e3ea468c09eefb 100644
+--- a/grails-app/controllers/linksharing/LinkResourceController.groovy
++++ b/grails-app/controllers/linksharing/LinkResourceController.groovy
+@@ -7,11 +7,19 @@ class LinkResourceController {
+     def save(){
+ 
+              Topic topic = Topic.findByTopicNameAndCreatedBy(params.topicName,session.user)
++        println(params.topicName)
++        println(params.url)
++        println(params.description)
++
+                 LinkResource linkResource = new LinkResource(url: params.url, createdBy: session.user, description: params.description, topic: topic)
+-                if (linkResource.save())
+-                        flash.message="LINK RESOURCE SAVED"
++                if (linkResource.validate()) {
++                    linkResource.save()
++                    flash.message = "LINK RESOURCE SAVED"
++                    render("link resource saved successfully")
++                }
+                else
+                     flash.message="ERROR"
++        render("link resource could not be saved successfully")
+ 
+                        // forward(controller:'User', action: 'index')
+             }
+diff --git a/grails-app/controllers/linksharing/LoginController.groovy b/grails-app/controllers/linksharing/LoginController.groovy
+index ab1215a206df51eae9f186fc3faa17685499ae80..0bf6e8067a691a26fc062b8b88e2cb088ea3b061 100644
+--- a/grails-app/controllers/linksharing/LoginController.groovy
++++ b/grails-app/controllers/linksharing/LoginController.groovy
+@@ -68,9 +68,11 @@ class LoginController {
+                                 email: params.email,
+                                 userName: params.userName,
+                                   password: params.password,
+-                                confirmPassword: params.confirmPassword)
++                                confirmPassword: params.confirmPassword,
++                                     photo: params.photo.bytes)
+ 
+                if (newuser.validate()) {
++                   newuser.active=true
+                    newuser.save(flush: true, failOnError: true)
+ 
+ //                    render(view: '/login/')
+@@ -93,6 +95,10 @@ class LoginController {
+                    else if (newuser.errors.hasFieldErrors("firstName")) {
+                        println newuser.errors.getFieldError("firstName")
+                    }
++
++                   else if (newuser.errors.hasFieldErrors("photo")) {
++                       println newuser.errors.getFieldError("photo")
++                   }
+                }
+ 
+     }
+diff --git a/grails-app/controllers/linksharing/ReadingItemController.groovy b/grails-app/controllers/linksharing/ReadingItemController.groovy
+index 97436d0a8d7f4769665f0597021ecb771390a5a7..60f5ba26c777294187a032511e1ab59182ce5578 100644
+--- a/grails-app/controllers/linksharing/ReadingItemController.groovy
++++ b/grails-app/controllers/linksharing/ReadingItemController.groovy
+@@ -5,6 +5,10 @@ class ReadingItemController {
+     def index() { }
+ 
+     def changeisRead(Long id, Boolean isRead){
++        println("in reading item..")
++        println(params.id)
++        println(isRead)
++
+              if(ReadingItem.executeUpdate("UPDATE RadingItem set isRead=:isRead where id=:id",
+                      [isRead:isRead, id:id])){
+                      render("SUCCESS")
+diff --git a/grails-app/controllers/linksharing/TopicController.groovy b/grails-app/controllers/linksharing/TopicController.groovy
+index 18b8ef49b3444bc4e215fa1d17aa6568e8815888..f87faf563c2676f54b6b1da8d2b653c81b014642 100644
+--- a/grails-app/controllers/linksharing/TopicController.groovy
++++ b/grails-app/controllers/linksharing/TopicController.groovy
+@@ -40,6 +40,7 @@ class TopicController {
+         else
+         {
+             topicService.delete(topic)
++            render(" topic deleted successfully")
+             flash.message="topic deleted"
+         }
+ 
+diff --git a/grails-app/controllers/linksharing/UserController.groovy b/grails-app/controllers/linksharing/UserController.groovy
+index 353da8f1a0fc3497e4946f8462e2b01007487353..91ca77a5b73e7e62fa9dd1bf8e4e3f09a149f55a 100644
+--- a/grails-app/controllers/linksharing/UserController.groovy
++++ b/grails-app/controllers/linksharing/UserController.groovy
+@@ -4,6 +4,7 @@ import Utilities.Util
+ import dto.EmailDTO
+ import enumeration.Visibility
+ import org.springframework.context.MessageSource
++import vo.UserVO
+ 
+ class UserController {
+ 
+@@ -11,6 +12,7 @@ class UserController {
+     MessageSource messageSource
+     UserService userService
+     UnreadItemService unreadItemService
++    def assetResourceLocator
+ 
+     def index() {
+       //  render("welcome ${session.user.getName()}")
+@@ -68,9 +70,20 @@ class UserController {
+ 
+     }
+ 
+-    def add()
+-    {
+-
++    def fetchUserImage(){
++        def user = User.findByUserName(params.username)
++        byte[] photo
++        if(!user?.photo){
++            println("Photo Not Found")
++            photo = assetResourceLocator.findAssetForURI('user.png').byteArray
++        }else {
++            println("Photo Found")
++            photo= user.photo
++        }
++        OutputStream out = response.getOutputStream()
++        out.write(photo)
++        out.flush()
++        out.close()
+     }
+ 
+     def editProfile() {
+@@ -86,4 +99,27 @@ class UserController {
+ 
+        userService.changePassword(oldPassword,newPassword,confirmNewPassword)
+     }
++
++    def updateUser()
++    {
++        if (userService.updateProfile(params, new String(session.user.userName)))
++        {
++            flash.message = "Updation Successful"
++        } else
++            flash.error = "Unable To Update Credentials"
++    }
++
++    def showUserListToAdmin(){
++        List<UserVO> allUsers= userService.showAllUsers()
++        render(view: '/user/adminView', model: [allUsers:allUsers])
++    }
++
++    def changeState(){
++        println "Printing params- $params.id"
++        if(userService.activateDeactivate(new Integer(params.id))){
++            flash.message= "State Changed"
++        }else
++            flash.error= "Unable To Change State"
++        redirect(controller: 'user', action: 'showUserListToAdmin')
++    }
+ }
+diff --git a/grails-app/domain/linksharing/Topic.groovy b/grails-app/domain/linksharing/Topic.groovy
+index 958a55ce82713aff33989baefaee16890c4a63bf..96eb7066b4ffda329b4f1a66a3e9cf0a55892a97 100644
+--- a/grails-app/domain/linksharing/Topic.groovy
++++ b/grails-app/domain/linksharing/Topic.groovy
+@@ -16,7 +16,7 @@ class Topic {
+     Visibility visibility
+ 
+ 
+-    static hasMany = [resource: Resource]
++    static hasMany = [resource: Resource, subscription:Subscription]
+ 
+     static belongsTo = [createdBy: User]
+ 
+@@ -26,9 +26,9 @@ class Topic {
+         createdBy(nullable: false)
+         visibility(nullable: false)
+     }
+-
+     static  mapping = {
+         sort 'topicName':"asc"
++        subscription cascade:'all-delete-orphan'
+ 
+ 
+     }
+@@ -129,7 +129,16 @@ class Topic {
+         return  result
+     }
+ 
++    static List <String> getCreatedTopicName(User user)
++    {
++        List <Topic> list = Topic.findAllByCreatedBy(user)
++        List <String>result = []
+ 
++        list.topicName.each{
++            result.add(it)
++        }
++        return  result
++    }
+ 
+     static transients = ['getSubscribedUsers']
+ 
+diff --git a/grails-app/domain/linksharing/User.groovy b/grails-app/domain/linksharing/User.groovy
+index dc768ae379a5afa57aae99a96b61cac08e713e36..6dec873d854dee0269e3f2557c1f66c3c0b4aaa1 100644
+--- a/grails-app/domain/linksharing/User.groovy
++++ b/grails-app/domain/linksharing/User.groovy
+@@ -13,7 +13,7 @@ class User {
+     Boolean active
+     Date dateCreated
+     Date lastUpdated
+-    Byte photo
++    Byte[] photo
+ 
+     static hasMany = [topic:Topic]
+ 
+diff --git a/grails-app/services/linksharing/UnreadItemService.groovy b/grails-app/services/linksharing/UnreadItemService.groovy
+index daf1a9a7b18a2c503bfd087ec9266f345f1a5ec5..ff8c1897dd466119141b1c7b6e52fc7d2fbf952e 100644
+--- a/grails-app/services/linksharing/UnreadItemService.groovy
++++ b/grails-app/services/linksharing/UnreadItemService.groovy
+@@ -45,7 +45,7 @@ class UnreadItemService {
+ 
+           List result=[]
+ 
+-            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(user, false)
++            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(user, true)
+ 
+             readingItemList.resource.each { list ->
+               result.add(list)
+diff --git a/grails-app/services/linksharing/UserService.groovy b/grails-app/services/linksharing/UserService.groovy
+index 39d70e637a1bb4ba8dd7d578264c4aa226c90f75..7256842f72fd7993e7bee2edd8677b779a5e17db 100644
+--- a/grails-app/services/linksharing/UserService.groovy
++++ b/grails-app/services/linksharing/UserService.groovy
+@@ -47,4 +47,53 @@ class UserService {
+         User.executeUpdate("update User u set u.password=:newPassword where u.email=:email",[newPassword:newPassword, email:email] )
+     }
+ 
++    def updateProfile(Map userData, String userName)
++    {
++        User user = User.findByUserName(userName)
++        user.firstName = userData.updatedFirstname
++        user.lastName = userData.updateLastname
++        user.userName = userData.updatedUsername
++        if (userData.updatedPhoto)
++            user.photo = userData.updatedPhoto.bytes
++
++        if (user.save(flush: true)) {
++            log.info("Credentials Updated : $user")
++            return true
++        } else {
++            log.error("Error Updating Credentials : $user")
++            user.errors.allErrors.each { println it }
++            return false
++        }
++    }
++
++    def showAllUsers() {
++        List<User> userList = User.findAllByAdmin(false)
++        if (userList) {
++            List<UserVO> allUsers = []
++            userList.each {
++                allUsers.add(new UserVO(name: it.getName(), username: it.userName, active: it.active, userId: it.id))
++            }
++            return allUsers
++        } else
++            return null
++    }
++
++    def activateDeactivate(Integer userId) {
++        User user = User.findById(userId)
++        if (user.active)
++            user.active = false
++        else
++            user.active = true
++        if (user.save(flush: true)) {
++            log.info("State Successfully Changed : $user")
++            return true
++        } else {
++            log.error("Unable to Change State : $user")
++            user.errors.allErrors.each { println it }
++            return false
++        }
++
++    }
++
++
+ }
+diff --git a/grails-app/taglib/linksharing/LinksharingTagLib.groovy b/grails-app/taglib/linksharing/LinksharingTagLib.groovy
+index 5d897a58a2a47ac5e006d8f11485d1c0633c11da..f0c3820bfaad489f934e2f4962ef9e69002d736a 100644
+--- a/grails-app/taglib/linksharing/LinksharingTagLib.groovy
++++ b/grails-app/taglib/linksharing/LinksharingTagLib.groovy
+@@ -28,16 +28,19 @@ class LinksharingTagLib {
+ 
+         if (ReadingItem.findByUser(session.user))
+         {
+-            Resource resource1 = LinkResource.load(attrs.id)
+-            Resource resource2 = DocumentResource.load(attrs.id)
++//            Resource resource =Resource.get(attrs.id)
++            Resource resource1 = LinkResource.get(attrs.id)
++            Resource resource2 = DocumentResource.get(attrs.id)
+ 
+             if ((ReadingItem.findByResourceAndIsRead(resource1,true)) || ReadingItem.findByResourceAndIsRead(resource2, true))
+             {
+-            out<< "mark as unread"
++            //out<< "mark as unread"
++                out<<"<a href='/ReadingItem/changeisRead/${attrs.id}/${0}'> mark as unread </a>"
+             }
+ 
+             else {
+-                out<<" mark as read"
++              //  out<<" mark as read"
++             out<< "<a href='/ReadingItem/changeisRead /${attrs.id}/${1}'> mark as read  </a>"
+ 
+             }
+         }
+@@ -48,6 +51,22 @@ class LinksharingTagLib {
+ 
+     }
+ 
++    def ToggleResource={attrs,body->
++        Resource resource1 = LinkResource.get(attrs.id)
++        Resource resource2 = DocumentResource.get(attrs.id)
++
++        if(resource1)
++        {
++            out<<"view url"
++        }
++
++        if (resource2)
++        {
++            out<<"download "
++        }
++
++    }
++
+     def subscriptionCount={attrs,body->
+         out << Subscription.findAllByTopic(attrs.id).size()
+ 
+@@ -83,15 +102,24 @@ class LinksharingTagLib {
+ 
+     }
+ 
+-//    def userImg={
+-//        attrs,body->
+-//            User.findById()
+-//    }
+ 
+     def userImage = { attrs, body ->
++
+         out << "<img src='${createLink(controller: 'user', action: 'fetchUserImage', params: [username: attrs.username])}' " +
+                 " height='${attrs.height}' width='${attrs.width}'>"
+     }
+ 
++    def adminPageSubscriptionCount={ attrs , body->
++        User user = User.get(attrs.id)
++       out<< Subscription.findAllByUser(user).size()
++
++    }
++
++    def adminPageTopicCount={ attrs , body->
++        User user = User.get(attrs.id)
++        out<< Topic.findAllByCreatedBy(user).size()
++
++    }
++
+ 
+ }
+diff --git a/grails-app/views/Resource/_createResource.gsp b/grails-app/views/Resource/_createResource.gsp
+index 5d1392a72bba1b1fb3cc2fd3e6003054db380e0e..d0be2e2237acc0847776aa9222ec21736e2f43a9 100644
+--- a/grails-app/views/Resource/_createResource.gsp
++++ b/grails-app/views/Resource/_createResource.gsp
+@@ -1,3 +1,4 @@
++<%@ page import="linksharing.Topic" %>
+ <div id="myModal3" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+ 
+@@ -5,34 +6,36 @@
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+-                <h4 class="modal-title">create resource</h4>
++                <h4 class="modal-title">create link resource</h4>
+             </div>
+             <div class="modal-body row">
+                 <g:form controller="linkResource" action="save">
+ 
+-                    <div class="form-group">
++                    <div class="form-group row">
+                         <label class="control-label col-sm-2" for="url">link:</label>
+ 
+                         <div class="col-sm-10">
+-                            <input type="text" id="url" placeholder="Enter link" name="link"/>
++                            <input type="text" id="url" placeholder="Enter link" name="url"/>
+ 
+                         </div>
+ 
+                     </div>
+-                    <div class="form-group">
++                    <div class="form-group row">
+                         <label class="control-label col-sm-2" for="description">description:</label>
+                         <div class="col-sm-10">
+-                            <textarea content="text" rows="5" id="description">
++                            <textarea content="text" rows="5" name="description" id="description">
+ 
+                             </textarea>
+                         </div>
+                     </div>
+                     <div class="dropdown">
+-                        <label class="control-label col-sm-2" for="topic">topic:</label>
++                        <label class="control-label col-sm-2" for="topicName">topic:</label>
+ 
+-                        <button class="btn btn-default dropdown-toggle" type="button"
+-                                data-toggle="dropdown" id="topic">topic
+-                            <span class="caret"></span></button>
++                        %{--<button class="btn btn-default dropdown-toggle" type="button"--}%
++                                %{--data-toggle="dropdown" id="topic">topic--}%
++                            %{--<span class="caret"></span></button>--}%
++                        <g:select name="topicName" from="${Topic.getCreatedTopicName(session.user)}"
++                                  value="topicName">Topics</g:select>
+                     </div>
+                     <br>
+ 
+diff --git a/grails-app/views/Resource/_resourceShow.gsp b/grails-app/views/Resource/_resourceShow.gsp
+index 8741ab11ea697fd35eecab08ae0263e070cd2453..1c6afd12160fd580869ef143a63a8d71fdd258e9 100644
+--- a/grails-app/views/Resource/_resourceShow.gsp
++++ b/grails-app/views/Resource/_resourceShow.gsp
+@@ -3,7 +3,7 @@
+ <head>
+ 
+     <title></title>
+-    <meta name="layout" content="main">
++    %{--<meta name="layout" content="main">--}%
+     <asset:link rel="stylesheet" href="application.css"></asset:link>
+     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+ 
+diff --git a/grails-app/views/documentResource/_shareDocument.gsp b/grails-app/views/documentResource/_shareDocument.gsp
+index 79ab21700581f5043c8a8bde6c8c20c0d3c79bc1..a9505e9e9274bdf1d1e614569262468c846073b7 100644
+--- a/grails-app/views/documentResource/_shareDocument.gsp
++++ b/grails-app/views/documentResource/_shareDocument.gsp
+@@ -5,14 +5,14 @@
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+-                <h4 class="modal-title">Share document</h4>
++                <h4 class="modal-title">create document resource</h4>
+             </div>
+ 
+             <div class="modal-body row">
+ 
+                 <g:uploadForm controller="DocumentResource" action="update" method="post">
+ 
+-                    <div class="form-group">
++                    <div class="form-group row">
+                         <label class="control-label col-sm-2" for="document">document</label>
+ 
+                         %{--<div class="col-sm-10">--}%
+@@ -35,7 +35,7 @@
+                     <br>
+ 
+ 
+-                    <div class="form-group">
++                    <div class="form-group row">
+                         <label class="control-label col-sm-2" for="description">description:</label>
+ 
+                         <div class="col-sm-10">
+@@ -51,7 +51,7 @@
+ 
+                         %{--<span class="caret"></span>--}%
+ 
+-                        <g:select name="topicName" from="${Topic.getTopicName(session.user)}"
++                        <g:select name="topicName" from="${Topic.getCreatedTopicName(session.user)}"
+                                   value="topicName">Topics</g:select>
+ 
+                     </div>
+diff --git a/grails-app/views/layouts/main.gsp b/grails-app/views/layouts/main.gsp
+index deea22970070b5d1e05006524e0013dd525e2005..9926fcb9dc864cb03f65dd61524ae557564b3549 100644
+--- a/grails-app/views/layouts/main.gsp
++++ b/grails-app/views/layouts/main.gsp
+@@ -77,7 +77,8 @@
+ 
+                         <g:if test="${session.user.admin==true}">
+ 
+-                        <li><a href="#">Users</a></li>
++                        %{--<li><a href="#">Users</a></li>--}%
++                            <li><g:link controller="user" action="showUserListToAdmin">Users</g:link></li>
+                         <li><a href="#">Post</a></li>
+                         <li><a href="#">Topic</a></li>
+ 
+diff --git a/grails-app/views/login/_userLogin.gsp b/grails-app/views/login/_userLogin.gsp
+index 92757a20fae9959f51cda13d9ce9f68127e4cb4c..972c52e46ad4016b582a78bd4263b587cac367dd 100644
+--- a/grails-app/views/login/_userLogin.gsp
++++ b/grails-app/views/login/_userLogin.gsp
+@@ -2,11 +2,11 @@
+         <g:form controller="login" action="loginHandler" method="post">
+             <div class="form-group col-lg-10">
+                 <label>Username</label>
+-                <input class="form-control" type="text" name="loginusername" placeholder="enter your username">
++                <input class="form-control" type="text" name="loginusername" placeholder="enter your username" required>
+             </div><div class="col-lg-2"></div>
+             <div class="form-group col-lg-10">
+                 <label>Password</label>
+-                <input class="form-control" type="password" name="loginpassword" placeholder="enter your password">
++                <input class="form-control" type="password" name="loginpassword" placeholder="enter your password" required>
+ 
+             </div>
+             <div class="col-lg-12"></div>
+diff --git a/grails-app/views/login/_userRegister.gsp b/grails-app/views/login/_userRegister.gsp
+index 852c67b6be43bd5abcc188065a1414993797b689..8dac35d9d0731e5eb9746e6ceef360b9e9e2bb7d 100644
+--- a/grails-app/views/login/_userRegister.gsp
++++ b/grails-app/views/login/_userRegister.gsp
+@@ -1,4 +1,4 @@
+-<g:form  controller="login" action="register" method="post">
++<g:uploadForm controller="login" action="register" method="post" enctype="multipart/form-data">
+ 
+ 
+ 
+@@ -11,32 +11,32 @@
+ 
+     <div class="form-group col-lg-10">
+         <label>First Name</label>
+-        <input class="form-control" type="text" name="firstName" placeholder="enter your first name">
++        <input class="form-control" type="text" name="firstName" placeholder="enter your first name" required>
+     </div><div class="col-lg-2"></div>
+     <div class="form-group col-lg-10">
+         <label>Last name </label>
+-        <input class="form-control" type="text" name="lastName" placeholder="enter your last name">
++        <input class="form-control" type="text" name="lastName" placeholder="enter your last name" required>
+ 
+     </div>
+     <div class="form-group col-lg-10">
+         <label>Email </label>
+-        <input class="form-control" type="email" name="email" placeholder="enter your email">
++        <input class="form-control" type="email" name="email" placeholder="enter your email" required>
+ 
+     </div>
+     <div class="form-group col-lg-10">
+         <label>Username </label>
+-        <input class="form-control" type="text" name="userName" >
++        <input class="form-control" type="text" name="userName" required>
+ 
+     </div>
+ 
+     <div class="form-group col-lg-10">
+         <label>Password </label>
+-        <input class="form-control" type="password" name="password" placeholder="enter password">
++        <input class="form-control" type="password" name="password" placeholder="enter password" required>
+ 
+     </div>
+     <div class="form-group col-lg-10">
+         <label>Confirm Password </label>
+-        <input class="form-control" type="password" name="confirmPassword" placeholder="confirm your  password">
++        <input class="form-control" type="password" name="confirmPassword" placeholder="confirm your  password" required>
+ 
+     </div>
+ 
+@@ -51,7 +51,7 @@
+     </div>
+ 
+ 
+-</g:form>
++</g:uploadForm>
+ 
+ 
+ 
+diff --git a/grails-app/views/user/adminView.gsp b/grails-app/views/user/adminView.gsp
+new file mode 100644
+index 0000000000000000000000000000000000000000..909228017404289d88a664059b36351c6f599454
+--- /dev/null
++++ b/grails-app/views/user/adminView.gsp
+@@ -0,0 +1,62 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <title></title>
++    <meta name="layout" content="main">
++
++</head>
++
++<body>
++<div class="container">
++    <div class="col-lg-12">
++        <g:each in="${allUsers}" var="user">
++            <div class="panel panel-primary col-lg-12">
++                <div class="panel-body">
++                    <div class="col-sm-12">
++                        <div class="row">
++                            <div class="col-sm-3">
++                                <ls:userImage username="${user.username}" height="100" width="100"/>
++                            </div>
++
++                            <div class="col-sm-9">
++
++                                <p>${user.name}<br>>
++                                    <small class="text-muted"> @${user.username}</small>
++                                </p>
++
++                                <div class="row">
++
++                                    <h6 class="col-sm-4">Subscriptions
++                                        %{--<p class="text-primary">${user.subscriptionCount}</p>--}%
++                                        <p class="text-primary">   <ls:adminPageSubscriptionCount id="${user.userId}"> </ls:adminPageSubscriptionCount></p>
++                                    </h6>
++
++                                    <h6 class="col-sm-4">Topics
++                                        %{--<p class="text-primary">${user.resourceCount}</p>--}%
++
++                                        <p class="text-primary">  <ls:adminPageTopicCount id="${user.userId}"> </ls:adminPageTopicCount> </p>
++                                    </h6>
++
++                                    <h6 class="col-sm-4">Active
++                                        <p class="text-primary"><a
++                                                href="${createLink(controller: 'user', action: 'changeState', id:
++                                                        user.userId
++                                                )}">${user.active.toString().toUpperCase()}</a></p>
++                                    </h6>
++
++                                </div>
++                            </div>
++
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </g:each>
++
++    </div>
++
++</div>
++
++</body>
++</html>
+\ No newline at end of file
+diff --git a/grails-app/views/user/dashboard.gsp b/grails-app/views/user/dashboard.gsp
+index 488ce567f024e15aec7d25ea3f437a7a12e51809..18d040b2d0a7bde7bcbd5593bba3908bc13d6af4 100644
+--- a/grails-app/views/user/dashboard.gsp
++++ b/grails-app/views/user/dashboard.gsp
+@@ -20,10 +20,16 @@
+             <div class="panel-body">
+                 <div class="col-sm-12">
+                     <div class="row">
+-                        <div class="col-sm-3 fa fa-user fa-5x">
++                        %{--<div class="col-sm-3 fa fa-user fa-5x">--}%
++                        %{--</div>--}%
++
++                        %{--<ls:userImage username="${session.user.userName}" height="100" width="100"/>--}%
++                    %{--</div>--}%
++                        <div class="col-sm-3">
++                            <ls:userImage username="${session.user.userName}" height="100" width="100"/>
+                         </div>
+ 
+-                        <div class="col-sm-9">
++                    <div class="col-sm-9">
+ 
+                             <p>${session.user.userName}<br>
+                                 <small class="text-muted">${session.user.userName}</small>
+@@ -116,9 +122,10 @@
+                             <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
+                             <i class="fa fa-google fa-lg" aria-hidden="true"></i>
+                             <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+-                            <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"
+-                                                                                                 style="color: #007efc;font-size: small">Download</a>
+-                                <a href="#" style="color: #007efc;font-size: small">Mark as Read</a>
++                            %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#" style="color: #007efc;font-size: small">Download</a>--}%
++                                %{--<a href="#" style="color: #007efc;font-size: small">Mark as Read</a>--}%
++                            <ls:toggleResource id="${list.id}"> </ls:toggleResource>
++                            <ls:markAsRead id="${list.id}"> </ls:markAsRead>
+                                 <g:link controller="resource" action="showPost" id="${list.id}">View Post</g:link></span>
+ 
+                         </div>
+@@ -128,29 +135,7 @@
+                </g:each>
+                 <hr>
+ 
+-                %{--<div class="panel-body">--}%
+-                    %{--<div class="col-lg-12">--}%
+-                        %{--<div class="col-lg-3" style="margin-top: 25px">--}%
+-                            %{--<i class="fa fa-user fa-5x" aria-hidden="true"></i>--}%
+ 
+-                        %{--</div>--}%
+-
+-                        %{--<div class="col-lg-9">--}%
+-                            %{--<p><h6>User's FullName  <span style="color: darkgray">${session.user.getName()}</span><span--}%
+-                                %{--class="pull-right"--}%
+-                                %{--style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>--}%
+-                            %{--<p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>--}%
+-
+-                            %{--<i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>--}%
+-                            %{--<i class="fa fa-google fa-lg" aria-hidden="true"></i>--}%
+-                            %{--<i class="fa fa-twitter fa-lg" aria-hidden="true"></i>--}%
+-                            %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"--}%
+-                                                                                                 %{--style="color: #007efc;font-size: small">Download</a>--}%
+-                                %{--<a href="#" style="color: #007efc;font-size: small">Mark as Read</a>--}%
+-                                %{--<a href="#" style="color: #007efc;font-size: small">View Topic</a></span>--}%
+-                        %{--</div>--}%
+-                    %{--</div>--}%
+-                %{--</div>--}%
+             </div>
+         </div>
+ 
+diff --git a/src/main/groovy/vo/UserVO.groovy b/src/main/groovy/vo/UserVO.groovy
+index 463ca3a6b696d3d86c0df9ccf964d4bddad1d80b..10e3d4ebb7bda97f7c8adfb521ac82a52e7c6daf 100644
+--- a/src/main/groovy/vo/UserVO.groovy
++++ b/src/main/groovy/vo/UserVO.groovy
+@@ -3,9 +3,6 @@ package vo
+ class UserVO {
+     String name
+     String username
+-    Integer subscriptionCount
+-    Integer resourceCount
+-    Integer topicCount
+     Boolean active
+     Integer userId
+ }
+-- 
+2.7.4
+

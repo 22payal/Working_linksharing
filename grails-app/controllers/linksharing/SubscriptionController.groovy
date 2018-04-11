@@ -20,20 +20,21 @@ class SubscriptionController {
         }
     }
 
-    def subscriptionUpdate(Integer id, String seriousness) {
-        Subscription subscription = Subscription.load(id)
+    def update(Integer id, String seriousness) {
 
-        if ((subscription) && (Seriousness.convertSeriousness(seriousness))) {
-            subscription.save()
-
-            if (subscription.hasErrors()) {
-                render("Error while saving Subscription ")
+        seriousness = Seriousness.convertSeriousness(params.seriousness)
+        Subscription subscription = Subscription.findById(params.id)
+        if (subscription) {
+            subscription.seriousness = seriousness
+            if (subscription.save(flush: true)) {
+                log.info("Saved Successfully : $subscription")
+                render("SUCCESS")
             } else {
-                render(" Subscription saved without errors")
+                log.error("Error while Saving : $subscription")
+                render("FAILURE")
             }
-        } else {
-            render("error while updating subscription")
-        }
+        } else
+            render("SUBSCRIPTION NOT FOUND")
     }
 
     def subscriptionDelete() {

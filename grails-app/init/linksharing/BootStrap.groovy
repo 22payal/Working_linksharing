@@ -142,7 +142,7 @@ class BootStrap {
 
                             user.refresh()
                             println("Creating topic for user $user with name topic $topicCount")
-                            Topic topic = new Topic(topicName:  "topic $topicCount", visibility: Visibility.PRIVATE, createdBy: user)
+                            Topic topic = new Topic(topicName:  "topic $topicCount", visibility: Visibility.PUBLIC, createdBy: user)
                             topic.validate()
                             if(topic.hasErrors()) {
                                 println topic.errors

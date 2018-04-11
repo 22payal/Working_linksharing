@@ -84,9 +84,9 @@ class TopicController {
 
     def invite()
     {
-        println(params.to)
-        println(params.topicName)
-        render("in topic invite")
+//        println(params.to)
+//        println(params.topicName)
+//        render("in topic invite")
         Topic topic = Topic.findByTopicName(params.topicName)
 
         if (topic && User.findByEmail(params.to))
@@ -134,5 +134,48 @@ class TopicController {
 
     }
 
+//    def search()
+//    {
+//       List<Topic> topicNames = topicService.publicSearch(params.search)
+//        List<Topic> adminView = topicService.globalSearch(params.search)
+//
+//       if(topicNames)
+//       {
+//        render(view:"searchResult" , model: [topicNames: topicNames])
+//       }
+//        else {
+//           render("no such topic found")
+//       }
+//
+//
+//    }
+
+    def changeName(){
+        if(topicService.editTopicName(params)){
+            flash.message = "Topic Name Changed Successfully"
+        }else{
+            flash.error= "Error Changing Topic Name"
+        }
+        redirect(controller: 'user',action: 'index')
+    }
+
+    def update(Integer id, String visibility) {
+
+        visibility = Visibility.convertIntoEnum(params.visibility)
+
+        Topic topic = Topic.findById(params.id)
+        if (topic) {
+            topic.visibility = visibility
+            if (topic.validate()) {
+                topic.save(flush: true)
+                log.info("Saved Successfully : $topic")
+                render("SUCCESS")
+            } else {
+                log.error("Error while Saving : $topic")
+                render("FAILURE")
+            }
+        } else
+            render("Topic Not Found")
+    }
 
 }
