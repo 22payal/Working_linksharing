@@ -68,9 +68,11 @@ class LoginController {
                                 email: params.email,
                                 userName: params.userName,
                                   password: params.password,
-                                confirmPassword: params.confirmPassword)
+                                confirmPassword: params.confirmPassword,
+                                     photo: params.photo.bytes)
 
                if (newuser.validate()) {
+                   newuser.active=true
                    newuser.save(flush: true, failOnError: true)
 
 //                    render(view: '/login/')
@@ -92,6 +94,10 @@ class LoginController {
 
                    else if (newuser.errors.hasFieldErrors("firstName")) {
                        println newuser.errors.getFieldError("firstName")
+                   }
+
+                   else if (newuser.errors.hasFieldErrors("photo")) {
+                       println newuser.errors.getFieldError("photo")
                    }
                }
 

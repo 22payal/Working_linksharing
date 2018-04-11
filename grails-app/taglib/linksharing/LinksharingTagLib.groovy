@@ -28,16 +28,19 @@ class LinksharingTagLib {
 
         if (ReadingItem.findByUser(session.user))
         {
-            Resource resource1 = LinkResource.load(attrs.id)
-            Resource resource2 = DocumentResource.load(attrs.id)
+//            Resource resource =Resource.get(attrs.id)
+            Resource resource1 = LinkResource.get(attrs.id)
+            Resource resource2 = DocumentResource.get(attrs.id)
 
             if ((ReadingItem.findByResourceAndIsRead(resource1,true)) || ReadingItem.findByResourceAndIsRead(resource2, true))
             {
-            out<< "mark as unread"
+            //out<< "mark as unread"
+                out<<"<a href='/ReadingItem/changeisRead/${attrs.id}/${0}'> mark as unread </a>"
             }
 
             else {
-                out<<" mark as read"
+              //  out<<" mark as read"
+             out<< "<a href='/ReadingItem/changeisRead /${attrs.id}/${1}'> mark as read  </a>"
 
             }
         }
@@ -45,6 +48,22 @@ class LinksharingTagLib {
     }
 
     def canDeleteResource={attrs,body->
+
+    }
+
+    def ToggleResource={attrs,body->
+        Resource resource1 = LinkResource.get(attrs.id)
+        Resource resource2 = DocumentResource.get(attrs.id)
+
+        if(resource1)
+        {
+            out<<"view url"
+        }
+
+        if (resource2)
+        {
+            out<<"download "
+        }
 
     }
 
@@ -83,14 +102,23 @@ class LinksharingTagLib {
 
     }
 
-//    def userImg={
-//        attrs,body->
-//            User.findById()
-//    }
 
     def userImage = { attrs, body ->
+
         out << "<img src='${createLink(controller: 'user', action: 'fetchUserImage', params: [username: attrs.username])}' " +
                 " height='${attrs.height}' width='${attrs.width}'>"
+    }
+
+    def adminPageSubscriptionCount={ attrs , body->
+        User user = User.get(attrs.id)
+       out<< Subscription.findAllByUser(user).size()
+
+    }
+
+    def adminPageTopicCount={ attrs , body->
+        User user = User.get(attrs.id)
+        out<< Topic.findAllByCreatedBy(user).size()
+
     }
 
 

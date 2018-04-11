@@ -20,10 +20,16 @@
             <div class="panel-body">
                 <div class="col-sm-12">
                     <div class="row">
-                        <div class="col-sm-3 fa fa-user fa-5x">
+                        %{--<div class="col-sm-3 fa fa-user fa-5x">--}%
+                        %{--</div>--}%
+
+                        %{--<ls:userImage username="${session.user.userName}" height="100" width="100"/>--}%
+                    %{--</div>--}%
+                        <div class="col-sm-3">
+                            <ls:userImage username="${session.user.userName}" height="100" width="100"/>
                         </div>
 
-                        <div class="col-sm-9">
+                    <div class="col-sm-9">
 
                             <p>${session.user.userName}<br>
                                 <small class="text-muted">${session.user.userName}</small>
@@ -116,9 +122,10 @@
                             <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
                             <i class="fa fa-google fa-lg" aria-hidden="true"></i>
                             <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-                            <span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"
-                                                                                                 style="color: #007efc;font-size: small">Download</a>
-                                <a href="#" style="color: #007efc;font-size: small">Mark as Read</a>
+                            %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#" style="color: #007efc;font-size: small">Download</a>--}%
+                                %{--<a href="#" style="color: #007efc;font-size: small">Mark as Read</a>--}%
+                            <ls:toggleResource id="${list.id}"> </ls:toggleResource>
+                            <ls:markAsRead id="${list.id}"> </ls:markAsRead>
                                 <g:link controller="resource" action="showPost" id="${list.id}">View Post</g:link></span>
 
                         </div>
@@ -128,29 +135,7 @@
                </g:each>
                 <hr>
 
-                %{--<div class="panel-body">--}%
-                    %{--<div class="col-lg-12">--}%
-                        %{--<div class="col-lg-3" style="margin-top: 25px">--}%
-                            %{--<i class="fa fa-user fa-5x" aria-hidden="true"></i>--}%
 
-                        %{--</div>--}%
-
-                        %{--<div class="col-lg-9">--}%
-                            %{--<p><h6>User's FullName  <span style="color: darkgray">${session.user.getName()}</span><span--}%
-                                %{--class="pull-right"--}%
-                                %{--style="margin-right: 0px;color: #007efc;font-size: small">Topic Name</span></h6> </p>--}%
-                            %{--<p><h5>An overview of the topic is written here for basic understanding...............................</h5></p>--}%
-
-                            %{--<i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>--}%
-                            %{--<i class="fa fa-google fa-lg" aria-hidden="true"></i>--}%
-                            %{--<i class="fa fa-twitter fa-lg" aria-hidden="true"></i>--}%
-                            %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#"--}%
-                                                                                                 %{--style="color: #007efc;font-size: small">Download</a>--}%
-                                %{--<a href="#" style="color: #007efc;font-size: small">Mark as Read</a>--}%
-                                %{--<a href="#" style="color: #007efc;font-size: small">View Topic</a></span>--}%
-                        %{--</div>--}%
-                    %{--</div>--}%
-                %{--</div>--}%
             </div>
         </div>
 

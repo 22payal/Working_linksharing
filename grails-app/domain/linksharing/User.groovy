@@ -13,7 +13,7 @@ class User {
     Boolean active
     Date dateCreated
     Date lastUpdated
-    Byte photo
+    Byte[] photo
 
     static hasMany = [topic:Topic]
 

@@ -45,7 +45,7 @@ class UnreadItemService {
 
           List result=[]
 
-            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(user, false)
+            List<ReadingItem> readingItemList = ReadingItem.findAllByUserAndIsRead(user, true)
 
             readingItemList.resource.each { list ->
               result.add(list)

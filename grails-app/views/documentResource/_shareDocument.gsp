@@ -5,14 +5,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Share document</h4>
+                <h4 class="modal-title">create document resource</h4>
             </div>
 
             <div class="modal-body row">
 
                 <g:uploadForm controller="DocumentResource" action="update" method="post">
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <label class="control-label col-sm-2" for="document">document</label>
 
                         %{--<div class="col-sm-10">--}%
@@ -35,7 +35,7 @@
                     <br>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <label class="control-label col-sm-2" for="description">description:</label>
 
                         <div class="col-sm-10">
@@ -51,7 +51,7 @@
 
                         %{--<span class="caret"></span>--}%
 
-                        <g:select name="topicName" from="${Topic.getTopicName(session.user)}"
+                        <g:select name="topicName" from="${Topic.getCreatedTopicName(session.user)}"
                                   value="topicName">Topics</g:select>
 
                     </div>

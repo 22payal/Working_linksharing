@@ -1,4 +1,4 @@
-<g:form  controller="login" action="register" method="post">
+<g:uploadForm controller="login" action="register" method="post" enctype="multipart/form-data">
 
 
 
@@ -11,32 +11,32 @@
 
     <div class="form-group col-lg-10">
         <label>First Name</label>
-        <input class="form-control" type="text" name="firstName" placeholder="enter your first name">
+        <input class="form-control" type="text" name="firstName" placeholder="enter your first name" required>
     </div><div class="col-lg-2"></div>
     <div class="form-group col-lg-10">
         <label>Last name </label>
-        <input class="form-control" type="text" name="lastName" placeholder="enter your last name">
+        <input class="form-control" type="text" name="lastName" placeholder="enter your last name" required>
 
     </div>
     <div class="form-group col-lg-10">
         <label>Email </label>
-        <input class="form-control" type="email" name="email" placeholder="enter your email">
+        <input class="form-control" type="email" name="email" placeholder="enter your email" required>
 
     </div>
     <div class="form-group col-lg-10">
         <label>Username </label>
-        <input class="form-control" type="text" name="userName" >
+        <input class="form-control" type="text" name="userName" required>
 
     </div>
 
     <div class="form-group col-lg-10">
         <label>Password </label>
-        <input class="form-control" type="password" name="password" placeholder="enter password">
+        <input class="form-control" type="password" name="password" placeholder="enter password" required>
 
     </div>
     <div class="form-group col-lg-10">
         <label>Confirm Password </label>
-        <input class="form-control" type="password" name="confirmPassword" placeholder="confirm your  password">
+        <input class="form-control" type="password" name="confirmPassword" placeholder="confirm your  password" required>
 
     </div>
 
@@ -51,7 +51,7 @@
     </div>
 
 
-</g:form>
+</g:uploadForm>
 
 
 

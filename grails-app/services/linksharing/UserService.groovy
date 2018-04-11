@@ -47,4 +47,53 @@ class UserService {
         User.executeUpdate("update User u set u.password=:newPassword where u.email=:email",[newPassword:newPassword, email:email] )
     }
 
+    def updateProfile(Map userData, String userName)
+    {
+        User user = User.findByUserName(userName)
+        user.firstName = userData.updatedFirstname
+        user.lastName = userData.updateLastname
+        user.userName = userData.updatedUsername
+        if (userData.updatedPhoto)
+            user.photo = userData.updatedPhoto.bytes
+
+        if (user.save(flush: true)) {
+            log.info("Credentials Updated : $user")
+            return true
+        } else {
+            log.error("Error Updating Credentials : $user")
+            user.errors.allErrors.each { println it }
+            return false
+        }
+    }
+
+    def showAllUsers() {
+        List<User> userList = User.findAllByAdmin(false)
+        if (userList) {
+            List<UserVO> allUsers = []
+            userList.each {
+                allUsers.add(new UserVO(name: it.getName(), username: it.userName, active: it.active, userId: it.id))
+            }
+            return allUsers
+        } else
+            return null
+    }
+
+    def activateDeactivate(Integer userId) {
+        User user = User.findById(userId)
+        if (user.active)
+            user.active = false
+        else
+            user.active = true
+        if (user.save(flush: true)) {
+            log.info("State Successfully Changed : $user")
+            return true
+        } else {
+            log.error("Unable to Change State : $user")
+            user.errors.allErrors.each { println it }
+            return false
+        }
+
+    }
+
+
 }

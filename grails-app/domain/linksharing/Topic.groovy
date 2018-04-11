@@ -16,7 +16,7 @@ class Topic {
     Visibility visibility
 
 
-    static hasMany = [resource: Resource]
+    static hasMany = [resource: Resource, subscription:Subscription]
 
     static belongsTo = [createdBy: User]
 
@@ -26,9 +26,9 @@ class Topic {
         createdBy(nullable: false)
         visibility(nullable: false)
     }
-
     static  mapping = {
         sort 'topicName':"asc"
+        subscription cascade:'all-delete-orphan'
 
 
     }
@@ -129,7 +129,16 @@ class Topic {
         return  result
     }
 
+    static List <String> getCreatedTopicName(User user)
+    {
+        List <Topic> list = Topic.findAllByCreatedBy(user)
+        List <String>result = []
 
+        list.topicName.each{
+            result.add(it)
+        }
+        return  result
+    }
 
     static transients = ['getSubscribedUsers']
 

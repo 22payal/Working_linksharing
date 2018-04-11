@@ -4,6 +4,7 @@ import Utilities.Util
 import dto.EmailDTO
 import enumeration.Visibility
 import org.springframework.context.MessageSource
+import vo.UserVO
 
 class UserController {
 
@@ -11,6 +12,7 @@ class UserController {
     MessageSource messageSource
     UserService userService
     UnreadItemService unreadItemService
+    def assetResourceLocator
 
     def index() {
       //  render("welcome ${session.user.getName()}")
@@ -68,9 +70,20 @@ class UserController {
 
     }
 
-    def add()
-    {
-
+    def fetchUserImage(){
+        def user = User.findByUserName(params.username)
+        byte[] photo
+        if(!user?.photo){
+            println("Photo Not Found")
+            photo = assetResourceLocator.findAssetForURI('user.png').byteArray
+        }else {
+            println("Photo Found")
+            photo= user.photo
+        }
+        OutputStream out = response.getOutputStream()
+        out.write(photo)
+        out.flush()
+        out.close()
     }
 
     def editProfile() {
@@ -85,5 +98,28 @@ class UserController {
         String confirmNewPassword= params.updatedConfirmPassword
 
        userService.changePassword(oldPassword,newPassword,confirmNewPassword)
+    }
+
+    def updateUser()
+    {
+        if (userService.updateProfile(params, new String(session.user.userName)))
+        {
+            flash.message = "Updation Successful"
+        } else
+            flash.error = "Unable To Update Credentials"
+    }
+
+    def showUserListToAdmin(){
+        List<UserVO> allUsers= userService.showAllUsers()
+        render(view: '/user/adminView', model: [allUsers:allUsers])
+    }
+
+    def changeState(){
+        println "Printing params- $params.id"
+        if(userService.activateDeactivate(new Integer(params.id))){
+            flash.message= "State Changed"
+        }else
+            flash.error= "Unable To Change State"
+        redirect(controller: 'user', action: 'showUserListToAdmin')
     }
 }

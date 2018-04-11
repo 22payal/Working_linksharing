@@ -77,7 +77,8 @@
 
                         <g:if test="${session.user.admin==true}">
 
-                        <li><a href="#">Users</a></li>
+                        %{--<li><a href="#">Users</a></li>--}%
+                            <li><g:link controller="user" action="showUserListToAdmin">Users</g:link></li>
                         <li><a href="#">Post</a></li>
                         <li><a href="#">Topic</a></li>
 

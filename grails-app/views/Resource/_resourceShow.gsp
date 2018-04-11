@@ -3,7 +3,7 @@
 <head>
 
     <title></title>
-    <meta name="layout" content="main">
+    %{--<meta name="layout" content="main">--}%
     <asset:link rel="stylesheet" href="application.css"></asset:link>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 

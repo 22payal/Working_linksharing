@@ -40,6 +40,7 @@ class TopicController {
         else
         {
             topicService.delete(topic)
+            render(" topic deleted successfully")
             flash.message="topic deleted"
         }
 
