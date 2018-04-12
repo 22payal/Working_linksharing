@@ -17,21 +17,32 @@ class TopicService {
     }
 
     def publicSearch(String name) {
+        println("name gotten is: ${name}")
 
-        List<Topic> topicList = Topic.findAllByTopicNameIlikeAndVisibility("%${name}%",Visibility.PRIVATE)
-        List result = []
+        List<Topic> topicList = Topic.findAllByTopicNameIlikeAndVisibility("%${name}%",Visibility.PUBLIC)
 
-        if (topicList) {
-            topicList.each {
-                result.add(it)
-            }
+//        List <Topic> result = []
+//
+//        if (topicList) {
+//            topicList.each {
+//                result.add(it)
+//            }
+//        }
+//
+//         result.each {
+//             println(it)
+//         }
+        topicList.each {
+            println(it)
         }
 
+        return topicList
     }
 
     def editTopicName(Map topicData){
         Topic topic = Topic.findById(topicData.topicId)
         topic.topicName= topicData.changedTopicName
+
         if(topic.validate()){
             topic.save(flush:true)
             log.info("Topic Name Changed Successfully : $topic")
@@ -45,12 +56,14 @@ class TopicService {
     }
 
     def update(Map topicData) {
-println("in topic service with id ${topicData.topicId} and visibility ${topicData.visibility}")
+        println("in topic service with id ${topicData.topicId} and visibility ${topicData.visibility}")
         Topic topic = Topic.findById(topicData.topicId)
+
         println(topic.visibility)
-        println( Visibility.convertIntoEnum(topicData.visiblity))
-        topic.visibility  = Visibility.convertIntoEnum(topicData.visiblity)
-       println( Visibility.convertIntoEnum(topicData.visiblity))
+        println( Visibility.convert(topicData.visiblity))
+
+        topic.visibility  = Visibility.convert(topicData.visiblity)
+       println( Visibility.convert(topicData.visiblity))
         println(topic.visibility)
 
             if (topic.validate()) {

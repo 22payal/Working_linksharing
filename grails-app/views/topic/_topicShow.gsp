@@ -9,7 +9,7 @@
 
     <title></title>
 
-    <asset:link rel="stylesheet" href="application.css"></asset:link>
+    <asset:link rel="stylesheet" href="application.css"> </asset:link>
     <meta name="layout" content="main">
 
 </head>

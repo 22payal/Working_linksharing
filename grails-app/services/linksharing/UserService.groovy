@@ -73,6 +73,7 @@ class UserService {
             userList.each {
                 allUsers.add(new UserVO(name: it.getName(), username: it.userName, active: it.active, userId: it.id))
             }
+            println("size of all users ${allUsers.size()}" )
             return allUsers
         } else
             return null
@@ -84,6 +85,7 @@ class UserService {
             user.active = false
         else
             user.active = true
+
         if (user.save(flush: true)) {
             log.info("State Successfully Changed : $user")
             return true

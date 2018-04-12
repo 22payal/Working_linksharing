@@ -28,7 +28,7 @@
                 <li class="col-lg-5 ">
                     <g:form controller="topic" action="search" method="post" class="navbar-form navbar-left" >
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" class="form-control"name="search" id="search" placeholder="Search...">
 
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">

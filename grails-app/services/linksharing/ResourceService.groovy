@@ -42,4 +42,37 @@ class ResourceService {
             return false
         }
     }
+
+    def saveRating(Map resourceData) {
+        println(resourceData.resourceId)
+        println(resourceData.score)
+
+        Resource resource = Resource.findById(resourceData.resourceId)
+
+
+        ResourceRating resourceRating = ResourceRating.findByCreatedByAndResource(resourceData.ratedBy, resource)
+        if (resourceRating) {
+            resourceRating.score = resourceData.score
+
+            if (resourceRating.save(flush: true)) {
+                log.info("Score Updated Successfully : $resourceRating")
+                return resourceRating
+            } else {
+                log.error("Score Updation Failed : $resourceRating")
+                resourceRating.errors.allErrors.each { println it }
+                return null
+            }
+        } else {
+            resourceRating = new ResourceRating(createdBy: resourceData.ratedBy, resource: resource, score: resourceData.score)
+            if (resourceRating.save(flush: true)) {
+                log.info("Score Saved Successfully : $resourceRating")
+                return resourceRating
+            } else {
+                log.error("Error while saving : $resourceRating")
+                resourceRating.errors.allErrors.each { println(it) }
+                return null
+            }
+        }
+    }
+
 }

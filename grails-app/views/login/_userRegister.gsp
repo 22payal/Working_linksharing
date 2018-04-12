@@ -97,7 +97,7 @@
     %{--<div class="modal-header">--}%
         %{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span--}%
                 %{--aria-hidden="true">&times;</span></button>--}%
-        %{--<h4 class="modal-title" id="addUserModalLabel">New User</h4>--}%
+        %{--<h4 class="modal-title">New User</h4>--}%
     %{--</div>--}%
 
 
@@ -145,6 +145,8 @@
 
 %{--</g:form>--}%
 
+
+%{--<script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}%
 
 %{--<script type="text/javascript">--}%
     %{--$(document).ready(function () {--}%

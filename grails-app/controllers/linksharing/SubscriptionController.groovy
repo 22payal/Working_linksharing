@@ -4,6 +4,7 @@ import enumeration.Seriousness
 
 class SubscriptionController {
 
+    ReadingItemService readingItemService
     def index() {}
 
 
@@ -12,30 +13,26 @@ class SubscriptionController {
         Subscription subscription = new Subscription(user: session.user, topic: newtopic, seriousness: "SERIOUS")
         subscription.save()
 
+      Boolean result =  readingItemService.createReadingItem(session.user,newtopic)
+        if (result)
+        {
+            println("reading item added")
+        }
+        else
+        {
+            println("reading item not added")
+        }
+
         if (subscription.hasErrors()) {
-            render("Error found while saving Subscription")
+            flash.message="Error found while saving Subscription"
 
         } else {
-            render("Subscription successfully saved")
+            flash.error="Subscription successfully saved"
+            redirect(controller:'user', action:'index')
         }
     }
 
-//    def update(Integer id, String seriousness) {
-//
-//        seriousness = Seriousness.convertSeriousness(params.seriousness)
-//        Subscription subscription = Subscription.findById(params.id)
-//        if (subscription) {
-//            subscription.seriousness = seriousness
-//            if (subscription.save(flush: true)) {
-//                log.info("Saved Successfully : $subscription")
-//                render("SUCCESS")
-//            } else {
-//                log.error("Error while Saving : $subscription")
-//                render("FAILURE")
-//            }
-//        } else
-//            render("SUBSCRIPTION NOT FOUND")
-//    }
+
 
     def subscriptionDelete() {
 

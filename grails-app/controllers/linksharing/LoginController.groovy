@@ -26,7 +26,7 @@ class LoginController {
 
     def loginHandler(String loginusername,String loginpassword) {
         User user = User.findByUserNameAndPassword(loginusername, loginpassword)
-        if(user!=null) {
+        if((user!=null) && (user.active!=false)) {
             user.active=true
             if(user.active) {
                 session.user=user
@@ -73,7 +73,9 @@ class LoginController {
 
                if (newuser.validate()) {
                    newuser.active=true
+                   newuser.admin=false
                    newuser.save(flush: true, failOnError: true)
+                   println("saved successfully..")
 
 //                    render(view: '/login/')
                    redirect (controller: 'login', action: 'home')

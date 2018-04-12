@@ -10,88 +10,93 @@
     <title></title>
 
     <asset:link rel="stylesheet" href="application.css"></asset:link>
-    <meta name="layout" content="main">
+    %{--<meta name="layout" content="main">--}%
 
 </head>
 
 <body>
 
-<div class="container">
-    <div class="col-lg-6">
-        <div class="col-lg-12">
-            <g:each in="${topicNames}" var="topic">
-            <div class=" panel panel-default     ">
+yeah!!
 
-                <div class="panel-heading " style="background: #007efc">
-                    <p>
-                    <h3 style="color:white">Topic:"${topic.topicName}"</h3></p>
-                </div>
+%{--<div class="container">--}%
+    %{--<div class="col-lg-6">--}%
+        %{--<div class="col-lg-12">--}%
+            %{--<g:each in="${topicNames}" var="topic">--}%
+            %{--<div class=" panel panel-default     ">--}%
 
-                <div class="panel-body  ">
-                    <div class="col-lg-12">
-                        <div class="col-lg-3" style="margin-top: 25px">
-                            <i class="fa fa-user-circle fa-5x" aria-hidden="true"></i>
+                %{--<div class="panel-heading " style="background: #007efc">--}%
+                    %{--<p>--}%
+                    %{--<h3 style="color:white">Topic:"${topic.topicName}"</h3>--}%
+                   %{--</p>--}%
+                %{--</div>--}%
 
-                        </div>
+                %{--<div class="panel-body  ">--}%
+                    %{--<div class="col-lg-12">--}%
+                        %{--<div class="col-lg-3" style="margin-top: 25px">--}%
+                            %{--<i class="fa fa-user-circle fa-5x" aria-hidden="true"></i>--}%
 
-                        <div class="col-lg-9">
-                            <div class="col-lg-12">
-                                <h5><a href="#">${topic.topicName}</a> <span
-                                        STYLE="color: #007efc ">(${topic.visibility})</span></h5>
-                            </div>
+                        %{--</div>--}%
 
-                            <div class="col-lg-12">
-                                <div class="col-lg-5">
-                                    <p style="color: #007efc">@${topic.createdBy.userName}</p>
+                        %{--<div class="col-lg-9">--}%
+                            %{--<div class="col-lg-12">--}%
+                                %{--<h5><a href="#">${topic.topicName}</a> <span--}%
+                                        %{--STYLE="color: #007efc ">(${topic.visibility})</span></h5>--}%
+                            %{--</div>--}%
 
-                                    <% Subscription subscription = Subscription.findByUserAndTopic(topic.createdBy,topic) %>
-                                    <g:if test="${subscription}">
+                            %{--<div class="col-lg-12">--}%
+                                %{--<div class="col-lg-5">--}%
+                                    %{--<p style="color: #007efc">@${topic.createdBy.userName}</p>--}%
 
-                                        <g:link controller="subscription" action="subscriptionDelete"
-                                                id="${topic.id}">Unsubscribe</g:link>
-                                    </g:if>
+                                    %{--<% Subscription subscription = Subscription.findByUserAndTopic(topic.createdBy,topic) %>--}%
+                                    %{--<g:if test="${subscription}">--}%
 
-                                    <g:else>
-                                        <g:link controller="subscription" action="subscriptionSave"
-                                                id="${topic}">Subscribe</g:link>
-                                    </g:else>
+                                        %{--<g:link controller="subscription" action="subscriptionDelete"--}%
+                                                %{--id="${topic.id}">Unsubscribe</g:link>--}%
+                                    %{--</g:if>--}%
+
+                                    %{--<g:else>--}%
+                                        %{--<g:link controller="subscription" action="subscriptionSave"--}%
+                                                %{--id="${topic}">Subscribe</g:link>--}%
+                                    %{--</g:else>--}%
 
 
                                     %{--<ls:toggleSubscribe id="${topic}"> </ls:toggleSubscribe>--}%
 
-                                </div>
+                                %{--</div>--}%
 
-                                <div class="col-lg-5">
-                                    <p style="color: #007efc">Subscriptions</p>
-                                    <p1 style="color: #2e6da4">
+                                %{--<div class="col-lg-5">--}%
+                                    %{--<p style="color: #007efc">Subscriptions</p>--}%
+                                    %{--<p1 style="color: #2e6da4">--}%
 
                                         %{--${Subscription.countByTopic(topic)}--}%
 
-                                        <ls:subscriptionCount id="${topic}"> </ls:subscriptionCount>
-                                    </p1>
+                                        %{--<ls:subscriptionCount id="${topic}"> </ls:subscriptionCount>--}%
+                                    %{--</p1>--}%
 
-                                </div>
+                                %{--</div>--}%
 
-                                <div class="col-lg-2">
-                                    <p style="color: #007efc">Post</p>
-                                    <p1 style="color: #2e6da4">
+                                %{--<div class="col-lg-2">--}%
+                                    %{--<p style="color: #007efc">Post</p>--}%
+                                    %{--<p1 style="color: #2e6da4">--}%
                                         %{--${Resource.countByTopic(topic)}--}%
-                                        <ls:resourceCount id="${topic}"> </ls:resourceCount>
-                                    </p1>
-                                </div>
+                                        %{--<ls:resourceCount id="${topic}"> </ls:resourceCount>--}%
+                                    %{--</p1>--}%
+                                %{--</div>--}%
 
-                            </div>
+                            %{--</div>--}%
 
-                        </div>
-                    </div>
+                        %{--</div>--}%
+                    %{--</div>--}%
 
-                </div>
-            </div>
+                %{--</div>--}%
+            %{--</div>--}%
 
-             </g:each>
+             %{--</g:each>--}%
 
-        </div>
-    </div>
-</div>
+        %{--</div>--}%
+    %{--</div>--}%
+%{--</div>--}%
+
+
 </body>
 </html>

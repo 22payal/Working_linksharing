@@ -12,26 +12,9 @@ class TopicController {
     TopicService topicService
     SubscriptionService subscriptionService
 
-
-//    def index() {
-//
-//    }
-
-
-//
-//    def topicShow(ResourceSearchCo resourceSearchCo)
-//    {
-//        Topic topic = Resource.search(resourceSearchCo)
-//        render("CreatedBy- $topic.createdBy.firstName having Topicname- $topic.topicName")
-//
-//
-//    }
-
-
-
     def topicDelete(Integer id)
     {
-//
+
         Topic topic = Topic.get(params.id)
         if (!topic)
         {
@@ -47,25 +30,17 @@ class TopicController {
 
     }
 
-    //   def topicSave() { }
-
-
-//     List topicShow(User user)
-//    {
-//        List<Topic> topics =Topic.findAllByCreatedBy(user)
-//        render("${topics.topicName}")
-//    }
 
    def show()
   {
       Topic topic = Topic.findById(params.id)
 
-      render(view: '_topicShow', model: [topic: topic])
+      render(view: '/topic/_topicShow', model: [topic: topic])
   }
 
     def save() {
 
-        Topic topic = new Topic(createdBy: session.user, visibility: Visibility.convertIntoEnum(params.visibility), topicName:params.topicName)
+        Topic topic = new Topic(createdBy: session.user, visibility: Visibility.convert(params.visibility), topicName:params.topicName)
 
 
         if (topic.validate()) {
@@ -85,15 +60,12 @@ class TopicController {
 
     def invite()
     {
-//        println(params.to)
-//        println(params.topicName)
-//        render("in topic invite")
+
         Topic topic = Topic.findByTopicName(params.topicName)
 
         if (topic && User.findByEmail(params.to))
         {
-              //send invite
-            println("in if")
+
             EmailDTO emailDTO = new EmailDTO(to: params.to, subject:"NEW INVITATION" ,from:"payalttn123@gmail.com" , linkId: topic.id , content: "your new subscription")
 
             println(emailDTO.properties)
@@ -109,11 +81,6 @@ class TopicController {
 
     def join(Integer id)
     {
-        printf("in topic join action")
-
-        println(params.link)
-        println(params.email)
-
         Topic topic=Topic.findById(params.link)
 
         User user= User.findByEmail(params.email)
@@ -135,21 +102,27 @@ class TopicController {
 
     }
 
-//    def search()
-//    {
-//       List<Topic> topicNames = topicService.publicSearch(params.search)
-//        List<Topic> adminView = topicService.globalSearch(params.search)
-//
-//       if(topicNames)
-//       {
-//        render(view:"searchResult" , model: [topicNames: topicNames])
-//       }
-//        else {
-//           render("no such topic found")
-//       }
-//
-//
-//    }
+    def search()
+    {
+       // println("in topic search with search params ${params.search}")
+
+
+       List<Topic> topicNames = topicService.publicSearch(params.search)
+       // List<Topic> adminView = topicService.globalSearch(params.search)
+      //  println("in search waiting to send : ${topicNames}")
+
+       if(topicNames)
+       {
+         //  println("sending...")
+        render(view:"/topic/searchResult" ,model: [topicNames:topicNames])
+//           render("hello ")
+       }
+        else {
+           render("no such topic found")
+       }
+
+
+    }
 
     def changeTopicData(){
         if((topicService.editTopicName(params)) && (topicService.update(params)) && (subscriptionService.update(params))){

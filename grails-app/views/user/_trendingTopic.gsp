@@ -17,8 +17,13 @@
 
                         <div class="col-sm-3 glyphicon glyphicon-user fa-5x">
 
-                        </div>
-                        <div class="col-sm-9">
+                        %{--<div class="col-sm-2 row">--}%
+                            %{--<ls:userImage username="${trendingTopics.createdBy}" height="100" width="100"/>--}%
+                        %{--</div>--}%
+
+
+                    </div>
+                        <div class="col-sm-9 row">
                             <a href="#" class="pull-left">${trendingTopics.topicName}</a>
                             <br>
                             <div class="row">
@@ -30,12 +35,12 @@
                                 </div>
 
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-6 row">
                                     <h6 class="text-muted pull-left">Subscriptions</h6>
                                     <h6 class="text-primary">${Topic.getSubscriptions(trendingTopics)}</h6>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-6 ">
                                     <h6 class="text-muted  pull-right">Post
                                         <br>
                                         <br>

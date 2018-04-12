@@ -75,7 +75,7 @@ class UserController {
         byte[] photo
         if(!user?.photo){
             println("Photo Not Found")
-            photo = assetResourceLocator.findAssetForURI('user.png').byteArray
+            photo = assetResourceLocator.findAssetForURI('dummy.png').byteArray
         }else {
             println("Photo Found")
             photo= user.photo
@@ -117,6 +117,7 @@ class UserController {
     def changeState(){
         println "Printing params- $params.id"
         if(userService.activateDeactivate(new Integer(params.id))){
+
             flash.message= "State Changed"
         }else
             flash.error= "Unable To Change State"

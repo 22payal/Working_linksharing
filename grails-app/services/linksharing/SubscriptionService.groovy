@@ -17,7 +17,8 @@ class SubscriptionService {
         Topic topic = Topic.findById(topicData.topicId)
 
         Subscription subscription= Subscription.findByTopic(topic)
-        subscription.seriousness = Seriousness.convertSeriousness(topicData.seriousness)
+        subscription.seriousness = Seriousness.convert(topicData.seriousness)
+
             if (subscription.validate()) {
                 subscription.save(flush: true)
                 log.info("Topic seriousness Changed Successfully : $topic")

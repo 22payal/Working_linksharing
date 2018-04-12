@@ -47,9 +47,6 @@ class LinksharingTagLib {
 
     }
 
-    def canDeleteResource={attrs,body->
-
-    }
 
     def ToggleResource={attrs,body->
         Resource resource1 = LinkResource.get(attrs.id)

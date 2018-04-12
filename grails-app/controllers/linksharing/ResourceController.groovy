@@ -76,4 +76,19 @@ class ResourceController {
         redirect(controller: 'user', action: 'editProfile')
     }
 
+
+        def storeRating() {
+            println("in rating ")
+            println("with score ${params.star} with id ${params.id}")
+            Map map = [score: params.star,ratedBy: session.user, resourceId: params.id]
+
+            if (resourceService.saveRating(map)) {
+                println(" saved rating")
+                flash.message = "Saved Succesfully"
+            } else {
+                flash.eror = "Rating Not Saved"
+            }
+            redirect(controller: 'resource', action: 'showPost', model: [params])
+        }
+
 }
