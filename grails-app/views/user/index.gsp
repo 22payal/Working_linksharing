@@ -44,10 +44,12 @@
             <g:render template="/documentResource/shareDocument"></g:render>
 
             <li class="dropdown  col-lg-3" style="padding: 0px">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user"
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/area/"><i class="fa fa-user"
                                                                               style="font-size:24px"></i>
                     <b>${session.user.userName}</b>
-                    <span class="caret"></span></a>
+                    <span class="caret"></span>
+
+                </a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Profile</a></li>
 

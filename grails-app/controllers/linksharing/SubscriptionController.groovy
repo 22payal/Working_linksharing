@@ -1,6 +1,7 @@
 package linksharing
 
 import enumeration.Seriousness
+import grails.converters.JSON
 
 class SubscriptionController {
 
@@ -14,21 +15,15 @@ class SubscriptionController {
         subscription.save()
 
       Boolean result =  readingItemService.createReadingItem(session.user,newtopic)
-        if (result)
-        {
-            println("reading item added")
-        }
-        else
-        {
-            println("reading item not added")
-        }
 
         if (subscription.hasErrors()) {
-            flash.message="Error found while saving Subscription"
+            flash.error="Error found while saving Subscription"
+            render ([error: "your subscription could not be saved "] as JSON)
 
         } else {
-            flash.error="Subscription successfully saved"
-            redirect(controller:'user', action:'index')
+            flash.message="Subscription successfully saved"
+            render ([message: "your subscription saved successfully "] as JSON)
+            //redirect(controller:'user', action:'index')
         }
     }
 
@@ -36,20 +31,41 @@ class SubscriptionController {
 
     def subscriptionDelete() {
 
-        Topic topic= Topic.get(params.id)
+        println("delte subs was invoked with id ${params.topicId}")
+
+        Topic topic= Topic.get(params.topicId)
 
         Subscription  subscription = Subscription.findByTopic(topic)
 
         subscription.delete(flush:true)
 
+
         if (subscription.hasErrors()) {
             flash.error = "error"
-            render("subscription could not be deleted")
+            println("has error")
+            render ([error: "your subscription could not be deleted "] as JSON)
 
         } else {
             flash.message = "success"
-            render("subscription deleted successfully")
+            println("delted")
+
+            render ([message: "your subscription is now deleted "] as JSON)
         }
+
+
+    }
+
+    def updateSeriousness()
+    {
+
+        println("i was invoked with seriousness ${params.categoryId} and id ${params.id} ")
+
+        Subscription subscription = Subscription.findBySeriousness()
+
+        subscription.seriousness = (params.categoryId)
+        subscription.save(flush:true)
+
+        render subscription as JSON
     }
 
 

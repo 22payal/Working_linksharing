@@ -219,17 +219,26 @@
                     <g:uploadForm controller="user" action="updateUser" enctype="multipart/form-data">
                         <div class="form-group col-lg-10">
                             <label>First Name*</label>
-                            <input class="form-control" type="text" name="updatedFirstname" required>
+                            <input class="form-control" type="text" name="updatedFirstname" >
+
+                            <g:hiddenField name="firstName" value="${session.user.firstName}"/>
+
                         </div>
 
                         <div class="form-group col-lg-10">
                             <label>Last Name*</label>
-                            <input class="form-control" type="text" name="updateLastname" required>
+                            <input class="form-control" type="text" name="updateLastname" >
+                            <g:hiddenField name="lastName" value="${session.user.lastName}"/>
+
+
                         </div>
 
                         <div class="form-group col-lg-10">
                             <label>Username*</label>
-                            <input class="form-control" type="text" name="updatedUsername" required>
+                            <input class="form-control" type="text" name="updatedUsername" >
+
+                            <g:hiddenField name="userName" value="${session.user.userName}"/>
+
                         </div>
 
                         <div class="col-lg-2"></div>

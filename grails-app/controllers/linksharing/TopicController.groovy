@@ -3,6 +3,7 @@ package linksharing
 import dto.EmailDTO
 import enumeration.Seriousness
 import enumeration.Visibility
+import grails.converters.JSON
 
 
 class TopicController {
@@ -14,13 +15,17 @@ class TopicController {
 
     def topicDelete(Integer id) {
 
-        Topic topic = Topic.get(params.id)
+        println("topic delete invoked with id ${params.topicId}")
+
+        Topic topic = Topic.get(params.topicId)
         if (!topic) {
             flash.error = "topic not found"
+          //  render ([message: "your topic could not be deleted "] as JSON)
+
         } else {
             topicService.delete(topic)
-            render(" topic deleted successfully")
             flash.message = "topic deleted"
+            //render ([message: "your topic is now deleted "] as JSON)
         }
 
     }

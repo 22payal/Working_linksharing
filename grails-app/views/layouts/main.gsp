@@ -19,6 +19,8 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#">LinkSharing</a>
         </div>
+
+
     </div>
 
     <g:if test="${session.user}">
@@ -73,14 +75,17 @@
                         <b>${session.user.getName()}</b>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
+
+
                         <li><g:link controller="user" action="editProfile">Profile</g:link></li>
 
                         <g:if test="${session.user.admin==true}">
 
                         %{--<li><a href="#">Users</a></li>--}%
                             <li><g:link controller="user" action="showUserListToAdmin">Users</g:link></li>
-                        <li><a href="#">Post</a></li>
-                        <li><a href="#">Topic</a></li>
+
+                            <li><a href="#">Post</a></li>
+                            <li><a href="#">Topic</a></li>
 
                        </g:if>
 

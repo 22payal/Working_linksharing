@@ -1,11 +1,14 @@
 <%@ page import="linksharing.Subscription" %>
 <%@ page import="linksharing.Topic" %>
+
+
 <div class="panel-body">
     <div class="row">
         <div class="col-sm-12">
-            <g:each in="${Subscription.getSubscribedTopics(session.user)}" var="subscribedTopics">
-            <div class="row">
-           <div class="col-sm-3 fa fa-user fa-5x">
+            <g:each in="${Subscription.getSubscribedTopics(session.user)}" var="subscribedTopics" >
+            <div class="row" >
+
+                <div class="col-sm-3 fa fa-user fa-5x">
 
                %{--<div class="col-sm-2">--}%
                %{--<ls:userImage username="${subscribedTopics.createdBy}" height="50" width="50"/>--}%
@@ -13,7 +16,7 @@
 
            </div>
 
-                <div class="col-sm-9">
+                <div class="col-sm-9" id="deleteMe">
 
                         <a href="#" class="pull-left">${subscribedTopics.topicName}</a>
                         <br>
@@ -22,8 +25,12 @@
                             <div class="col-sm-6">
                                 <h6 class="text-muted">${session.user.userName}</h6>
 
-                                <g:link controller="subscription" action="subscriptionDelete"
-                                        id="${subscribedTopics}">Unsubscribe</g:link>
+                                %{--<g:link controller="subscription" action="subscriptionDelete"--}%
+                                        %{--id="${subscribedTopics}">Unsubscribe</g:link>--}%
+
+                                <button class="unsubscribeMe pull-right" id="${subscribedTopics.id}" onclick="deleteEntry(this.id);">Unsubscribe</button>
+
+
                             </div>
 
                             <div class="col-sm-2">
@@ -42,14 +49,18 @@
                                     </p>
                                 </h6>
                             </div>
-                            <span type="img" class="fa fa-envelope pull-right fa-2x"
-                                  style="margin-left: 10px;color: #007efc;"></span>
 
-                            <select class="pull-right">
-                                <option>Serious</option>
-                                <option>Casual</option>
-                                <option>Very Serious</option>
-                            </select>
+                            <li class="col-lg-1" style="padding: 0px">
+
+                                <a href="#myModal2" data-toggle="modal"
+                                                                         data-target="#myModal2"><i class="fa fa-envelope"
+                                                                                                    style="font-size:24px"></i></a>
+                            </li>
+
+                            <div id="updateMe" class="pull-right">
+                            <g:select name="seriousness" from="${enumeration.Seriousness.values()}" value="seriousness" id="${subscribedTopics.id}" onchange="categoryChanged(this.value);" />
+
+                            </div>
 
                         </div>
                 </div>
@@ -59,3 +70,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    // function categoryChanged(categoryId) {
+    //     jQuery.ajax({type:'POST',data:'categoryId='+categoryId  ,url:'/subscription/updateSeriousness/categoryChanged',success:function(data,textStatus){jQuery('#updateMe').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){}});
+    // }
+
+    function deleteEntry(topicId) {
+        jQuery.ajax({type:'POST',data:'topicId='+topicId  ,url:'/subscription/subscriptionDelete/deleteEntry',success:function(data,textStatus){jQuery('#deleteMe').html(data);},error:function(XMLHttpRequest,textStatus,errorThrown){}});
+    }
+</script>
