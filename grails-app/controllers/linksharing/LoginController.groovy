@@ -21,6 +21,7 @@ class LoginController {
         else
         {
             render("session over")
+            redirect(controller: 'login', action: 'home')
         }
      }
 
@@ -34,14 +35,16 @@ class LoginController {
             }
             else {
                 flash.error = "Your account is not active"
-                render("Your account is not active")
+               // redirect(controller: 'login',action: 'home')
+                render(view: 'error')
 
             }
         }
         else
         {
             flash.error="User not found"
-            render("User not found")
+            //render("User not found")
+            redirect(view: 'notFound' )
         }
 
     }
@@ -54,12 +57,12 @@ class LoginController {
 
     }
 
-    def topPost()
-    {
-                    List<ResourceVO> topPosts = Resource.getTopPost()
-                    println("$topPosts.id + $topPosts.createdBy + $topPosts.topicName")
-
-    }
+//    def topPost()
+//    {
+//                    List<ResourceVO> topPosts = Resource.getTopPost()
+//                    println("$topPosts.id + $topPosts.createdBy + $topPosts.topicName")
+//
+//    }
 
     def register() {
 
@@ -102,12 +105,10 @@ class LoginController {
                        println newuser.errors.getFieldError("photo")
                    }
                }
+        flash.error="could not register"
+        redirect(controller: 'login',action: 'home')
 
     }
-
-//    def topPosts() {
-//        List<ResourceVO> topPosts = Resource.getTopPost()
-//    }
 
 
     def forgotPassword()

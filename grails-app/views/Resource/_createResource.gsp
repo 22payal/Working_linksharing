@@ -31,9 +31,6 @@
                     <div class="dropdown">
                         <label class="control-label col-sm-2" for="topicName">topic:</label>
 
-                        %{--<button class="btn btn-default dropdown-toggle" type="button"--}%
-                                %{--data-toggle="dropdown" id="topic">topic--}%
-                            %{--<span class="caret"></span></button>--}%
                         <g:select name="topicName" from="${Topic.getCreatedTopicName(session.user)}"
                                   value="topicName">Topics</g:select>
                     </div>

@@ -14,7 +14,8 @@
     <div class="col-lg-6">
         <div class="col-lg-12" style="margin-top: 25px">
 
-            <div class=" panel panel-default     ">
+
+                    <div class=" panel panel-default     ">
                 <div class="panel-heading " style="background:#007efc">
                     <p>
 

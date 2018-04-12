@@ -44,14 +44,14 @@
                                                               data-target="#myModal"><i class="fa fa-comments"
                                                                                         style="font-size:24px"></i></a>
                 </li>
-                <g:render template="/topic/createTopic"></g:render>
+                <g:render template="/topic/createTopic"/>
 
                 <li class="col-lg-1" style="padding: 0px"><a href="#myModal2" data-toggle="modal"
                                                              data-target="#myModal2"><i class="fa fa-envelope"
                                                                                         style="font-size:24px"></i></a>
                 </li>
 
-                <g:render template="sendInvite"></g:render>
+                <g:render template="sendInvite"/>
 
 
                 <li class="col-lg-1" style="padding: 0px"><a href="#myModal3" data-toggle="modal"
@@ -59,13 +59,13 @@
                                                                                         style="font-size:24px"></i></a>
                 </li>
 
-                <g:render template="/Resource/createResource"></g:render>
+                <g:render template="/Resource/createResource"/>
 
                 <li class="col-lg-1" style="padding: 0px"><a href="#myModal4" data-toggle="modal"
                                                              data-target="#myModal4"><i class="fa fa-file-text"
                                                                                         style="font-size:24px"></i></a>
                 </li>
-                <g:render template="/documentResource/shareDocument"></g:render>
+                <g:render template="/documentResource/shareDocument"/>
 
                 <li class="dropdown  col-lg-3" style="padding: 0px">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -90,8 +90,6 @@
                 </li>
 
             </ul>
-
-        </div>
 
         </div>
     </g:if>

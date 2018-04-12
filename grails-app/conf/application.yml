@@ -147,3 +147,11 @@ grails:
 #server:
 #    contextPath: /linksharing-app/
 #
+uploadFilePath : "/home/payal/linksharingFiles"
+
+spring:
+  http:
+    multipart:
+      max-file-size: 26214400
+      max-request-size: 26214400
+

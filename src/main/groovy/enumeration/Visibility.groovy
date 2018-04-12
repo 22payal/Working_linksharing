@@ -14,6 +14,7 @@ int getkey()
 {
      value
 }
+
 //    static Visibility convertIntoEnum(String inputString) {
 //        inputString = inputString.toUpperCase()
 //        Visibility visibility = inputString

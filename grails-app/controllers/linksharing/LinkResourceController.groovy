@@ -21,6 +21,10 @@ class LinkResourceController {
                     flash.message="ERROR"
         render("link resource could not be saved successfully")
 
-                       // forward(controller:'User', action: 'index')
             }
+
+    def viewUrl()
+    {
+        render("in view url ")
+    }
 }

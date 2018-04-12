@@ -7,8 +7,8 @@
             <div class="row">
            <div class="col-sm-3 fa fa-user fa-5x">
 
-               %{--<div class="col-sm-2 row">--}%
-               %{--<ls:userImage username="${subscribedTopics.createdBy}" height="100" width="100"/>--}%
+               %{--<div class="col-sm-2">--}%
+               %{--<ls:userImage username="${subscribedTopics.createdBy}" height="50" width="50"/>--}%
                %{--</div>--}%
 
            </div>
