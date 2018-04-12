@@ -20,22 +20,22 @@ class SubscriptionController {
         }
     }
 
-    def update(Integer id, String seriousness) {
-
-        seriousness = Seriousness.convertSeriousness(params.seriousness)
-        Subscription subscription = Subscription.findById(params.id)
-        if (subscription) {
-            subscription.seriousness = seriousness
-            if (subscription.save(flush: true)) {
-                log.info("Saved Successfully : $subscription")
-                render("SUCCESS")
-            } else {
-                log.error("Error while Saving : $subscription")
-                render("FAILURE")
-            }
-        } else
-            render("SUBSCRIPTION NOT FOUND")
-    }
+//    def update(Integer id, String seriousness) {
+//
+//        seriousness = Seriousness.convertSeriousness(params.seriousness)
+//        Subscription subscription = Subscription.findById(params.id)
+//        if (subscription) {
+//            subscription.seriousness = seriousness
+//            if (subscription.save(flush: true)) {
+//                log.info("Saved Successfully : $subscription")
+//                render("SUCCESS")
+//            } else {
+//                log.error("Error while Saving : $subscription")
+//                render("FAILURE")
+//            }
+//        } else
+//            render("SUBSCRIPTION NOT FOUND")
+//    }
 
     def subscriptionDelete() {
 

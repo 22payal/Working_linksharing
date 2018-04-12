@@ -10,6 +10,7 @@ class TopicController {
 
     EmailService emailService
     TopicService topicService
+    SubscriptionService subscriptionService
 
 
 //    def index() {
@@ -150,32 +151,13 @@ class TopicController {
 //
 //    }
 
-    def changeName(){
-        if(topicService.editTopicName(params)){
-            flash.message = "Topic Name Changed Successfully"
+    def changeTopicData(){
+        if((topicService.editTopicName(params)) && (topicService.update(params)) && (subscriptionService.update(params))){
+            flash.message = "Topic data Changed Successfully"
         }else{
-            flash.error= "Error Changing Topic Name"
+            flash.error= "Error Changing Topic data"
         }
         redirect(controller: 'user',action: 'index')
-    }
-
-    def update(Integer id, String visibility) {
-
-        visibility = Visibility.convertIntoEnum(params.visibility)
-
-        Topic topic = Topic.findById(params.id)
-        if (topic) {
-            topic.visibility = visibility
-            if (topic.validate()) {
-                topic.save(flush: true)
-                log.info("Saved Successfully : $topic")
-                render("SUCCESS")
-            } else {
-                log.error("Error while Saving : $topic")
-                render("FAILURE")
-            }
-        } else
-            render("Topic Not Found")
     }
 
 }

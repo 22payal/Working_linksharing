@@ -14,11 +14,19 @@ int getkey()
 {
      value
 }
-    static Visibility convertIntoEnum(String inputString) {
-        inputString = inputString.toUpperCase()
-        Visibility visibility = inputString
+//    static Visibility convertIntoEnum(String inputString) {
+//        inputString = inputString.toUpperCase()
+//        Visibility visibility = inputString
+//
+//        return visibility
+//    }
 
-        return visibility
+     static Visibility convert(String str){
+        if("PUBLIC"==str.toUpperCase()){
+            return Visibility.PUBLIC;
+        }
+        else
+            return Visibility.PRIVATE;
     }
 
 }

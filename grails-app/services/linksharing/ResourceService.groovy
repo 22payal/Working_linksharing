@@ -28,4 +28,18 @@ class ResourceService {
 //        Resource resource = Resource.findById(resourceId)
 //        return resource
 //    }
+
+    def changeResourceDescription(Map resourceData) {
+        Resource resource = Resource.findById(resourceData.resourceId)
+        resource.description = resourceData.updatedResourceDescription
+        if (resource.validate()) {
+            resource.save(flush: true)
+            log.info("Resource Description Changed Successfully : $resource")
+            return true
+        } else {
+            log.info("Unable To Resource Description : $resource")
+            resource.errors.allErrors.each { println it }
+            return false
+        }
+    }
 }
