@@ -127,11 +127,11 @@
                                 <g:link controller="resource" action="showPost" id="${list.id}">View Post</g:link></span>
 
 
-                            <div class="pagination">
-                                <g:paginate total="${total}" next="next" prev="previous" maxsteps="${readingItems.size()}"
-                                            controller="user"
-                                            action="index" max="${co.max}" offset="${co.offset}"/>
-                            </div>
+                            %{--<div class="pagination">--}%
+                                %{--<g:paginate total="${total}" next="next" prev="previous" maxsteps="${readingItems.size()}"--}%
+                                            %{--controller="user"--}%
+                                            %{--action="index" max="${co.max}" offset="${co.offset}"/>--}%
+                            %{--</div>--}%
 
 
                         </div>

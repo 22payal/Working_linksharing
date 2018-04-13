@@ -31,7 +31,11 @@
                                 <div class="col-sm-6">
                                     <h6 class="text-muted">@${trendingTopics.createdBy.userName}</h6>
                                     %{--<a href="#">Unsubscribe</a>--}%
+
+
                                     <ls:toggleSubscribe id="${trendingTopics.id}"> </ls:toggleSubscribe>
+
+
                                 </div>
 
 

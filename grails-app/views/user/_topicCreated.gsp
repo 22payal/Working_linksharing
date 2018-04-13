@@ -46,8 +46,9 @@
                                 %{--<a href="#"></a>--}%
                             %{--</span>--}%
 
+                            <div>
                            <button class="deleteMe pull-right" id="${createdTopics.id}" onclick="deleteEntry(this.id);">Delete topic</button>
-
+                        </div>
 
                             <span type="img" class="fa fa-file pull-right fa-2x"
                                   style="margin-left: 10px;  margin-right: 5px;color: #007efc;">
@@ -58,18 +59,23 @@
 
                             </span>
 
+                           <div>
+                            %{--<li class="col-lg-1 " style="padding: 0px">--}%
 
-                            %{--<li class="col-lg-1 " style="padding: 0px"><a href="#myModal4" data-toggle="modal"--}%
-                                                                         %{--data-target="#myModal4"><i class="fa fa-file-text"--}%
-                                                                                                    %{--style="margin-left: 10px;  margin-right: 5px;color: #007efc;"></i></a>--}%
+                                %{--<a href="#myModal4" data-toggle="modal"--}%
+                                   %{--data-target="#myModal4"><i class="fa fa-file-text"--}%
+                                                              %{--style="margin-left: 50px; color: #007efc;"></i></a>--}%
                             %{--</li>--}%
+                           </div>
 
-                            %{--<li class="col-lg-1 pull-right" style="padding: 0px">--}%
+                                <div >
+                            <li class="col-lg-1 pull-right" style="padding:0px">
 
-                                %{--<a href="#myModal2" data-toggle="modal"--}%
-                                   %{--data-target="#myModal2"><i class="fa fa-envelope"--}%
-                                                              %{--style="margin-left: 10px;color: #007efc;"></i></a>--}%
-                            %{--</li>--}%
+                                <a href="#myModal2" data-toggle="modal"
+                                   data-target="#myModal2"><i class="fa fa-envelope"
+                                                              style="margin-left: 50px;color: #007efc;"></i></a>
+                            </li>
+                            </div>
 
                             <select class="pull-right">
                                 <option>Serious</option>
