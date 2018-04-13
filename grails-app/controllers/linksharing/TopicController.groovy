@@ -116,13 +116,37 @@ class TopicController {
 
     }
 
-    def changeTopicData() {
-        if ((topicService.editTopicName(params)) && (topicService.update(params)) && (subscriptionService.update(params))) {
-            flash.message = "Topic data Changed Successfully"
-        } else {
-            flash.error = "Error Changing Topic data"
+//    def changeTopicData() {
+//        if ((topicService.editTopicName(params)) && (topicService.update(params)) && (subscriptionService.update(params))) {
+//            flash.message = "Topic data Changed Successfully"
+//        } else {
+//            flash.error = "Error Changing Topic data"
+//        }
+//        redirect(controller: 'user', action: 'index')
+//    }
+
+
+
+    def changeVisibility(){
+        println "TopicController.changeVisibility"
+        println "data ::" + params
+        if(topicService.changeVisibility(params)){
+            flash.message = "Updated"
+            println("changed")
+        }else{
+            flash.error = "Unable to Update"
+            println("not changed")
         }
-        redirect(controller: 'user', action: 'index')
+        redirect(controller: 'user', action: 'editProfile')
+    }
+
+    def changeName(){
+        if(topicService.editTopicName(params)){
+            flash.message = "Topic Name Changed Successfully"
+        }else{
+            flash.error= "Error Changing Topic Name"
+        }
+        redirect(controller: 'user',action: 'index')
     }
 
 }

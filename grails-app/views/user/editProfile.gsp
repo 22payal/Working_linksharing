@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>${user.name} Profile</title>
     <meta name="layout" content="main">
+    <asset:javascript src="jquery-2.2.0.min.js"/>
 
 </head>
 
@@ -27,15 +28,13 @@
                             <div class="row">
 
                                 <h6 class="text-muted col-sm-6">Subscriptions
-                                    <p class="text-primary">
-                                    <ls:userSubscriptionCount/>
-                                </p>
+
+                                <ls:userSubscriptionCount/>
                                 </h6>
 
                                 <h6 class="text-muted col-sm-6">Topics
-                                    <p class="text-primary">
-                                    <ls:topicCount/>
-                                </p>
+
+                                <ls:topicCount/>
                                 </h6>
 
                             </div>
@@ -74,14 +73,11 @@
                                         </div>
 
                                         <div class="col-sm-9">
-                                            <g:form class="form-inline" controller="topic" action="changeTopicData">
+                                            <g:form class="form-inline" controller="topic" action="changeName">
                                                 <div class="form-group">
 
                                                     <input type="text" class="form-control" name="changedTopicName"
                                                            placeholder="${topic.topicName}">
-
-                                                    <g:select name="seriousness" from="${enumeration.Seriousness.values()}" value="seriousness" />
-                                                    <g:select name="visibility" from="${enumeration.Visibility.values()}" value="visibility" />
                                                     <g:hiddenField name="topicId" value="${topic.topicId}"/>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary ">Save</button>
@@ -95,9 +91,7 @@
 
                                                 <div class="col-sm-3">
                                                     <h6 class="text-muted pull-left">Subscriptions</h6>
-                                                    <h6 class="text-primary">
-                                                        <ls:inboxSubscriptionCount id="${topic.topicId}"> </ls:inboxSubscriptionCount>
-                                                    </h6>
+                                                    <h6 class="text-primary">${topic.subscriptionCount}</h6>
                                                 </div>
 
                                                 <div class="col-sm-3">
@@ -105,9 +99,7 @@
                                                         <br>
                                                         <br>
 
-                                                        <p class="text-primary">
-                                                            <ls:inboxResourceCount id="${topic.topicId}"> </ls:inboxResourceCount>
-                                                        </p>
+                                                        <p class="text-primary">${topic.resourcesCount}</p>
                                                     </h6>
                                                 </div>
                                                 <span type="img" class="fa fa-file pull-right fa-2x"
@@ -115,26 +107,22 @@
                                                 <span type="img" class="fa fa-envelope pull-right fa-2x"
                                                       style="margin-left: 10px;">
                                                 </span>
-                                                <span type="img" class="glyphicon glyphicon-trash pull-right fa-2x"
-                                                      style="margin-left: 10px;">
-                                                </span>
-
                                                 <a href=""
                                                    onclick="return deleteTopic(${topic.topicId})">
                                                     <span type="img" class="glyphicon glyphicon-trash pull-right fa-2x"
                                                           style="margin-left: 10px;">
                                                     </span></a>
 
-
-
                                                 <div>
-
-                                                    </div>
-
-                                                    <div>
-
-                                                    </div>
-
+                                                    <select class="pull-right" name="topicVisibility"
+                                                            id="topic_Visibility"
+                                                            onchange="changeVisibility(${topic.topicId}, this.value)">
+                                                        <option class="placeholder" selected disabled
+                                                                value="">${topic.topicVisibility}</option>
+                                                        <option value="${enumeration.Visibility.PRIVATE}">PRIVATE</option>
+                                                        <option value="${enumeration.Visibility.PUBLIC}">PUBLIC</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -181,8 +169,10 @@
                                             <div class="col-sm-3">
                                                 <h6 class="text-muted">@${post.ownerUsername}</h6>
                                             </div>
+
                                             <div class="col-sm-5">
-                                                <a href="${createLink(controller: 'topic', action: 'show', id: post.topicId)}" class="pull-right">${post.topicName}</a>
+                                                <a href="${createLink(controller: 'topic', action: 'show', id: post.topicId)}"
+                                                   class="pull-right">${post.topicName}</a>
                                             </div>
                                         </div>
 
@@ -226,26 +216,17 @@
                     <g:uploadForm controller="user" action="updateUser" enctype="multipart/form-data">
                         <div class="form-group col-lg-10">
                             <label>First Name*</label>
-                            <input class="form-control" type="text" name="updatedFirstname" >
-
-                            <g:hiddenField name="firstName" value="${session.user.firstName}"/>
-
+                            <input class="form-control" type="text" name="updatedFirstname" required>
                         </div>
 
                         <div class="form-group col-lg-10">
                             <label>Last Name*</label>
-                            <input class="form-control" type="text" name="updateLastname" >
-                            <g:hiddenField name="lastName" value="${session.user.lastName}"/>
-
-
+                            <input class="form-control" type="text" name="updateLastname" required>
                         </div>
 
                         <div class="form-group col-lg-10">
                             <label>Username*</label>
-                            <input class="form-control" type="text" name="updatedUsername" >
-
-                            <g:hiddenField name="userName" value="${session.user.userName}"/>
-
+                            <input class="form-control" type="text" name="updatedUsername" required>
                         </div>
 
                         <div class="col-lg-2"></div>
@@ -280,20 +261,13 @@
 
                 <div class="panel-body ">
                     <g:form controller="user" action="changePassword">
-
                         <div class="form-group col-lg-10">
-                            <label>Old Password*</label>
-                            <input class="form-control" type="text" name="oldPassword">
-                        </div>
-
-
-                        <div class="form-group col-lg-10">
-                            <label>New Password*</label>
+                            <label>Password*</label>
                             <input class="form-control" type="text" name="updatedPassword">
                         </div>
 
                         <div class="form-group col-lg-10">
-                            <label>Confirm New Password*</label>
+                            <label>Confirm Password*</label>
                             <input class="form-control" type="password" name="updatedConfirmPassword">
                         </div>
 
@@ -318,12 +292,34 @@
 
 </div>
 
+
+<script>
+    function changeVisibility(topicId, value) {
+        console.log("inside change")
+        console.log("id is : ", topicId)
+        console.log("value is : ", value)
+        $.ajax({
+            type: 'post',
+            data: {'id': topicId, 'visibility': value},
+            url: '/topic/changeVisibility',
+            dataType: 'json',
+            success: function (res) {
+                alert(res);
+            },
+            error: function (res) {
+                $('#message').text('Error!');
+                $('.dvLoading').hide();
+            }
+        });
+    }
+</script>
+
 <script>
     function deleteTopic(topicId) {
         var r = confirm("Are you sure to delete?");
         if (r == true) {
             $.ajax({
-                url: "/topic/topicDelete",
+                url: "/topic/delete",
                 type: "POST",
                 data: {topicId: topicId},
                 success: function (data) {
@@ -335,4 +331,5 @@
 </script>
 
 </body>
+
 </html>
