@@ -20,12 +20,12 @@ class TopicController {
         Topic topic = Topic.get(params.topicId)
         if (!topic) {
             flash.error = "topic not found"
-          //  render ([message: "your topic could not be deleted "] as JSON)
+            render ([message: "your topic could not be deleted "] as JSON)
 
         } else {
             topicService.delete(topic)
             flash.message = "topic deleted"
-            //render ([message: "your topic is now deleted "] as JSON)
+            render ([message: "your topic is now deleted "] as JSON)
         }
 
     }
@@ -45,13 +45,15 @@ class TopicController {
         if (topic.validate()) {
             topic.save()
             flash.message = "Topic is now saved"
-            render("topic saved successfully")
+           // render("topic saved successfully")
+            render ([message: "your topic is now saved "] as JSON)
 
             redirect(controller: 'User', action: 'index')
         } else {
             flash.error = "Topic is not saved"
-            render("error during saving topic")
+           // render("error during saving topic")
             topic.errors.allErrors.each { println(it) }
+            render ([message: "your topic is could not be saved"] as JSON)
 
         }
 
@@ -84,11 +86,13 @@ class TopicController {
         if (subscription.validate()) {
             subscription.save()
             flash.message = "Subscription saved successfully"
-            render("Subscription for that topic created successfully")
+           // render("Subscription for that topic created successfully")
+            render ([message: "your subscription is now saved"] as JSON)
         } else {
             subscription.errors.allErrors.each { println(it) }
             flash.error = "subscription could not be saved"
-            render("Subscription could not be saved")
+           // render("Subscription could not be saved")
+            render ([message: "your subscription could not be saved"] as JSON)
         }
 
     }
@@ -106,7 +110,7 @@ class TopicController {
             render(view: "/topic/searchResult", model: [topicNames: topicNames])
 //           render("hello ")
         } else {
-            render("no such topic found")
+            render ([message: "no such topic found"] as JSON)
         }
 
 

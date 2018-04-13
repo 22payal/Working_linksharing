@@ -34,7 +34,7 @@ class LinksharingTagLib {
                 out << "<a href='/ReadingItem/changeisRead?id=${attrs.id}&isRead=${1}'> mark as read </a>"
             } else {
                 //  out<<" mark as read"
-                out << "<a href='/ReadingItem/changeisRead /${attrs.id}/&isRead=${0}'> mark as unread  </a>"
+                out << "<a href='/ReadingItem/changeisRead /id=${attrs.id}/&isRead=${0}'> mark as unread  </a>"
 
             }
         }

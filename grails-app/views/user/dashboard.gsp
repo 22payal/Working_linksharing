@@ -121,11 +121,18 @@
                             <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i>
                             <i class="fa fa-google fa-lg" aria-hidden="true"></i>
                             <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
-                            %{--<span class="pull-right" style="margin-right: 0px;color: #007efc"><a href="#" style="color: #007efc;font-size: small">Download</a>--}%
-                                %{--<a href="#" style="color: #007efc;font-size: small">Mark as Read</a>--}%
+
                             <ls:toggleResource id="${list.id}"> </ls:toggleResource>
                             <ls:markAsRead id="${list.id}"> </ls:markAsRead>
                                 <g:link controller="resource" action="showPost" id="${list.id}">View Post</g:link></span>
+
+
+                            <div class="pagination">
+                                <g:paginate total="${total}" next="next" prev="previous" maxsteps="${readingItems.size()}"
+                                            controller="user"
+                                            action="index" max="${co.max}" offset="${co.offset}"/>
+                            </div>
+
 
                         </div>
                     </div>
