@@ -25,20 +25,21 @@
         <div class="col-lg-8">
 
             <ul class="nav navbar-nav col-lg-12">
-                <li class="col-lg-5 ">
-                    <form class="navbar-form navbar-left" action="/action_page.php">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search...">
 
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
+                %{--<ul class="nav navbar-nav col-lg-12">--}%
+                    <li class="col-lg-5 ">
+                        <g:form controller="topic" action="search" method="post" class="navbar-form navbar-left" >
+                            <div class="input-group">
+                                <input type="text" class="form-control"name="search" id="search" placeholder="Search...">
+
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </li>
-
+                        </g:form>
+                    </li>
 
                 <li class="col-lg-1 " style="padding: 0px"><a href="#myModal" data-toggle="modal"
                                                               data-target="#myModal"><i class="fa fa-comments"

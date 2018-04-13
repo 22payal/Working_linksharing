@@ -36,7 +36,7 @@
                         <div class="col-lg-9">
                             <div class="col-lg-12">
                                 <h5><a href="#">${topic.topicName}</a> <span
-                                        STYLE="color: #007efc ">(${topic.visibility})</span></h5>
+                                        STYLE="color: #007efc "></span></h5>
                             </div>
 
                             <div class="col-lg-12">
